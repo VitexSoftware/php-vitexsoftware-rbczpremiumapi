@@ -1,6 +1,11 @@
 {
-    "name": "vitexsoftware/rbczpremiumapi",
-    "description": "php client library for rbczpremiumapi",
+    {{#composerPackageName}}
+    "name": "{{.}}",
+    {{/composerPackageName}}
+    {{#artifactVersion}}
+    "version": "{{.}}",
+    {{/artifactVersion}}
+    "description": "{{{appDescription}}}",
     "keywords": [
         "openapitools",
         "openapi-generator",
@@ -10,12 +15,12 @@
         "rest",
         "api"
     ],
-    "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-raiffeisenbank",
-    "license": "MIT",
+    "homepage": "https://openapi-generator.tech",
+    "license": "unlicense",
     "authors": [
         {
-            "name": "Vítězslav Dvořák",
-            "homepage": "https://vitexsoftware.com"
+            "name": "OpenAPI-Generator contributors",
+            "homepage": "https://openapi-generator.tech"
         }
     ],
     "require": {
@@ -31,9 +36,9 @@
         "friendsofphp/php-cs-fixer": "^3.5"
     },
     "autoload": {
-        "psr-4": { "OpenAPI\\Client\\" : "lib/" }
+        "psr-4": { "{{escapedInvokerPackage}}\\" : "{{srcBasePath}}/" }
     },
     "autoload-dev": {
-        "psr-4": { "OpenAPI\\Client\\Test\\" : "test/" }
+        "psr-4": { "{{escapedInvokerPackage}}\\Test\\" : "{{testBasePath}}/" }
     }
 }

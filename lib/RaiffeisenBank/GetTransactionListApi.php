@@ -1,6 +1,6 @@
 <?php
 /**
- * GetAccountsApi
+ * GetTransactionListApi
  * PHP version 7.4
  *
  * @category Class
@@ -25,7 +25,7 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\raiffeisenbank;
+namespace OpenAPI\Client\RaiffeisenBank;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -40,14 +40,14 @@ use OpenAPI\Client\HeaderSelector;
 use OpenAPI\Client\ObjectSerializer;
 
 /**
- * GetAccountsApi Class Doc Comment
+ * GetTransactionListApi Class Doc Comment
  *
  * @category Class
  * @package  OpenAPI\Client
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class GetAccountsApi
+class GetTransactionListApi
 {
     /**
      * @var ClientInterface
@@ -71,7 +71,7 @@ class GetAccountsApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'getAccounts' => [
+        'getTransactionList' => [
             'application/json',
         ],
     ];
@@ -123,42 +123,48 @@ class GetAccountsApi
     }
 
     /**
-     * Operation getAccounts
+     * Operation getTransactionList
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Number of the requested page. Default is 1. (optional)
-     * @param  int $size Number of items on the page. Default is 15. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
+     * @param  int $page Page number to be requested. The first page is 1. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return object|object|object|object
+     * @return object|object|object|object|object|object
      */
-    public function getAccounts($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getTransactionList($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        list($response) = $this->getAccountsWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType);
+        list($response) = $this->getTransactionListWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType);
         return $response;
     }
 
     /**
-     * Operation getAccountsWithHttpInfo
+     * Operation getTransactionListWithHttpInfo
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Number of the requested page. Default is 1. (optional)
-     * @param  int $size Number of items on the page. Default is 15. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
+     * @param  int $page Page number to be requested. The first page is 1. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of object|object|object|object, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getAccountsWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getTransactionListWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        $request = $this->getAccountsRequest($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType);
+        $request = $this->getTransactionListRequest($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -211,6 +217,21 @@ class GetAccountsApi
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
+                case 400:
+                    if ('object' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('object' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, 'object', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
                 case 401:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -227,6 +248,21 @@ class GetAccountsApi
                         $response->getHeaders()
                     ];
                 case 403:
+                    if ('object' === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('object' !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, 'object', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                case 404:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -284,6 +320,14 @@ class GetAccountsApi
                     );
                     $e->setResponseObject($data);
                     break;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        'object',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -293,6 +337,14 @@ class GetAccountsApi
                     $e->setResponseObject($data);
                     break;
                 case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        'object',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
@@ -314,21 +366,24 @@ class GetAccountsApi
     }
 
     /**
-     * Operation getAccountsAsync
+     * Operation getTransactionListAsync
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Number of the requested page. Default is 1. (optional)
-     * @param  int $size Number of items on the page. Default is 15. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
+     * @param  int $page Page number to be requested. The first page is 1. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccountsAsync($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getTransactionListAsync($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        return $this->getAccountsAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType)
+        return $this->getTransactionListAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -337,22 +392,25 @@ class GetAccountsApi
     }
 
     /**
-     * Operation getAccountsAsyncWithHttpInfo
+     * Operation getTransactionListAsyncWithHttpInfo
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Number of the requested page. Default is 1. (optional)
-     * @param  int $size Number of items on the page. Default is 15. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
+     * @param  int $page Page number to be requested. The first page is 1. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccountsAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getTransactionListAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
         $returnType = 'object';
-        $request = $this->getAccountsRequest($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType);
+        $request = $this->getTransactionListRequest($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -391,49 +449,97 @@ class GetAccountsApi
     }
 
     /**
-     * Create request for operation 'getAccounts'
+     * Create request for operation 'getTransactionList'
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Number of the requested page. Default is 1. (optional)
-     * @param  int $size Number of items on the page. Default is 15. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
+     * @param  int $page Page number to be requested. The first page is 1. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getAccountsRequest($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getTransactionListRequest($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
 
         // verify the required parameter 'x_ibm_client_id' is set
         if ($x_ibm_client_id === null || (is_array($x_ibm_client_id) && count($x_ibm_client_id) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_ibm_client_id when calling getAccounts'
+                'Missing the required parameter $x_ibm_client_id when calling getTransactionList'
             );
         }
 
         // verify the required parameter 'x_request_id' is set
         if ($x_request_id === null || (is_array($x_request_id) && count($x_request_id) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_request_id when calling getAccounts'
+                'Missing the required parameter $x_request_id when calling getTransactionList'
             );
         }
         if (strlen($x_request_id) > 60) {
-            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 60.');
+            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 60.');
         }
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $x_request_id)) {
-            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling GetAccountsApi.getAccounts, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
+            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
         
+        // verify the required parameter 'account_number' is set
+        if ($account_number === null || (is_array($account_number) && count($account_number) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $account_number when calling getTransactionList'
+            );
+        }
+        if (strlen($account_number) > 10) {
+            throw new \InvalidArgumentException('invalid length for "$account_number" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 10.');
+        }
+        if (!preg_match("/[0-9]{1,10}/", $account_number)) {
+            throw new \InvalidArgumentException("invalid value for \"account_number\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[0-9]{1,10}/.");
+        }
+        
+        // verify the required parameter 'currency_code' is set
+        if ($currency_code === null || (is_array($currency_code) && count($currency_code) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $currency_code when calling getTransactionList'
+            );
+        }
+        if (strlen($currency_code) > 3) {
+            throw new \InvalidArgumentException('invalid length for "$currency_code" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 3.');
+        }
+        if (!preg_match("/[A-Z]{1,3}/", $currency_code)) {
+            throw new \InvalidArgumentException("invalid value for \"currency_code\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[A-Z]{1,3}/.");
+        }
+        
+        // verify the required parameter 'from' is set
+        if ($from === null || (is_array($from) && count($from) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $from when calling getTransactionList'
+            );
+        }
+
+        // verify the required parameter 'to' is set
+        if ($to === null || (is_array($to) && count($to) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $to when calling getTransactionList'
+            );
+        }
+
         if ($psu_ip_address !== null && strlen($psu_ip_address) > 39) {
-            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 39.');
+            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 39.');
+        }
+        
+        if ($page !== null && $page > 99999) {
+            throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 99999.');
+        }
+        if ($page !== null && $page < 1) {
+            throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be bigger than or equal to 1.');
         }
         
 
-
-
-        $resourcePath = '/rbcz/premium/mock/accounts';
+        $resourcePath = '/rbcz/premium/mock/accounts/{accountNumber}/{currencyCode}/transactions';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -442,17 +548,26 @@ class GetAccountsApi
 
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $page,
-            'page', // param base name
-            'integer', // openApiType
+            $from,
+            'from', // param base name
+            'string', // openApiType
             '', // style
             false, // explode
-            false // required
+            true // required
         ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $size,
-            'size', // param base name
+            $to,
+            'to', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
             'integer', // openApiType
             '', // style
             false, // explode
@@ -472,6 +587,22 @@ class GetAccountsApi
             $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($psu_ip_address);
         }
 
+        // path params
+        if ($account_number !== null) {
+            $resourcePath = str_replace(
+                '{' . 'accountNumber' . '}',
+                ObjectSerializer::toPathValue($account_number),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($currency_code !== null) {
+            $resourcePath = str_replace(
+                '{' . 'currencyCode' . '}',
+                ObjectSerializer::toPathValue($currency_code),
+                $resourcePath
+            );
+        }
 
 
         $headers = $this->headerSelector->selectHeaders(

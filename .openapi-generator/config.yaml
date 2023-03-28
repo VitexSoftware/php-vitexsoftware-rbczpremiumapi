@@ -1,7 +1,11 @@
 ---
+templateDir: .openapi-generator/templates
 additionalProperties:
   packageName: raiffeisenbank_client
   projectName: raiffeisenbank_client
-  apiPackage: raiffeisenbank
+  apiPackage: RaiffeisenBank
   UserId: VitexSoftware
   RepoId: php-vitexsoftware-raiffeisenbank
+files:
+  AUTHORS.md: {}
+  composer.json: {}

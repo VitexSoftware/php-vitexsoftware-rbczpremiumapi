@@ -1,6 +1,6 @@
 <?php
 /**
- * DownloadStatementApi
+ * GetAccountsApi
  * PHP version 7.4
  *
  * @category Class
@@ -25,7 +25,7 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\raiffeisenbank;
+namespace OpenAPI\Client\RaiffeisenBank;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -40,14 +40,14 @@ use OpenAPI\Client\HeaderSelector;
 use OpenAPI\Client\ObjectSerializer;
 
 /**
- * DownloadStatementApi Class Doc Comment
+ * GetAccountsApi Class Doc Comment
  *
  * @category Class
  * @package  OpenAPI\Client
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class DownloadStatementApi
+class GetAccountsApi
 {
     /**
      * @var ClientInterface
@@ -71,7 +71,7 @@ class DownloadStatementApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'downloadStatement' => [
+        'getAccounts' => [
             'application/json',
         ],
     ];
@@ -123,42 +123,42 @@ class DownloadStatementApi
     }
 
     /**
-     * Operation downloadStatement
+     * Operation getAccounts
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accept_language The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
-     * @param  \OpenAPI\Client\Model\DownloadStatementRequest $request_body request_body (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \SplFileObject|object|object|object|\OpenAPI\Client\Model\GetBalance404Response|object
+     * @return object|object|object|object
      */
-    public function downloadStatement($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address = null, string $contentType = self::contentTypes['downloadStatement'][0])
+    public function getAccounts($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        list($response) = $this->downloadStatementWithHttpInfo($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address, $contentType);
+        list($response) = $this->getAccountsWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType);
         return $response;
     }
 
     /**
-     * Operation downloadStatementWithHttpInfo
+     * Operation getAccountsWithHttpInfo
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accept_language The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
-     * @param  \OpenAPI\Client\Model\DownloadStatementRequest $request_body (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \SplFileObject|object|object|object|\OpenAPI\Client\Model\GetBalance404Response|object, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function downloadStatementWithHttpInfo($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address = null, string $contentType = self::contentTypes['downloadStatement'][0])
+    public function getAccountsWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        $request = $this->downloadStatementRequest($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address, $contentType);
+        $request = $this->getAccountsRequest($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -197,21 +197,6 @@ class DownloadStatementApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\SplFileObject' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SplFileObject' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SplFileObject', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 400:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -256,21 +241,6 @@ class DownloadStatementApi
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
-                case 404:
-                    if ('\OpenAPI\Client\Model\GetBalance404Response' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance404Response' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance404Response', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
                 case 429:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -288,7 +258,7 @@ class DownloadStatementApi
                     ];
             }
 
-            $returnType = '\SplFileObject';
+            $returnType = 'object';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -309,14 +279,6 @@ class DownloadStatementApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SplFileObject',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
                         'object',
                         $e->getResponseHeaders()
                     );
@@ -338,14 +300,6 @@ class DownloadStatementApi
                     );
                     $e->setResponseObject($data);
                     break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance404Response',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -360,21 +314,21 @@ class DownloadStatementApi
     }
 
     /**
-     * Operation downloadStatementAsync
+     * Operation getAccountsAsync
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accept_language The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
-     * @param  \OpenAPI\Client\Model\DownloadStatementRequest $request_body (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function downloadStatementAsync($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address = null, string $contentType = self::contentTypes['downloadStatement'][0])
+    public function getAccountsAsync($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        return $this->downloadStatementAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address, $contentType)
+        return $this->getAccountsAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -383,22 +337,22 @@ class DownloadStatementApi
     }
 
     /**
-     * Operation downloadStatementAsyncWithHttpInfo
+     * Operation getAccountsAsyncWithHttpInfo
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accept_language The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
-     * @param  \OpenAPI\Client\Model\DownloadStatementRequest $request_body (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function downloadStatementAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address = null, string $contentType = self::contentTypes['downloadStatement'][0])
+    public function getAccountsAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        $returnType = '\SplFileObject';
-        $request = $this->downloadStatementRequest($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address, $contentType);
+        $returnType = 'object';
+        $request = $this->getAccountsRequest($x_ibm_client_id, $x_request_id, $psu_ip_address, $page, $size, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -437,67 +391,73 @@ class DownloadStatementApi
     }
 
     /**
-     * Create request for operation 'downloadStatement'
+     * Create request for operation 'getAccounts'
      *
      * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accept_language The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
-     * @param  \OpenAPI\Client\Model\DownloadStatementRequest $request_body (required)
      * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function downloadStatementRequest($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address = null, string $contentType = self::contentTypes['downloadStatement'][0])
+    public function getAccountsRequest($x_ibm_client_id, $x_request_id, $psu_ip_address = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
 
         // verify the required parameter 'x_ibm_client_id' is set
         if ($x_ibm_client_id === null || (is_array($x_ibm_client_id) && count($x_ibm_client_id) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_ibm_client_id when calling downloadStatement'
+                'Missing the required parameter $x_ibm_client_id when calling getAccounts'
             );
         }
 
         // verify the required parameter 'x_request_id' is set
         if ($x_request_id === null || (is_array($x_request_id) && count($x_request_id) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_request_id when calling downloadStatement'
+                'Missing the required parameter $x_request_id when calling getAccounts'
             );
         }
         if (strlen($x_request_id) > 60) {
-            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling DownloadStatementApi.downloadStatement, must be smaller than or equal to 60.');
+            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 60.');
         }
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $x_request_id)) {
-            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling DownloadStatementApi.downloadStatement, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
+            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling GetAccountsApi.getAccounts, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
         
-        // verify the required parameter 'accept_language' is set
-        if ($accept_language === null || (is_array($accept_language) && count($accept_language) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $accept_language when calling downloadStatement'
-            );
-        }
-
-        // verify the required parameter 'request_body' is set
-        if ($request_body === null || (is_array($request_body) && count($request_body) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $request_body when calling downloadStatement'
-            );
-        }
-
         if ($psu_ip_address !== null && strlen($psu_ip_address) > 39) {
-            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling DownloadStatementApi.downloadStatement, must be smaller than or equal to 39.');
+            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 39.');
         }
         
 
-        $resourcePath = '/rbcz/premium/mock/accounts/statements/download';
+
+
+        $resourcePath = '/rbcz/premium/mock/accounts';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'integer', // openApiType
+            '', // style
+            false, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $size,
+            'size', // param base name
+            'integer', // openApiType
+            '', // style
+            false, // explode
+            false // required
+        ) ?? []);
 
         // header params
         if ($x_ibm_client_id !== null) {
@@ -508,10 +468,6 @@ class DownloadStatementApi
             $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($x_request_id);
         }
         // header params
-        if ($accept_language !== null) {
-            $headerParams['Accept-Language'] = ObjectSerializer::toHeaderValue($accept_language);
-        }
-        // header params
         if ($psu_ip_address !== null) {
             $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($psu_ip_address);
         }
@@ -519,20 +475,13 @@ class DownloadStatementApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['*/*', ],
+            ['application/json', ],
             $contentType,
             $multipart
         );
 
         // for model (json/xml)
-        if (isset($request_body)) {
-            if (stripos($headers['Content-Type'], 'application/json') !== false) {
-                # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($request_body));
-            } else {
-                $httpBody = $request_body;
-            }
-        } elseif (count($formParams) > 0) {
+        if (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -571,7 +520,7 @@ class DownloadStatementApi
         $operationHost = $this->config->getHost();
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'POST',
+            'GET',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

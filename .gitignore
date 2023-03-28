@@ -13,5 +13,3 @@ composer.phar
 
 # PHPUnit cache
 .phpunit.result.cache
-
-node_modules
