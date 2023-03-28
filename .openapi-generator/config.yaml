@@ -1,0 +1,7 @@
+---
+additionalProperties:
+  packageName: raiffeisenbank_client
+  projectName: raiffeisenbank_client
+  apiPackage: raiffeisenbank
+  UserId: VitexSoftware
+  RepoId: php-vitexsoftware-raiffeisenbank
