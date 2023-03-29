@@ -6,6 +6,7 @@ additionalProperties:
   apiPackage: RaiffeisenBank
   UserId: VitexSoftware
   RepoId: php-vitexsoftware-raiffeisenbank
+  infoEmail: info@vitexsoftware.cz
 files:
   AUTHORS.md: {}
   composer.json: {}

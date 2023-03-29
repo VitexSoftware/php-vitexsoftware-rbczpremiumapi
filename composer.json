@@ -31,9 +31,13 @@
         "friendsofphp/php-cs-fixer": "^3.5"
     },
     "autoload": {
-        "psr-4": { "OpenAPI\\Client\\" : "lib/" }
+        "psr-4": { "OpenAPI\\Client\\" : "lib/" },
+        "psr-4": { "OpenAPI\\Client\\Model\\" : "lib/Model" },
+        "psr-4": { "OpenAPI\\Client\\RaiffeisenBank\\" : "lib/RaiffeisenBank" }
     },
     "autoload-dev": {
-        "psr-4": { "OpenAPI\\Client\\Test\\" : "test/" }
+        "psr-4": { "OpenAPI\\Client\\Test\\" : "test/" },
+        "psr-4": { "OpenAPI\\Client\\Test\\Model\\" : "test/Model" },
+        "psr-4": { "OpenAPI\\Client\\Test\\RaiffeisenBank\\" : "test/RaiffeisenBank" }
     }
 }
