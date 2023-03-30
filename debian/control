@@ -1,5 +1,5 @@
 Source: php-vitexsoftware-rbczpremiumapi
-Build-Depends: debhelper (>= 10), moreutils, jq, composer, phpdocumentor, php-mbstring, php-dom, php-xml, php-intl
+Build-Depends: debhelper (>= 10), moreutils, jq, composer, phpdocumentor, php-curl
 Section: web
 Standards-Version: 3.9.8
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
