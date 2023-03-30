@@ -25,6 +25,7 @@ docs/Model/ImportPayments400Response.md
 docs/Model/ImportPayments413Response.md
 docs/Model/ImportPayments415Response.md
 git_push.sh
+lib/ApiClient.php
 lib/ApiException.php
 lib/Configuration.php
 lib/HeaderSelector.php
@@ -42,11 +43,12 @@ lib/Model/ImportPayments413Response.php
 lib/Model/ImportPayments415Response.php
 lib/Model/ModelInterface.php
 lib/ObjectSerializer.php
-lib/RaiffeisenBank/DownloadStatementApi.php
-lib/RaiffeisenBank/GetAccountBalanceApi.php
-lib/RaiffeisenBank/GetAccountsApi.php
-lib/RaiffeisenBank/GetBatchDetailApi.php
-lib/RaiffeisenBank/GetStatementListApi.php
-lib/RaiffeisenBank/GetTransactionListApi.php
-lib/RaiffeisenBank/UploadPaymentsApi.php
+lib/PremiumAPI/DownloadStatementApi.php
+lib/PremiumAPI/GetAccountBalanceApi.php
+lib/PremiumAPI/GetAccountsApi.php
+lib/PremiumAPI/GetBatchDetailApi.php
+lib/PremiumAPI/GetStatementListApi.php
+lib/PremiumAPI/GetTransactionListApi.php
+lib/PremiumAPI/UploadPaymentsApi.php
 phpunit.xml.dist
+test/bootstrap.php

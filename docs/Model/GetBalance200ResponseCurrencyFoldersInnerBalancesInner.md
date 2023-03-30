@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**balance_type** | **string** | the balance type (CODEBOOK: AccountBalanceTypes) |
+**balanceType** | **string** | the balance type (CODEBOOK: AccountBalanceTypes) |
 **currency** | **string** | The currency of the balance |
 **value** | **float** | The balance amount |
 

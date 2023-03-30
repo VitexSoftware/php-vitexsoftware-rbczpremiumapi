@@ -1,4 +1,4 @@
-# OpenAPI\Client\GetBatchDetailApi
+# VitexSoftware\Raiffeisenbank\GetBatchDetailApi
 
 All URIs are relative to https://api.rb.cz, except if the operation defines another base path.
 
@@ -10,7 +10,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 ## `getBatchDetail()`
 
 ```php
-getBatchDetail($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address): object
+getBatchDetail($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress): object
 ```
 
 
@@ -25,18 +25,18 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new OpenAPI\Client\Api\GetBatchDetailApi(
+$apiInstance = new VitexSoftware\Raiffeisenbank\Api\GetBatchDetailApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
-    new GuzzleHttp\Client()
+    new \VitexSoftware\Raiffeisenbank\ApiClient()
 );
-$x_ibm_client_id = 'x_ibm_client_id_example'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
-$x_request_id = 'x_request_id_example'; // string | Unique request id provided by consumer application for reference and auditing.
-$batch_file_id = 56; // int | Batch file id
-$psu_ip_address = 'psu_ip_address_example'; // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible.
+$xIBMClientId = 'xIBMClientId_example'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
+$xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
+$batchFileId = 56; // int | Batch file id
+$pSUIPAddress = 'pSUIPAddress_example'; // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible.
 
 try {
-    $result = $apiInstance->getBatchDetail($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address);
+    $result = $apiInstance->getBatchDetail($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling GetBatchDetailApi->getBatchDetail: ', $e->getMessage(), PHP_EOL;
@@ -47,10 +47,10 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **x_ibm_client_id** | **string**| ClientID obtained from Developer Portal - when you registered your app with us. | |
-| **x_request_id** | **string**| Unique request id provided by consumer application for reference and auditing. | |
-| **batch_file_id** | **int**| Batch file id | |
-| **psu_ip_address** | **string**| IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. | [optional] |
+| **xIBMClientId** | **string**| ClientID obtained from Developer Portal - when you registered your app with us. | |
+| **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. | |
+| **batchFileId** | **int**| Batch file id | |
+| **pSUIPAddress** | **string**| IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. | [optional] |
 
 ### Return type
 

@@ -1,12 +1,21 @@
 ---
 templateDir: .openapi-generator/templates
 additionalProperties:
-  packageName: raiffeisenbank_client
-  projectName: raiffeisenbank_client
-  apiPackage: RaiffeisenBank
+  packageName: Raiffeisenbank Premium API client library
+  apiPackage: PremiumAPI
   UserId: VitexSoftware
   RepoId: php-vitexsoftware-raiffeisenbank
   infoEmail: info@vitexsoftware.cz
+  allowUnicodeIdentifiers: true
+  artifactVersion: 0.1.0
+  invokerPackage: VitexSoftware\Raiffeisenbank
+  modelPackage: Model
+  variableNamingConvention: camelCase
 files:
   AUTHORS.md: {}
   composer.json: {}
+  ApiClient.php: 
+      folder: lib
+  bootstrap.php:
+      folder: test
+

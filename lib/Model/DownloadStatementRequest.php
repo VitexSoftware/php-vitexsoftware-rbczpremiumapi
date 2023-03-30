@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,17 +27,17 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace VitexSoftware\Raiffeisenbank\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * DownloadStatementRequest Class Doc Comment
  *
  * @category Class
  * @description Request values for the statement download.
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -59,10 +59,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
       * @var string[]
       */
     protected static $openAPITypes = [
-        'account_number' => 'string',
+        'accountNumber' => 'string',
         'currency' => 'string',
-        'statement_id' => 'string',
-        'statement_format' => 'string'
+        'statementId' => 'string',
+        'statementFormat' => 'string'
     ];
 
     /**
@@ -73,10 +73,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'account_number' => null,
+        'accountNumber' => null,
         'currency' => null,
-        'statement_id' => null,
-        'statement_format' => null
+        'statementId' => null,
+        'statementFormat' => null
     ];
 
     /**
@@ -85,10 +85,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'account_number' => false,
+        'accountNumber' => false,
 		'currency' => false,
-		'statement_id' => false,
-		'statement_format' => false
+		'statementId' => false,
+		'statementFormat' => false
     ];
 
     /**
@@ -177,10 +177,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
      * @var string[]
      */
     protected static $attributeMap = [
-        'account_number' => 'accountNumber',
+        'accountNumber' => 'accountNumber',
         'currency' => 'currency',
-        'statement_id' => 'statementId',
-        'statement_format' => 'statementFormat'
+        'statementId' => 'statementId',
+        'statementFormat' => 'statementFormat'
     ];
 
     /**
@@ -189,10 +189,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
      * @var string[]
      */
     protected static $setters = [
-        'account_number' => 'setAccountNumber',
+        'accountNumber' => 'setAccountNumber',
         'currency' => 'setCurrency',
-        'statement_id' => 'setStatementId',
-        'statement_format' => 'setStatementFormat'
+        'statementId' => 'setStatementId',
+        'statementFormat' => 'setStatementFormat'
     ];
 
     /**
@@ -201,10 +201,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
      * @var string[]
      */
     protected static $getters = [
-        'account_number' => 'getAccountNumber',
+        'accountNumber' => 'getAccountNumber',
         'currency' => 'getCurrency',
-        'statement_id' => 'getStatementId',
-        'statement_format' => 'getStatementFormat'
+        'statementId' => 'getStatementId',
+        'statementFormat' => 'getStatementFormat'
     ];
 
     /**
@@ -281,10 +281,10 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('account_number', $data ?? [], null);
+        $this->setIfExists('accountNumber', $data ?? [], null);
         $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('statement_id', $data ?? [], null);
-        $this->setIfExists('statement_format', $data ?? [], null);
+        $this->setIfExists('statementId', $data ?? [], null);
+        $this->setIfExists('statementFormat', $data ?? [], null);
     }
 
     /**
@@ -314,20 +314,20 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     {
         $invalidProperties = [];
 
-        if ($this->container['account_number'] === null) {
-            $invalidProperties[] = "'account_number' can't be null";
+        if ($this->container['accountNumber'] === null) {
+            $invalidProperties[] = "'accountNumber' can't be null";
         }
-        if ($this->container['statement_id'] === null) {
-            $invalidProperties[] = "'statement_id' can't be null";
+        if ($this->container['statementId'] === null) {
+            $invalidProperties[] = "'statementId' can't be null";
         }
-        if ($this->container['statement_format'] === null) {
-            $invalidProperties[] = "'statement_format' can't be null";
+        if ($this->container['statementFormat'] === null) {
+            $invalidProperties[] = "'statementFormat' can't be null";
         }
         $allowedValues = $this->getStatementFormatAllowableValues();
-        if (!is_null($this->container['statement_format']) && !in_array($this->container['statement_format'], $allowedValues, true)) {
+        if (!is_null($this->container['statementFormat']) && !in_array($this->container['statementFormat'], $allowedValues, true)) {
             $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'statement_format', must be one of '%s'",
-                $this->container['statement_format'],
+                "invalid value '%s' for 'statementFormat', must be one of '%s'",
+                $this->container['statementFormat'],
                 implode("', '", $allowedValues)
             );
         }
@@ -348,28 +348,28 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
 
 
     /**
-     * Gets account_number
+     * Gets accountNumber
      *
      * @return string
      */
     public function getAccountNumber()
     {
-        return $this->container['account_number'];
+        return $this->container['accountNumber'];
     }
 
     /**
-     * Sets account_number
+     * Sets accountNumber
      *
-     * @param string $account_number Number of the account without prefix and bank code.
+     * @param string $accountNumber Number of the account without prefix and bank code.
      *
      * @return self
      */
-    public function setAccountNumber($account_number)
+    public function setAccountNumber($accountNumber)
     {
-        if (is_null($account_number)) {
-            throw new \InvalidArgumentException('non-nullable account_number cannot be null');
+        if (is_null($accountNumber)) {
+            throw new \InvalidArgumentException('non-nullable accountNumber cannot be null');
         }
-        $this->container['account_number'] = $account_number;
+        $this->container['accountNumber'] = $accountNumber;
 
         return $this;
     }
@@ -402,65 +402,65 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Gets statement_id
+     * Gets statementId
      *
      * @return string
      */
     public function getStatementId()
     {
-        return $this->container['statement_id'];
+        return $this->container['statementId'];
     }
 
     /**
-     * Sets statement_id
+     * Sets statementId
      *
-     * @param string $statement_id Public id of the statement.
+     * @param string $statementId Public id of the statement.
      *
      * @return self
      */
-    public function setStatementId($statement_id)
+    public function setStatementId($statementId)
     {
-        if (is_null($statement_id)) {
-            throw new \InvalidArgumentException('non-nullable statement_id cannot be null');
+        if (is_null($statementId)) {
+            throw new \InvalidArgumentException('non-nullable statementId cannot be null');
         }
-        $this->container['statement_id'] = $statement_id;
+        $this->container['statementId'] = $statementId;
 
         return $this;
     }
 
     /**
-     * Gets statement_format
+     * Gets statementFormat
      *
      * @return string
      */
     public function getStatementFormat()
     {
-        return $this->container['statement_format'];
+        return $this->container['statementFormat'];
     }
 
     /**
-     * Sets statement_format
+     * Sets statementFormat
      *
-     * @param string $statement_format The format of the statement.
+     * @param string $statementFormat The format of the statement.
      *
      * @return self
      */
-    public function setStatementFormat($statement_format)
+    public function setStatementFormat($statementFormat)
     {
-        if (is_null($statement_format)) {
-            throw new \InvalidArgumentException('non-nullable statement_format cannot be null');
+        if (is_null($statementFormat)) {
+            throw new \InvalidArgumentException('non-nullable statementFormat cannot be null');
         }
         $allowedValues = $this->getStatementFormatAllowableValues();
-        if (!in_array($statement_format, $allowedValues, true)) {
+        if (!in_array($statementFormat, $allowedValues, true)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    "Invalid value '%s' for 'statement_format', must be one of '%s'",
-                    $statement_format,
+                    "Invalid value '%s' for 'statementFormat', must be one of '%s'",
+                    $statementFormat,
                     implode("', '", $allowedValues)
                 )
             );
         }
-        $this->container['statement_format'] = $statement_format;
+        $this->container['statementFormat'] = $statementFormat;
 
         return $this;
     }

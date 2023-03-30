@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,16 +27,16 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace VitexSoftware\Raiffeisenbank\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance429Response Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -59,7 +59,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
       */
     protected static $openAPITypes = [
         'error' => 'string',
-        'error_description' => 'string'
+        'errorDescription' => 'string'
     ];
 
     /**
@@ -71,7 +71,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
       */
     protected static $openAPIFormats = [
         'error' => null,
-        'error_description' => null
+        'errorDescription' => null
     ];
 
     /**
@@ -81,7 +81,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
       */
     protected static array $openAPINullables = [
         'error' => false,
-		'error_description' => false
+		'errorDescription' => false
     ];
 
     /**
@@ -171,7 +171,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
      */
     protected static $attributeMap = [
         'error' => 'error',
-        'error_description' => 'error_description'
+        'errorDescription' => 'error_description'
     ];
 
     /**
@@ -181,7 +181,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
      */
     protected static $setters = [
         'error' => 'setError',
-        'error_description' => 'setErrorDescription'
+        'errorDescription' => 'setErrorDescription'
     ];
 
     /**
@@ -191,7 +191,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
      */
     protected static $getters = [
         'error' => 'getError',
-        'error_description' => 'getErrorDescription'
+        'errorDescription' => 'getErrorDescription'
     ];
 
     /**
@@ -265,7 +265,7 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
     public function __construct(array $data = null)
     {
         $this->setIfExists('error', $data ?? [], null);
-        $this->setIfExists('error_description', $data ?? [], null);
+        $this->setIfExists('errorDescription', $data ?? [], null);
     }
 
     /**
@@ -357,28 +357,28 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
     }
 
     /**
-     * Gets error_description
+     * Gets errorDescription
      *
      * @return string|null
      */
     public function getErrorDescription()
     {
-        return $this->container['error_description'];
+        return $this->container['errorDescription'];
     }
 
     /**
-     * Sets error_description
+     * Sets errorDescription
      *
-     * @param string|null $error_description error_description
+     * @param string|null $errorDescription errorDescription
      *
      * @return self
      */
-    public function setErrorDescription($error_description)
+    public function setErrorDescription($errorDescription)
     {
-        if (is_null($error_description)) {
-            throw new \InvalidArgumentException('non-nullable error_description cannot be null');
+        if (is_null($errorDescription)) {
+            throw new \InvalidArgumentException('non-nullable errorDescription cannot be null');
         }
-        $this->container['error_description'] = $error_description;
+        $this->container['errorDescription'] = $errorDescription;
 
         return $this;
     }

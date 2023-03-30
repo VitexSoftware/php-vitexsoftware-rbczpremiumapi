@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,17 +27,17 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace VitexSoftware\Raiffeisenbank\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance200Response Class Doc Comment
  *
  * @category Class
  * @description Account with balances
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -59,10 +59,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
       * @var string[]
       */
     protected static $openAPITypes = [
-        'number_part1' => 'string',
-        'number_part2' => 'string',
-        'bank_code' => 'string',
-        'currency_folders' => '\OpenAPI\Client\Model\GetBalance200ResponseCurrencyFoldersInner[]'
+        'numberPart1' => 'string',
+        'numberPart2' => 'string',
+        'bankCode' => 'string',
+        'currencyFolders' => '\VitexSoftware\Raiffeisenbank\Model\GetBalance200ResponseCurrencyFoldersInner[]'
     ];
 
     /**
@@ -73,10 +73,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'number_part1' => null,
-        'number_part2' => null,
-        'bank_code' => null,
-        'currency_folders' => null
+        'numberPart1' => null,
+        'numberPart2' => null,
+        'bankCode' => null,
+        'currencyFolders' => null
     ];
 
     /**
@@ -85,10 +85,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'number_part1' => false,
-		'number_part2' => false,
-		'bank_code' => false,
-		'currency_folders' => false
+        'numberPart1' => false,
+		'numberPart2' => false,
+		'bankCode' => false,
+		'currencyFolders' => false
     ];
 
     /**
@@ -177,10 +177,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
      * @var string[]
      */
     protected static $attributeMap = [
-        'number_part1' => 'numberPart1',
-        'number_part2' => 'numberPart2',
-        'bank_code' => 'bankCode',
-        'currency_folders' => 'currencyFolders'
+        'numberPart1' => 'numberPart1',
+        'numberPart2' => 'numberPart2',
+        'bankCode' => 'bankCode',
+        'currencyFolders' => 'currencyFolders'
     ];
 
     /**
@@ -189,10 +189,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
      * @var string[]
      */
     protected static $setters = [
-        'number_part1' => 'setNumberPart1',
-        'number_part2' => 'setNumberPart2',
-        'bank_code' => 'setBankCode',
-        'currency_folders' => 'setCurrencyFolders'
+        'numberPart1' => 'setNumberPart1',
+        'numberPart2' => 'setNumberPart2',
+        'bankCode' => 'setBankCode',
+        'currencyFolders' => 'setCurrencyFolders'
     ];
 
     /**
@@ -201,10 +201,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
      * @var string[]
      */
     protected static $getters = [
-        'number_part1' => 'getNumberPart1',
-        'number_part2' => 'getNumberPart2',
-        'bank_code' => 'getBankCode',
-        'currency_folders' => 'getCurrencyFolders'
+        'numberPart1' => 'getNumberPart1',
+        'numberPart2' => 'getNumberPart2',
+        'bankCode' => 'getBankCode',
+        'currencyFolders' => 'getCurrencyFolders'
     ];
 
     /**
@@ -264,10 +264,10 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('number_part1', $data ?? [], null);
-        $this->setIfExists('number_part2', $data ?? [], null);
-        $this->setIfExists('bank_code', $data ?? [], null);
-        $this->setIfExists('currency_folders', $data ?? [], null);
+        $this->setIfExists('numberPart1', $data ?? [], null);
+        $this->setIfExists('numberPart2', $data ?? [], null);
+        $this->setIfExists('bankCode', $data ?? [], null);
+        $this->setIfExists('currencyFolders', $data ?? [], null);
     }
 
     /**
@@ -297,11 +297,11 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
     {
         $invalidProperties = [];
 
-        if ($this->container['number_part2'] === null) {
-            $invalidProperties[] = "'number_part2' can't be null";
+        if ($this->container['numberPart2'] === null) {
+            $invalidProperties[] = "'numberPart2' can't be null";
         }
-        if ($this->container['bank_code'] === null) {
-            $invalidProperties[] = "'bank_code' can't be null";
+        if ($this->container['bankCode'] === null) {
+            $invalidProperties[] = "'bankCode' can't be null";
         }
         return $invalidProperties;
     }
@@ -319,109 +319,109 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
 
 
     /**
-     * Gets number_part1
+     * Gets numberPart1
      *
      * @return string|null
      */
     public function getNumberPart1()
     {
-        return $this->container['number_part1'];
+        return $this->container['numberPart1'];
     }
 
     /**
-     * Sets number_part1
+     * Sets numberPart1
      *
-     * @param string|null $number_part1 The prefix of the account number
+     * @param string|null $numberPart1 The prefix of the account number
      *
      * @return self
      */
-    public function setNumberPart1($number_part1)
+    public function setNumberPart1($numberPart1)
     {
-        if (is_null($number_part1)) {
-            throw new \InvalidArgumentException('non-nullable number_part1 cannot be null');
+        if (is_null($numberPart1)) {
+            throw new \InvalidArgumentException('non-nullable numberPart1 cannot be null');
         }
-        $this->container['number_part1'] = $number_part1;
+        $this->container['numberPart1'] = $numberPart1;
 
         return $this;
     }
 
     /**
-     * Gets number_part2
+     * Gets numberPart2
      *
      * @return string
      */
     public function getNumberPart2()
     {
-        return $this->container['number_part2'];
+        return $this->container['numberPart2'];
     }
 
     /**
-     * Sets number_part2
+     * Sets numberPart2
      *
-     * @param string $number_part2 The account number without prefix
+     * @param string $numberPart2 The account number without prefix
      *
      * @return self
      */
-    public function setNumberPart2($number_part2)
+    public function setNumberPart2($numberPart2)
     {
-        if (is_null($number_part2)) {
-            throw new \InvalidArgumentException('non-nullable number_part2 cannot be null');
+        if (is_null($numberPart2)) {
+            throw new \InvalidArgumentException('non-nullable numberPart2 cannot be null');
         }
-        $this->container['number_part2'] = $number_part2;
+        $this->container['numberPart2'] = $numberPart2;
 
         return $this;
     }
 
     /**
-     * Gets bank_code
+     * Gets bankCode
      *
      * @return string
      */
     public function getBankCode()
     {
-        return $this->container['bank_code'];
+        return $this->container['bankCode'];
     }
 
     /**
-     * Sets bank_code
+     * Sets bankCode
      *
-     * @param string $bank_code The bank clearing code
+     * @param string $bankCode The bank clearing code
      *
      * @return self
      */
-    public function setBankCode($bank_code)
+    public function setBankCode($bankCode)
     {
-        if (is_null($bank_code)) {
-            throw new \InvalidArgumentException('non-nullable bank_code cannot be null');
+        if (is_null($bankCode)) {
+            throw new \InvalidArgumentException('non-nullable bankCode cannot be null');
         }
-        $this->container['bank_code'] = $bank_code;
+        $this->container['bankCode'] = $bankCode;
 
         return $this;
     }
 
     /**
-     * Gets currency_folders
+     * Gets currencyFolders
      *
-     * @return \OpenAPI\Client\Model\GetBalance200ResponseCurrencyFoldersInner[]|null
+     * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance200ResponseCurrencyFoldersInner[]|null
      */
     public function getCurrencyFolders()
     {
-        return $this->container['currency_folders'];
+        return $this->container['currencyFolders'];
     }
 
     /**
-     * Sets currency_folders
+     * Sets currencyFolders
      *
-     * @param \OpenAPI\Client\Model\GetBalance200ResponseCurrencyFoldersInner[]|null $currency_folders The available currency folders information.
+     * @param \VitexSoftware\Raiffeisenbank\Model\GetBalance200ResponseCurrencyFoldersInner[]|null $currencyFolders The available currency folders information.
      *
      * @return self
      */
-    public function setCurrencyFolders($currency_folders)
+    public function setCurrencyFolders($currencyFolders)
     {
-        if (is_null($currency_folders)) {
-            throw new \InvalidArgumentException('non-nullable currency_folders cannot be null');
+        if (is_null($currencyFolders)) {
+            throw new \InvalidArgumentException('non-nullable currencyFolders cannot be null');
         }
-        $this->container['currency_folders'] = $currency_folders;
+        $this->container['currencyFolders'] = $currencyFolders;
 
         return $this;
     }

@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,17 +27,17 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace VitexSoftware\Raiffeisenbank\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetStatementsRequest Class Doc Comment
  *
  * @category Class
  * @description Request values for list of a statements.
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -59,11 +59,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var string[]
       */
     protected static $openAPITypes = [
-        'account_number' => 'string',
+        'accountNumber' => 'string',
         'currency' => 'string',
-        'statement_line' => 'string',
-        'date_from' => '\DateTime',
-        'date_to' => '\DateTime'
+        'statementLine' => 'string',
+        'dateFrom' => '\DateTime',
+        'dateTo' => '\DateTime'
     ];
 
     /**
@@ -74,11 +74,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'account_number' => null,
+        'accountNumber' => null,
         'currency' => null,
-        'statement_line' => null,
-        'date_from' => 'date',
-        'date_to' => 'date'
+        'statementLine' => null,
+        'dateFrom' => 'date',
+        'dateTo' => 'date'
     ];
 
     /**
@@ -87,11 +87,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'account_number' => false,
+        'accountNumber' => false,
 		'currency' => false,
-		'statement_line' => false,
-		'date_from' => false,
-		'date_to' => false
+		'statementLine' => false,
+		'dateFrom' => false,
+		'dateTo' => false
     ];
 
     /**
@@ -180,11 +180,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $attributeMap = [
-        'account_number' => 'accountNumber',
+        'accountNumber' => 'accountNumber',
         'currency' => 'currency',
-        'statement_line' => 'statementLine',
-        'date_from' => 'dateFrom',
-        'date_to' => 'dateTo'
+        'statementLine' => 'statementLine',
+        'dateFrom' => 'dateFrom',
+        'dateTo' => 'dateTo'
     ];
 
     /**
@@ -193,11 +193,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $setters = [
-        'account_number' => 'setAccountNumber',
+        'accountNumber' => 'setAccountNumber',
         'currency' => 'setCurrency',
-        'statement_line' => 'setStatementLine',
-        'date_from' => 'setDateFrom',
-        'date_to' => 'setDateTo'
+        'statementLine' => 'setStatementLine',
+        'dateFrom' => 'setDateFrom',
+        'dateTo' => 'setDateTo'
     ];
 
     /**
@@ -206,11 +206,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $getters = [
-        'account_number' => 'getAccountNumber',
+        'accountNumber' => 'getAccountNumber',
         'currency' => 'getCurrency',
-        'statement_line' => 'getStatementLine',
-        'date_from' => 'getDateFrom',
-        'date_to' => 'getDateTo'
+        'statementLine' => 'getStatementLine',
+        'dateFrom' => 'getDateFrom',
+        'dateTo' => 'getDateTo'
     ];
 
     /**
@@ -287,11 +287,11 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('account_number', $data ?? [], null);
+        $this->setIfExists('accountNumber', $data ?? [], null);
         $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('statement_line', $data ?? [], null);
-        $this->setIfExists('date_from', $data ?? [], null);
-        $this->setIfExists('date_to', $data ?? [], null);
+        $this->setIfExists('statementLine', $data ?? [], null);
+        $this->setIfExists('dateFrom', $data ?? [], null);
+        $this->setIfExists('dateTo', $data ?? [], null);
     }
 
     /**
@@ -322,10 +322,10 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
         $invalidProperties = [];
 
         $allowedValues = $this->getStatementLineAllowableValues();
-        if (!is_null($this->container['statement_line']) && !in_array($this->container['statement_line'], $allowedValues, true)) {
+        if (!is_null($this->container['statementLine']) && !in_array($this->container['statementLine'], $allowedValues, true)) {
             $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'statement_line', must be one of '%s'",
-                $this->container['statement_line'],
+                "invalid value '%s' for 'statementLine', must be one of '%s'",
+                $this->container['statementLine'],
                 implode("', '", $allowedValues)
             );
         }
@@ -346,28 +346,28 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
 
 
     /**
-     * Gets account_number
+     * Gets accountNumber
      *
      * @return string|null
      */
     public function getAccountNumber()
     {
-        return $this->container['account_number'];
+        return $this->container['accountNumber'];
     }
 
     /**
-     * Sets account_number
+     * Sets accountNumber
      *
-     * @param string|null $account_number account_number
+     * @param string|null $accountNumber accountNumber
      *
      * @return self
      */
-    public function setAccountNumber($account_number)
+    public function setAccountNumber($accountNumber)
     {
-        if (is_null($account_number)) {
-            throw new \InvalidArgumentException('non-nullable account_number cannot be null');
+        if (is_null($accountNumber)) {
+            throw new \InvalidArgumentException('non-nullable accountNumber cannot be null');
         }
-        $this->container['account_number'] = $account_number;
+        $this->container['accountNumber'] = $accountNumber;
 
         return $this;
     }
@@ -400,92 +400,92 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
     }
 
     /**
-     * Gets statement_line
+     * Gets statementLine
      *
      * @return string|null
      */
     public function getStatementLine()
     {
-        return $this->container['statement_line'];
+        return $this->container['statementLine'];
     }
 
     /**
-     * Sets statement_line
+     * Sets statementLine
      *
-     * @param string|null $statement_line Statement line identification.
+     * @param string|null $statementLine Statement line identification.
      *
      * @return self
      */
-    public function setStatementLine($statement_line)
+    public function setStatementLine($statementLine)
     {
-        if (is_null($statement_line)) {
-            throw new \InvalidArgumentException('non-nullable statement_line cannot be null');
+        if (is_null($statementLine)) {
+            throw new \InvalidArgumentException('non-nullable statementLine cannot be null');
         }
         $allowedValues = $this->getStatementLineAllowableValues();
-        if (!in_array($statement_line, $allowedValues, true)) {
+        if (!in_array($statementLine, $allowedValues, true)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    "Invalid value '%s' for 'statement_line', must be one of '%s'",
-                    $statement_line,
+                    "Invalid value '%s' for 'statementLine', must be one of '%s'",
+                    $statementLine,
                     implode("', '", $allowedValues)
                 )
             );
         }
-        $this->container['statement_line'] = $statement_line;
+        $this->container['statementLine'] = $statementLine;
 
         return $this;
     }
 
     /**
-     * Gets date_from
+     * Gets dateFrom
      *
      * @return \DateTime|null
      */
     public function getDateFrom()
     {
-        return $this->container['date_from'];
+        return $this->container['dateFrom'];
     }
 
     /**
-     * Sets date_from
+     * Sets dateFrom
      *
-     * @param \DateTime|null $date_from Date limit from.
+     * @param \DateTime|null $dateFrom Date limit from.
      *
      * @return self
      */
-    public function setDateFrom($date_from)
+    public function setDateFrom($dateFrom)
     {
-        if (is_null($date_from)) {
-            throw new \InvalidArgumentException('non-nullable date_from cannot be null');
+        if (is_null($dateFrom)) {
+            throw new \InvalidArgumentException('non-nullable dateFrom cannot be null');
         }
-        $this->container['date_from'] = $date_from;
+        $this->container['dateFrom'] = $dateFrom;
 
         return $this;
     }
 
     /**
-     * Gets date_to
+     * Gets dateTo
      *
      * @return \DateTime|null
      */
     public function getDateTo()
     {
-        return $this->container['date_to'];
+        return $this->container['dateTo'];
     }
 
     /**
-     * Sets date_to
+     * Sets dateTo
      *
-     * @param \DateTime|null $date_to Date limit to.
+     * @param \DateTime|null $dateTo Date limit to.
      *
      * @return self
      */
-    public function setDateTo($date_to)
+    public function setDateTo($dateTo)
     {
-        if (is_null($date_to)) {
-            throw new \InvalidArgumentException('non-nullable date_to cannot be null');
+        if (is_null($dateTo)) {
+            throw new \InvalidArgumentException('non-nullable dateTo cannot be null');
         }
-        $this->container['date_to'] = $date_to;
+        $this->container['dateTo'] = $dateTo;
 
         return $this;
     }

@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,16 +27,16 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace VitexSoftware\Raiffeisenbank\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance200ResponseCurrencyFoldersInner Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -60,7 +60,7 @@ class GetBalance200ResponseCurrencyFoldersInner implements ModelInterface, Array
     protected static $openAPITypes = [
         'currency' => 'string',
         'status' => 'string',
-        'balances' => '\OpenAPI\Client\Model\GetBalance200ResponseCurrencyFoldersInnerBalancesInner[]'
+        'balances' => '\VitexSoftware\Raiffeisenbank\Model\GetBalance200ResponseCurrencyFoldersInnerBalancesInner[]'
     ];
 
     /**
@@ -367,7 +367,7 @@ class GetBalance200ResponseCurrencyFoldersInner implements ModelInterface, Array
     /**
      * Gets balances
      *
-     * @return \OpenAPI\Client\Model\GetBalance200ResponseCurrencyFoldersInnerBalancesInner[]|null
+     * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance200ResponseCurrencyFoldersInnerBalancesInner[]|null
      */
     public function getBalances()
     {
@@ -377,7 +377,7 @@ class GetBalance200ResponseCurrencyFoldersInner implements ModelInterface, Array
     /**
      * Sets balances
      *
-     * @param \OpenAPI\Client\Model\GetBalance200ResponseCurrencyFoldersInnerBalancesInner[]|null $balances the balances of the currencyFolder
+     * @param \VitexSoftware\Raiffeisenbank\Model\GetBalance200ResponseCurrencyFoldersInnerBalancesInner[]|null $balances the balances of the currencyFolder
      *
      * @return self
      */

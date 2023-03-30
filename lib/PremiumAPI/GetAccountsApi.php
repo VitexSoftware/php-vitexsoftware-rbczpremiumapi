@@ -1,10 +1,10 @@
 <?php
 /**
- * GetAccountBalanceApi
+ * GetAccountsApi
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,7 +26,7 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\RaiffeisenBank;
+namespace VitexSoftware\Raiffeisenbank\PremiumAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -35,20 +35,20 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use OpenAPI\Client\ApiException;
-use OpenAPI\Client\Configuration;
-use OpenAPI\Client\HeaderSelector;
-use OpenAPI\Client\ObjectSerializer;
+use VitexSoftware\Raiffeisenbank\ApiException;
+use VitexSoftware\Raiffeisenbank\Configuration;
+use VitexSoftware\Raiffeisenbank\HeaderSelector;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * GetAccountBalanceApi Class Doc Comment
+ * GetAccountsApi Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class GetAccountBalanceApi
+class GetAccountsApi
 {
     /**
      * @var ClientInterface
@@ -72,7 +72,7 @@ class GetAccountBalanceApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'getBalance' => [
+        'getAccounts' => [
             'application/json',
         ],
     ];
@@ -124,40 +124,42 @@ class GetAccountBalanceApi
     }
 
     /**
-     * Operation getBalance
+     * Operation getAccounts
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number The number of account without prefix and bankCode (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \OpenAPI\Client\Model\GetBalance200Response|\OpenAPI\Client\Model\GetBalance401Response|\OpenAPI\Client\Model\GetBalance403Response|\OpenAPI\Client\Model\GetBalance404Response|\OpenAPI\Client\Model\GetBalance429Response
+     * @return object|object|object|object
      */
-    public function getBalance($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getAccounts($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        list($response) = $this->getBalanceWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address, $contentType);
+        list($response) = $this->getAccountsWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType);
         return $response;
     }
 
     /**
-     * Operation getBalanceWithHttpInfo
+     * Operation getAccountsWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number The number of account without prefix and bankCode (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \OpenAPI\Client\Model\GetBalance200Response|\OpenAPI\Client\Model\GetBalance401Response|\OpenAPI\Client\Model\GetBalance403Response|\OpenAPI\Client\Model\GetBalance404Response|\OpenAPI\Client\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getBalanceWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getAccountsWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        $request = $this->getBalanceRequest($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address, $contentType);
+        $request = $this->getAccountsRequest($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -196,83 +198,68 @@ class GetAccountBalanceApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Model\GetBalance200Response' === '\SplFileObject') {
+                    if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance200Response' !== 'string') {
+                        if ('object' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance200Response', []),
+                        ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\OpenAPI\Client\Model\GetBalance401Response' === '\SplFileObject') {
+                    if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance401Response' !== 'string') {
+                        if ('object' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance401Response', []),
+                        ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\OpenAPI\Client\Model\GetBalance403Response' === '\SplFileObject') {
+                    if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance403Response' !== 'string') {
+                        if ('object' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance403Response', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 404:
-                    if ('\OpenAPI\Client\Model\GetBalance404Response' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance404Response' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance404Response', []),
+                        ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\OpenAPI\Client\Model\GetBalance429Response' === '\SplFileObject') {
+                    if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance429Response' !== 'string') {
+                        if ('object' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance429Response', []),
+                        ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Model\GetBalance200Response';
+            $returnType = 'object';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -293,7 +280,7 @@ class GetAccountBalanceApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance200Response',
+                        'object',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -301,7 +288,7 @@ class GetAccountBalanceApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance401Response',
+                        'object',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -309,15 +296,7 @@ class GetAccountBalanceApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance403Response',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance404Response',
+                        'object',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -325,7 +304,7 @@ class GetAccountBalanceApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance429Response',
+                        'object',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -336,20 +315,21 @@ class GetAccountBalanceApi
     }
 
     /**
-     * Operation getBalanceAsync
+     * Operation getAccountsAsync
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number The number of account without prefix and bankCode (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBalanceAsync($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getAccountsAsync($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        return $this->getBalanceAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address, $contentType)
+        return $this->getAccountsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -358,21 +338,22 @@ class GetAccountBalanceApi
     }
 
     /**
-     * Operation getBalanceAsyncWithHttpInfo
+     * Operation getAccountsAsyncWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number The number of account without prefix and bankCode (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBalanceAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getAccountsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        $returnType = '\OpenAPI\Client\Model\GetBalance200Response';
-        $request = $this->getBalanceRequest($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address, $contentType);
+        $returnType = 'object';
+        $request = $this->getAccountsRequest($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -411,81 +392,87 @@ class GetAccountBalanceApi
     }
 
     /**
-     * Create request for operation 'getBalance'
+     * Create request for operation 'getAccounts'
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number The number of account without prefix and bankCode (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  int $page Number of the requested page. Default is 1. (optional)
+     * @param  int $size Number of items on the page. Default is 15. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getBalanceRequest($x_ibm_client_id, $x_request_id, $account_number, $psu_ip_address = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getAccountsRequest($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
 
-        // verify the required parameter 'x_ibm_client_id' is set
-        if ($x_ibm_client_id === null || (is_array($x_ibm_client_id) && count($x_ibm_client_id) === 0)) {
+        // verify the required parameter 'xIBMClientId' is set
+        if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_ibm_client_id when calling getBalance'
+                'Missing the required parameter $xIBMClientId when calling getAccounts'
             );
         }
 
-        // verify the required parameter 'x_request_id' is set
-        if ($x_request_id === null || (is_array($x_request_id) && count($x_request_id) === 0)) {
+        // verify the required parameter 'xRequestId' is set
+        if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_request_id when calling getBalance'
+                'Missing the required parameter $xRequestId when calling getAccounts'
             );
         }
-        if (strlen($x_request_id) > 60) {
-            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling GetAccountBalanceApi.getBalance, must be smaller than or equal to 60.');
+        if (strlen($xRequestId) > 60) {
+            throw new \InvalidArgumentException('invalid length for "$xRequestId" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 60.');
         }
-        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $x_request_id)) {
-            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling GetAccountBalanceApi.getBalance, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
+        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
+            throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetAccountsApi.getAccounts, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
         
-        // verify the required parameter 'account_number' is set
-        if ($account_number === null || (is_array($account_number) && count($account_number) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $account_number when calling getBalance'
-            );
-        }
-
-        if ($psu_ip_address !== null && strlen($psu_ip_address) > 39) {
-            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling GetAccountBalanceApi.getBalance, must be smaller than or equal to 39.');
+        if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
+            throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 39.');
         }
         
 
-        $resourcePath = '/rbcz/premium/mock/accounts/{accountNumber}/balance';
+
+
+        $resourcePath = '/rbcz/premium/mock/accounts';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $page,
+            'page', // param base name
+            'integer', // openApiType
+            '', // style
+            false, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $size,
+            'size', // param base name
+            'integer', // openApiType
+            '', // style
+            false, // explode
+            false // required
+        ) ?? []);
 
         // header params
-        if ($x_ibm_client_id !== null) {
-            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($x_ibm_client_id);
+        if ($xIBMClientId !== null) {
+            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($xIBMClientId);
         }
         // header params
-        if ($x_request_id !== null) {
-            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($x_request_id);
+        if ($xRequestId !== null) {
+            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($xRequestId);
         }
         // header params
-        if ($psu_ip_address !== null) {
-            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($psu_ip_address);
+        if ($pSUIPAddress !== null) {
+            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($pSUIPAddress);
         }
 
-        // path params
-        if ($account_number !== null) {
-            $resourcePath = str_replace(
-                '{' . 'accountNumber' . '}',
-                ObjectSerializer::toPathValue($account_number),
-                $resourcePath
-            );
-        }
 
 
         $headers = $this->headerSelector->selectHeaders(

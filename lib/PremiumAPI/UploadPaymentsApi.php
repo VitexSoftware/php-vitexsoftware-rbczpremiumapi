@@ -4,7 +4,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,7 +26,7 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\RaiffeisenBank;
+namespace VitexSoftware\Raiffeisenbank\PremiumAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -35,16 +35,16 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use OpenAPI\Client\ApiException;
-use OpenAPI\Client\Configuration;
-use OpenAPI\Client\HeaderSelector;
-use OpenAPI\Client\ObjectSerializer;
+use VitexSoftware\Raiffeisenbank\ApiException;
+use VitexSoftware\Raiffeisenbank\Configuration;
+use VitexSoftware\Raiffeisenbank\HeaderSelector;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * UploadPaymentsApi Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -126,42 +126,42 @@ class UploadPaymentsApi
     /**
      * Operation importPayments
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $batch_import_format Format of imported batch. For CCT format please use option SEPA-XML. (required)
-     * @param  string $request_body request_body (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $batch_name Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
+     * @param  string $requestBody requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return object|\OpenAPI\Client\Model\ImportPayments400Response|\OpenAPI\Client\Model\GetBalance401Response|\OpenAPI\Client\Model\GetBalance403Response|\OpenAPI\Client\Model\ImportPayments413Response|\OpenAPI\Client\Model\ImportPayments415Response|\OpenAPI\Client\Model\GetBalance429Response|\OpenAPI\Client\Model\ImportPayments415Response
+     * @return object|\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response
      */
-    public function importPayments($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address = null, $batch_name = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPayments($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        list($response) = $this->importPaymentsWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address, $batch_name, $contentType);
+        list($response) = $this->importPaymentsWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType);
         return $response;
     }
 
     /**
      * Operation importPaymentsWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $batch_import_format Format of imported batch. For CCT format please use option SEPA-XML. (required)
-     * @param  string $request_body (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $batch_name Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
+     * @param  string $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of object|\OpenAPI\Client\Model\ImportPayments400Response|\OpenAPI\Client\Model\GetBalance401Response|\OpenAPI\Client\Model\GetBalance403Response|\OpenAPI\Client\Model\ImportPayments413Response|\OpenAPI\Client\Model\ImportPayments415Response|\OpenAPI\Client\Model\GetBalance429Response|\OpenAPI\Client\Model\ImportPayments415Response, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function importPaymentsWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address = null, $batch_name = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        $request = $this->importPaymentsRequest($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address, $batch_name, $contentType);
+        $request = $this->importPaymentsRequest($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -215,107 +215,107 @@ class UploadPaymentsApi
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\OpenAPI\Client\Model\ImportPayments400Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\ImportPayments400Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\ImportPayments400Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\OpenAPI\Client\Model\GetBalance401Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance401Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance401Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\OpenAPI\Client\Model\GetBalance403Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance403Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance403Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\OpenAPI\Client\Model\ImportPayments413Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\ImportPayments413Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\ImportPayments413Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\OpenAPI\Client\Model\ImportPayments415Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\ImportPayments415Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\ImportPayments415Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\OpenAPI\Client\Model\GetBalance429Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\GetBalance429Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\GetBalance429Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\OpenAPI\Client\Model\ImportPayments415Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\OpenAPI\Client\Model\ImportPayments415Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Model\ImportPayments415Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -350,7 +350,7 @@ class UploadPaymentsApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\ImportPayments400Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -358,7 +358,7 @@ class UploadPaymentsApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance401Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -366,7 +366,7 @@ class UploadPaymentsApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance403Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -374,7 +374,7 @@ class UploadPaymentsApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\ImportPayments413Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -382,7 +382,7 @@ class UploadPaymentsApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\ImportPayments415Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -390,7 +390,7 @@ class UploadPaymentsApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\GetBalance429Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -398,7 +398,7 @@ class UploadPaymentsApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\OpenAPI\Client\Model\ImportPayments415Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -411,20 +411,20 @@ class UploadPaymentsApi
     /**
      * Operation importPaymentsAsync
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $batch_import_format Format of imported batch. For CCT format please use option SEPA-XML. (required)
-     * @param  string $request_body (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $batch_name Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
+     * @param  string $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function importPaymentsAsync($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address = null, $batch_name = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsAsync($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        return $this->importPaymentsAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address, $batch_name, $contentType)
+        return $this->importPaymentsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -435,21 +435,21 @@ class UploadPaymentsApi
     /**
      * Operation importPaymentsAsyncWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $batch_import_format Format of imported batch. For CCT format please use option SEPA-XML. (required)
-     * @param  string $request_body (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $batch_name Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
+     * @param  string $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function importPaymentsAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address = null, $batch_name = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
         $returnType = 'object';
-        $request = $this->importPaymentsRequest($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address, $batch_name, $contentType);
+        $request = $this->importPaymentsRequest($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -490,60 +490,60 @@ class UploadPaymentsApi
     /**
      * Create request for operation 'importPayments'
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $batch_import_format Format of imported batch. For CCT format please use option SEPA-XML. (required)
-     * @param  string $request_body (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $batch_name Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
+     * @param  string $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function importPaymentsRequest($x_ibm_client_id, $x_request_id, $batch_import_format, $request_body, $psu_ip_address = null, $batch_name = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsRequest($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
 
-        // verify the required parameter 'x_ibm_client_id' is set
-        if ($x_ibm_client_id === null || (is_array($x_ibm_client_id) && count($x_ibm_client_id) === 0)) {
+        // verify the required parameter 'xIBMClientId' is set
+        if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_ibm_client_id when calling importPayments'
+                'Missing the required parameter $xIBMClientId when calling importPayments'
             );
         }
 
-        // verify the required parameter 'x_request_id' is set
-        if ($x_request_id === null || (is_array($x_request_id) && count($x_request_id) === 0)) {
+        // verify the required parameter 'xRequestId' is set
+        if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_request_id when calling importPayments'
+                'Missing the required parameter $xRequestId when calling importPayments'
             );
         }
-        if (strlen($x_request_id) > 60) {
-            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 60.');
+        if (strlen($xRequestId) > 60) {
+            throw new \InvalidArgumentException('invalid length for "$xRequestId" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 60.');
         }
-        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $x_request_id)) {
-            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling UploadPaymentsApi.importPayments, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
+        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
+            throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling UploadPaymentsApi.importPayments, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
         
-        // verify the required parameter 'batch_import_format' is set
-        if ($batch_import_format === null || (is_array($batch_import_format) && count($batch_import_format) === 0)) {
+        // verify the required parameter 'batchImportFormat' is set
+        if ($batchImportFormat === null || (is_array($batchImportFormat) && count($batchImportFormat) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $batch_import_format when calling importPayments'
+                'Missing the required parameter $batchImportFormat when calling importPayments'
             );
         }
 
-        // verify the required parameter 'request_body' is set
-        if ($request_body === null || (is_array($request_body) && count($request_body) === 0)) {
+        // verify the required parameter 'requestBody' is set
+        if ($requestBody === null || (is_array($requestBody) && count($requestBody) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $request_body when calling importPayments'
+                'Missing the required parameter $requestBody when calling importPayments'
             );
         }
 
-        if ($psu_ip_address !== null && strlen($psu_ip_address) > 39) {
-            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 39.');
+        if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
+            throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 39.');
         }
         
-        if ($batch_name !== null && strlen($batch_name) > 50) {
-            throw new \InvalidArgumentException('invalid length for "$batch_name" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 50.');
+        if ($batchName !== null && strlen($batchName) > 50) {
+            throw new \InvalidArgumentException('invalid length for "$batchName" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 50.');
         }
         
 
@@ -556,24 +556,24 @@ class UploadPaymentsApi
 
 
         // header params
-        if ($x_ibm_client_id !== null) {
-            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($x_ibm_client_id);
+        if ($xIBMClientId !== null) {
+            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($xIBMClientId);
         }
         // header params
-        if ($x_request_id !== null) {
-            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($x_request_id);
+        if ($xRequestId !== null) {
+            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($xRequestId);
         }
         // header params
-        if ($psu_ip_address !== null) {
-            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($psu_ip_address);
+        if ($pSUIPAddress !== null) {
+            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($pSUIPAddress);
         }
         // header params
-        if ($batch_import_format !== null) {
-            $headerParams['Batch-Import-Format'] = ObjectSerializer::toHeaderValue($batch_import_format);
+        if ($batchImportFormat !== null) {
+            $headerParams['Batch-Import-Format'] = ObjectSerializer::toHeaderValue($batchImportFormat);
         }
         // header params
-        if ($batch_name !== null) {
-            $headerParams['Batch-Name'] = ObjectSerializer::toHeaderValue($batch_name);
+        if ($batchName !== null) {
+            $headerParams['Batch-Name'] = ObjectSerializer::toHeaderValue($batchName);
         }
 
 
@@ -585,12 +585,12 @@ class UploadPaymentsApi
         );
 
         // for model (json/xml)
-        if (isset($request_body)) {
+        if (isset($requestBody)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($request_body));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($requestBody));
             } else {
-                $httpBody = $request_body;
+                $httpBody = $requestBody;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

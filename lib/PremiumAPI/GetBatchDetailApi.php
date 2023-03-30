@@ -1,10 +1,10 @@
 <?php
 /**
- * GetTransactionListApi
+ * GetBatchDetailApi
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,7 +26,7 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\RaiffeisenBank;
+namespace VitexSoftware\Raiffeisenbank\PremiumAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -35,20 +35,20 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use OpenAPI\Client\ApiException;
-use OpenAPI\Client\Configuration;
-use OpenAPI\Client\HeaderSelector;
-use OpenAPI\Client\ObjectSerializer;
+use VitexSoftware\Raiffeisenbank\ApiException;
+use VitexSoftware\Raiffeisenbank\Configuration;
+use VitexSoftware\Raiffeisenbank\HeaderSelector;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * GetTransactionListApi Class Doc Comment
+ * GetBatchDetailApi Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class GetTransactionListApi
+class GetBatchDetailApi
 {
     /**
      * @var ClientInterface
@@ -72,7 +72,7 @@ class GetTransactionListApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'getTransactionList' => [
+        'getBatchDetail' => [
             'application/json',
         ],
     ];
@@ -124,48 +124,40 @@ class GetTransactionListApi
     }
 
     /**
-     * Operation getTransactionList
+     * Operation getBatchDetail
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  int $batchFileId Batch file id (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object|object|object|object|object|object
      */
-    public function getTransactionList($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getBatchDetail($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        list($response) = $this->getTransactionListWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType);
+        list($response) = $this->getBatchDetailWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType);
         return $response;
     }
 
     /**
-     * Operation getTransactionListWithHttpInfo
+     * Operation getBatchDetailWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  int $batchFileId Batch file id (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getTransactionListWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getBatchDetailWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        $request = $this->getTransactionListRequest($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType);
+        $request = $this->getBatchDetailRequest($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -367,24 +359,20 @@ class GetTransactionListApi
     }
 
     /**
-     * Operation getTransactionListAsync
+     * Operation getBatchDetailAsync
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  int $batchFileId Batch file id (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTransactionListAsync($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getBatchDetailAsync($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        return $this->getTransactionListAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType)
+        return $this->getBatchDetailAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -393,25 +381,21 @@ class GetTransactionListApi
     }
 
     /**
-     * Operation getTransactionListAsyncWithHttpInfo
+     * Operation getBatchDetailAsyncWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  int $batchFileId Batch file id (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTransactionListAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getBatchDetailAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
         $returnType = 'object';
-        $request = $this->getTransactionListRequest($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page, $contentType);
+        $request = $this->getBatchDetailRequest($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -450,157 +434,78 @@ class GetTransactionListApi
     }
 
     /**
-     * Create request for operation 'getTransactionList'
+     * Create request for operation 'getBatchDetail'
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $account_number Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currency_code Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  int $batchFileId Batch file id (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getTransactionListRequest($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getBatchDetailRequest($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
 
-        // verify the required parameter 'x_ibm_client_id' is set
-        if ($x_ibm_client_id === null || (is_array($x_ibm_client_id) && count($x_ibm_client_id) === 0)) {
+        // verify the required parameter 'xIBMClientId' is set
+        if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_ibm_client_id when calling getTransactionList'
+                'Missing the required parameter $xIBMClientId when calling getBatchDetail'
             );
         }
 
-        // verify the required parameter 'x_request_id' is set
-        if ($x_request_id === null || (is_array($x_request_id) && count($x_request_id) === 0)) {
+        // verify the required parameter 'xRequestId' is set
+        if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_request_id when calling getTransactionList'
+                'Missing the required parameter $xRequestId when calling getBatchDetail'
             );
         }
-        if (strlen($x_request_id) > 60) {
-            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 60.');
+        if (strlen($xRequestId) > 60) {
+            throw new \InvalidArgumentException('invalid length for "$xRequestId" when calling GetBatchDetailApi.getBatchDetail, must be smaller than or equal to 60.');
         }
-        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $x_request_id)) {
-            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
-        }
-        
-        // verify the required parameter 'account_number' is set
-        if ($account_number === null || (is_array($account_number) && count($account_number) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $account_number when calling getTransactionList'
-            );
-        }
-        if (strlen($account_number) > 10) {
-            throw new \InvalidArgumentException('invalid length for "$account_number" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 10.');
-        }
-        if (!preg_match("/[0-9]{1,10}/", $account_number)) {
-            throw new \InvalidArgumentException("invalid value for \"account_number\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[0-9]{1,10}/.");
+        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
+            throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetBatchDetailApi.getBatchDetail, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
         
-        // verify the required parameter 'currency_code' is set
-        if ($currency_code === null || (is_array($currency_code) && count($currency_code) === 0)) {
+        // verify the required parameter 'batchFileId' is set
+        if ($batchFileId === null || (is_array($batchFileId) && count($batchFileId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $currency_code when calling getTransactionList'
-            );
-        }
-        if (strlen($currency_code) > 3) {
-            throw new \InvalidArgumentException('invalid length for "$currency_code" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 3.');
-        }
-        if (!preg_match("/[A-Z]{1,3}/", $currency_code)) {
-            throw new \InvalidArgumentException("invalid value for \"currency_code\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[A-Z]{1,3}/.");
-        }
-        
-        // verify the required parameter 'from' is set
-        if ($from === null || (is_array($from) && count($from) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $from when calling getTransactionList'
+                'Missing the required parameter $batchFileId when calling getBatchDetail'
             );
         }
 
-        // verify the required parameter 'to' is set
-        if ($to === null || (is_array($to) && count($to) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $to when calling getTransactionList'
-            );
-        }
-
-        if ($psu_ip_address !== null && strlen($psu_ip_address) > 39) {
-            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 39.');
-        }
-        
-        if ($page !== null && $page > 99999) {
-            throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 99999.');
-        }
-        if ($page !== null && $page < 1) {
-            throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be bigger than or equal to 1.');
+        if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
+            throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetBatchDetailApi.getBatchDetail, must be smaller than or equal to 39.');
         }
         
 
-        $resourcePath = '/rbcz/premium/mock/accounts/{accountNumber}/{currencyCode}/transactions';
+        $resourcePath = '/rbcz/premium/mock/payments/batches/{batchFileId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
 
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $from,
-            'from', // param base name
-            'string', // openApiType
-            '', // style
-            false, // explode
-            true // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $to,
-            'to', // param base name
-            'string', // openApiType
-            '', // style
-            false, // explode
-            true // required
-        ) ?? []);
-        // query params
-        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
-            $page,
-            'page', // param base name
-            'integer', // openApiType
-            '', // style
-            false, // explode
-            false // required
-        ) ?? []);
 
         // header params
-        if ($x_ibm_client_id !== null) {
-            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($x_ibm_client_id);
+        if ($xIBMClientId !== null) {
+            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($xIBMClientId);
         }
         // header params
-        if ($x_request_id !== null) {
-            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($x_request_id);
+        if ($xRequestId !== null) {
+            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($xRequestId);
         }
         // header params
-        if ($psu_ip_address !== null) {
-            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($psu_ip_address);
+        if ($pSUIPAddress !== null) {
+            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($pSUIPAddress);
         }
 
         // path params
-        if ($account_number !== null) {
+        if ($batchFileId !== null) {
             $resourcePath = str_replace(
-                '{' . 'accountNumber' . '}',
-                ObjectSerializer::toPathValue($account_number),
-                $resourcePath
-            );
-        }
-        // path params
-        if ($currency_code !== null) {
-            $resourcePath = str_replace(
-                '{' . 'currencyCode' . '}',
-                ObjectSerializer::toPathValue($currency_code),
+                '{' . 'batchFileId' . '}',
+                ObjectSerializer::toPathValue($batchFileId),
                 $resourcePath
             );
         }

@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,16 +27,16 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace VitexSoftware\Raiffeisenbank\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance200ResponseCurrencyFoldersInnerBalancesInner Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -58,7 +58,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
       * @var string[]
       */
     protected static $openAPITypes = [
-        'balance_type' => 'string',
+        'balanceType' => 'string',
         'currency' => 'string',
         'value' => 'float'
     ];
@@ -71,7 +71,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'balance_type' => null,
+        'balanceType' => null,
         'currency' => null,
         'value' => 'double'
     ];
@@ -82,7 +82,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'balance_type' => false,
+        'balanceType' => false,
 		'currency' => false,
 		'value' => false
     ];
@@ -173,7 +173,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      * @var string[]
      */
     protected static $attributeMap = [
-        'balance_type' => 'balanceType',
+        'balanceType' => 'balanceType',
         'currency' => 'currency',
         'value' => 'value'
     ];
@@ -184,7 +184,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      * @var string[]
      */
     protected static $setters = [
-        'balance_type' => 'setBalanceType',
+        'balanceType' => 'setBalanceType',
         'currency' => 'setCurrency',
         'value' => 'setValue'
     ];
@@ -195,7 +195,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      * @var string[]
      */
     protected static $getters = [
-        'balance_type' => 'getBalanceType',
+        'balanceType' => 'getBalanceType',
         'currency' => 'getCurrency',
         'value' => 'getValue'
     ];
@@ -257,7 +257,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('balance_type', $data ?? [], null);
+        $this->setIfExists('balanceType', $data ?? [], null);
         $this->setIfExists('currency', $data ?? [], null);
         $this->setIfExists('value', $data ?? [], null);
     }
@@ -289,8 +289,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     {
         $invalidProperties = [];
 
-        if ($this->container['balance_type'] === null) {
-            $invalidProperties[] = "'balance_type' can't be null";
+        if ($this->container['balanceType'] === null) {
+            $invalidProperties[] = "'balanceType' can't be null";
         }
         if ($this->container['currency'] === null) {
             $invalidProperties[] = "'currency' can't be null";
@@ -314,28 +314,28 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
 
 
     /**
-     * Gets balance_type
+     * Gets balanceType
      *
      * @return string
      */
     public function getBalanceType()
     {
-        return $this->container['balance_type'];
+        return $this->container['balanceType'];
     }
 
     /**
-     * Sets balance_type
+     * Sets balanceType
      *
-     * @param string $balance_type the balance type (CODEBOOK: AccountBalanceTypes)
+     * @param string $balanceType the balance type (CODEBOOK: AccountBalanceTypes)
      *
      * @return self
      */
-    public function setBalanceType($balance_type)
+    public function setBalanceType($balanceType)
     {
-        if (is_null($balance_type)) {
-            throw new \InvalidArgumentException('non-nullable balance_type cannot be null');
+        if (is_null($balanceType)) {
+            throw new \InvalidArgumentException('non-nullable balanceType cannot be null');
         }
-        $this->container['balance_type'] = $balance_type;
+        $this->container['balanceType'] = $balanceType;
 
         return $this;
     }

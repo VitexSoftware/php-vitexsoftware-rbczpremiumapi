@@ -1,10 +1,10 @@
 <?php
 /**
- * GetBatchDetailApi
+ * DownloadStatementApi
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,7 +26,7 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\RaiffeisenBank;
+namespace VitexSoftware\Raiffeisenbank\PremiumAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -35,20 +35,20 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use OpenAPI\Client\ApiException;
-use OpenAPI\Client\Configuration;
-use OpenAPI\Client\HeaderSelector;
-use OpenAPI\Client\ObjectSerializer;
+use VitexSoftware\Raiffeisenbank\ApiException;
+use VitexSoftware\Raiffeisenbank\Configuration;
+use VitexSoftware\Raiffeisenbank\HeaderSelector;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * GetBatchDetailApi Class Doc Comment
+ * DownloadStatementApi Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class GetBatchDetailApi
+class DownloadStatementApi
 {
     /**
      * @var ClientInterface
@@ -72,7 +72,7 @@ class GetBatchDetailApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'getBatchDetail' => [
+        'downloadStatement' => [
             'application/json',
         ],
     ];
@@ -124,40 +124,42 @@ class GetBatchDetailApi
     }
 
     /**
-     * Operation getBatchDetail
+     * Operation downloadStatement
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  int $batch_file_id Batch file id (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $acceptLanguage The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
+     * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return object|object|object|object|object|object
+     * @return \SplFileObject|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object
      */
-    public function getBatchDetail($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function downloadStatement($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress = null, string $contentType = self::contentTypes['downloadStatement'][0])
     {
-        list($response) = $this->getBatchDetailWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address, $contentType);
+        list($response) = $this->downloadStatementWithHttpInfo($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress, $contentType);
         return $response;
     }
 
     /**
-     * Operation getBatchDetailWithHttpInfo
+     * Operation downloadStatementWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  int $batch_file_id Batch file id (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $acceptLanguage The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
+     * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
-     * @throws \OpenAPI\Client\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \SplFileObject|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getBatchDetailWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function downloadStatementWithHttpInfo($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress = null, string $contentType = self::contentTypes['downloadStatement'][0])
     {
-        $request = $this->getBatchDetailRequest($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address, $contentType);
+        $request = $this->downloadStatementRequest($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -196,17 +198,17 @@ class GetBatchDetailApi
 
             switch($statusCode) {
                 case 200:
-                    if ('object' === '\SplFileObject') {
+                    if ('\SplFileObject' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('object' !== 'string') {
+                        if ('\SplFileObject' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, 'object', []),
+                        ObjectSerializer::deserialize($content, '\SplFileObject', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -256,17 +258,17 @@ class GetBatchDetailApi
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('object' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('object' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response' !== 'string') {
                             $content = json_decode($content);
                         }
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, 'object', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -287,7 +289,7 @@ class GetBatchDetailApi
                     ];
             }
 
-            $returnType = 'object';
+            $returnType = '\SplFileObject';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -308,7 +310,7 @@ class GetBatchDetailApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        'object',
+                        '\SplFileObject',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -340,7 +342,7 @@ class GetBatchDetailApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        'object',
+                        '\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -359,20 +361,21 @@ class GetBatchDetailApi
     }
 
     /**
-     * Operation getBatchDetailAsync
+     * Operation downloadStatementAsync
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  int $batch_file_id Batch file id (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $acceptLanguage The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
+     * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBatchDetailAsync($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function downloadStatementAsync($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress = null, string $contentType = self::contentTypes['downloadStatement'][0])
     {
-        return $this->getBatchDetailAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address, $contentType)
+        return $this->downloadStatementAsyncWithHttpInfo($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -381,21 +384,22 @@ class GetBatchDetailApi
     }
 
     /**
-     * Operation getBatchDetailAsyncWithHttpInfo
+     * Operation downloadStatementAsyncWithHttpInfo
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  int $batch_file_id Batch file id (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $acceptLanguage The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
+     * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBatchDetailAsyncWithHttpInfo($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function downloadStatementAsyncWithHttpInfo($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress = null, string $contentType = self::contentTypes['downloadStatement'][0])
     {
-        $returnType = 'object';
-        $request = $this->getBatchDetailRequest($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address, $contentType);
+        $returnType = '\SplFileObject';
+        $request = $this->downloadStatementRequest($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -434,53 +438,61 @@ class GetBatchDetailApi
     }
 
     /**
-     * Create request for operation 'getBatchDetail'
+     * Create request for operation 'downloadStatement'
      *
-     * @param  string $x_ibm_client_id ClientID obtained from Developer Portal - when you registered your app with us. (required)
-     * @param  string $x_request_id Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  int $batch_file_id Batch file id (required)
-     * @param  string $psu_ip_address IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
+     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
+     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
+     * @param  string $acceptLanguage The Accept-Language request HTTP header is used to determine document  language. Supported languages are &#x60;cs&#x60; and &#x60;en&#x60;. (required)
+     * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody (required)
+     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getBatchDetailRequest($x_ibm_client_id, $x_request_id, $batch_file_id, $psu_ip_address = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function downloadStatementRequest($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress = null, string $contentType = self::contentTypes['downloadStatement'][0])
     {
 
-        // verify the required parameter 'x_ibm_client_id' is set
-        if ($x_ibm_client_id === null || (is_array($x_ibm_client_id) && count($x_ibm_client_id) === 0)) {
+        // verify the required parameter 'xIBMClientId' is set
+        if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_ibm_client_id when calling getBatchDetail'
+                'Missing the required parameter $xIBMClientId when calling downloadStatement'
             );
         }
 
-        // verify the required parameter 'x_request_id' is set
-        if ($x_request_id === null || (is_array($x_request_id) && count($x_request_id) === 0)) {
+        // verify the required parameter 'xRequestId' is set
+        if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_request_id when calling getBatchDetail'
+                'Missing the required parameter $xRequestId when calling downloadStatement'
             );
         }
-        if (strlen($x_request_id) > 60) {
-            throw new \InvalidArgumentException('invalid length for "$x_request_id" when calling GetBatchDetailApi.getBatchDetail, must be smaller than or equal to 60.');
+        if (strlen($xRequestId) > 60) {
+            throw new \InvalidArgumentException('invalid length for "$xRequestId" when calling DownloadStatementApi.downloadStatement, must be smaller than or equal to 60.');
         }
-        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $x_request_id)) {
-            throw new \InvalidArgumentException("invalid value for \"x_request_id\" when calling GetBatchDetailApi.getBatchDetail, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
+        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
+            throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling DownloadStatementApi.downloadStatement, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
         
-        // verify the required parameter 'batch_file_id' is set
-        if ($batch_file_id === null || (is_array($batch_file_id) && count($batch_file_id) === 0)) {
+        // verify the required parameter 'acceptLanguage' is set
+        if ($acceptLanguage === null || (is_array($acceptLanguage) && count($acceptLanguage) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $batch_file_id when calling getBatchDetail'
+                'Missing the required parameter $acceptLanguage when calling downloadStatement'
             );
         }
 
-        if ($psu_ip_address !== null && strlen($psu_ip_address) > 39) {
-            throw new \InvalidArgumentException('invalid length for "$psu_ip_address" when calling GetBatchDetailApi.getBatchDetail, must be smaller than or equal to 39.');
+        // verify the required parameter 'requestBody' is set
+        if ($requestBody === null || (is_array($requestBody) && count($requestBody) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $requestBody when calling downloadStatement'
+            );
+        }
+
+        if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
+            throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling DownloadStatementApi.downloadStatement, must be smaller than or equal to 39.');
         }
         
 
-        $resourcePath = '/rbcz/premium/mock/payments/batches/{batchFileId}';
+        $resourcePath = '/rbcz/premium/mock/accounts/statements/download';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -489,36 +501,39 @@ class GetBatchDetailApi
 
 
         // header params
-        if ($x_ibm_client_id !== null) {
-            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($x_ibm_client_id);
+        if ($xIBMClientId !== null) {
+            $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($xIBMClientId);
         }
         // header params
-        if ($x_request_id !== null) {
-            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($x_request_id);
+        if ($xRequestId !== null) {
+            $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($xRequestId);
         }
         // header params
-        if ($psu_ip_address !== null) {
-            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($psu_ip_address);
+        if ($acceptLanguage !== null) {
+            $headerParams['Accept-Language'] = ObjectSerializer::toHeaderValue($acceptLanguage);
+        }
+        // header params
+        if ($pSUIPAddress !== null) {
+            $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($pSUIPAddress);
         }
 
-        // path params
-        if ($batch_file_id !== null) {
-            $resourcePath = str_replace(
-                '{' . 'batchFileId' . '}',
-                ObjectSerializer::toPathValue($batch_file_id),
-                $resourcePath
-            );
-        }
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['*/*', ],
             $contentType,
             $multipart
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($requestBody)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($requestBody));
+            } else {
+                $httpBody = $requestBody;
+            }
+        } elseif (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -557,7 +572,7 @@ class GetBatchDetailApi
         $operationHost = $this->config->getHost();
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'GET',
+            'POST',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
