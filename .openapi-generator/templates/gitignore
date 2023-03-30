@@ -13,3 +13,17 @@ composer.phar
 
 # PHPUnit cache
 .phpunit.result.cache
+/debian/.debhelper/
+/debian/php-vitexsoftware-rbczpremiumapi/
+/debian/php-vitexsoftware-rbczpremiumapi-dev/
+/debian/php-vitexsoftware-rbczpremiumapi-doc/
+/debian/php-vitexsoftware-rbczpremiumapi-dev.debhelper.log
+/debian/php-vitexsoftware-rbczpremiumapi-dev.substvars
+/debian/php-vitexsoftware-rbczpremiumapi-doc.debhelper.log
+/debian/php-vitexsoftware-rbczpremiumapi-doc.substvars
+/debian/php-vitexsoftware-rbczpremiumapi.debhelper.log
+/debian/php-vitexsoftware-rbczpremiumapi.substvars
+/composer.lock
+/nbproject/
+/phpdoc/
+/.phpdoc/

@@ -1,0 +1,14 @@
+Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=143
+Upstream-Name: php-rbczpremiumapi
+Upstream-Source: https://github.com/VitexSoftware/php-rbczpremiumapi/archive/master.zip
+
+Files: *
+Homepage: https://github.com/VitexSoftware/php-rbczpremiumapi
+Copyright:
+  (c) 2013-2020 Vítězslav Dvořák (v.s.cz)
+License: MIT 
+
+License: MIT
+ On Debian systems the full text of the GNU General Public License can be found
+ in the `/usr/share/common-licenses/MIT' file.
+

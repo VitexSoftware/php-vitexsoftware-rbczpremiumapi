@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+
+PKG_PATH:=/usr/share/php/EaseCore
+BUILD_DIR:=build
+
+%:
+	dh $@
+
+override_dh_prep:
+	phpdoc -d lib --defaultpackagename=MainPackage
+	rm -rf phpdoc
+	mkdir -p phpdoc        
+	mv .phpdoc/build/* phpdoc
+	dh_prep
+
+override_dh_auto_test:
+	composer update --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
+	./vendor/bin/phpunit --bootstrap test/bootstrap.php 
+	dh_auto_test
+
+
+override_dh_install:
+	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/composer.json |sponge debian/composer.json
+	dh_install

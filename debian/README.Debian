@@ -1,0 +1,17 @@
+Ease framework Core for Debian
+------------------------------
+    
+    Is installed by standard way in /usr/share/php/EaseCore
+
+
+After installing package php-vitexsoftware-rbczpremiumapi-dev you can test EaseMailer function:
+
+php -f /usr/share/doc/php-vitexsoftware-rbczpremiumapi-dev/SendTestMail.php  info@vitexsoftware.cz
+
+04/02/20 19:44:49 ``  ❁ Message Příliš žluťoučký kůň úpěl ďábelské ódy was sent to info@vitexsoftware.cz
+04/02/20 19:44:49 ``  ⓘ Test mail sent
+
+
+ -- Vítězslav Dvořák <vitex@hippy.cz>  Ne říj 21 15:17:56 CEST 2020
+
+

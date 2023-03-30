@@ -1,0 +1,29 @@
+{
+  "name": "deb/rbczpremiumapi",
+  "description": "An Core of PHP Framework for Ease of writing Applications (debianized)",
+  "version": "0.1",
+  "authors": [
+    {
+      "name": "Vítězslav Dvořák",
+      "email": "info@vitexsoftware.cz",
+      "homepage": "http://v.s.cz/"
+    }
+  ],
+  "config": {
+    "vendor-dir": "/var/lib/composer/php-vitexsoftware-rbczpremiumapi"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ease\\": ".",
+      "Ease\\Logger\\": "Logger"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7"
+  },
+  "type": "library",
+  "homepage": "http://v.s.cz/ease.php",
+  "license": "GPL-2.0+",
+  "address": "1.11"
+}
