@@ -1,5 +1,5 @@
 Source: php-vitexsoftware-rbczpremiumapi
-Build-Depends: debhelper (>= 10), moreutils, jq, composer, phpdocumentor, php-curl
+Build-Depends: debhelper (>= 10), moreutils, jq, composer, phpdocumentor, php-curl, php-vitexsoftware-ease-core
 Section: web
 Standards-Version: 3.9.8
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
@@ -8,7 +8,7 @@ Priority: optional
 Homepage: https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
 
 Package: php-vitexsoftware-rbczpremiumapi
-Depends: ${misc:Depends}, php-guzzlehttp-psr7, composer-debian
+Depends: ${misc:Depends}, php-guzzlehttp-psr7, composer-debian, php-vitexsoftware-ease-core
 Architecture: all
 Suggests: abraflexi-raiffasenbank
 Section: office
