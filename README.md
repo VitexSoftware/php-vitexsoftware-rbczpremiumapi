@@ -22,11 +22,11 @@ To install the bindings via [Composer](https://getcomposer.org/), add the follow
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/VitexSoftware/php-vitexsoftware-raiffeisenbank.git"
+      "url": "https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi.git"
     }
   ],
   "require": {
-    "VitexSoftware/php-vitexsoftware-raiffeisenbank": "*@dev"
+    "VitexSoftware/php-vitexsoftware-rbczpremiumapi": "*@dev"
   }
 }
 ```
@@ -56,7 +56,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 $apiInstance = new VitexSoftware\Raiffeisenbank\Api\DownloadStatementApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
-    new GuzzleHttp\Client()
+    new \VitexSoftware\Raiffeisenbank\ApiClient()
 );
 $xIBMClientId = 'xIBMClientId_example'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.

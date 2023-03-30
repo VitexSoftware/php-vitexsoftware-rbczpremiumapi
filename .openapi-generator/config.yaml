@@ -4,7 +4,7 @@ additionalProperties:
   packageName: Raiffeisenbank Premium API client library
   apiPackage: PremiumAPI
   UserId: VitexSoftware
-  RepoId: php-vitexsoftware-raiffeisenbank
+  RepoId: php-vitexsoftware-rbczpremiumapi
   infoEmail: info@vitexsoftware.cz
   allowUnicodeIdentifiers: true
   artifactVersion: 0.1.0
