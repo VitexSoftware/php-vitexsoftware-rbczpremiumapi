@@ -4,7 +4,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
-| [**importPayments()**](UploadPaymentsApi.md#importPayments) | **POST** /rbcz/premium/mock/payments/batches |  |
+| [**importPayments()**](UploadPaymentsApi.md#importPayments) | **POST** /rbcz/premium/api/payments/batches |  |
 
 
 ## `importPayments()`
@@ -15,7 +15,7 @@ importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName): obj
 
 
 
-Importing batch payments in one of [supported formates](https://www.rb.cz/attachments/direct-banking/ekomunikator-datova-struktura.pdf) - see request parameter `Batch-Import-Format`.  This is API alternative to manual import of batch payments through [Internet Banking](https://www.rb.cz/podnikatele/ucty-a-platebni-styk/prime-bankovnictvi/internetove-bankovnictvi/caste-dotazy/import-hromadnych-plateb).  Imported payments are not immediately processed, they are just loaded into Internet Banking and they still must be authorized/certified in Internet Banking according to client settings of disposable rights and signatures.  Number of transactions in one request is limited to 5.000 (this can change without prior notice). Number of transactions is not checked during the call, it is performed later and possible error is provided in Internet Banking.  Once authorized/certified, uploaded payments will be processed in the Instant payments mode if the following conditions are met&#58;  1) the batch has no more than 50 payments  2) no more than 5 batches per day were uploaded  3) individual payments meet the conditions for Instant payments - see [Instant Payments](https://www.rb.cz/informacni-servis/platebni-styk/tuzemske-platby/okamzite-platby)
+Importing batch payments in one of [supported formates](https://www.rb.cz/attachments/direct-banking/ekomunikator-datova-struktura.pdf) - see request parameter `Batch-Import-Format`.  This is API alternative to manual import of batch payments through [Internet Banking](https://www.rb.cz/podnikatele/ucty-a-platebni-styk/prime-bankovnictvi/internetove-bankovnictvi/caste-dotazy/import-hromadnych-plateb).  Imported payments are not immediately processed, they are just loaded into Internet Banking and they still must be authorized/certified in Internet Banking according to client settings of disposable rights and signatures.  Number of transactions in one request is limited to 5.000 (this can change without prior notice). Number of transactions is not checked during the call, it is performed later and possible error is provided in Internet Banking.  The number of requests is limited to 5 per client per second and 5000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.  Once authorized/certified, uploaded payments will be processed in the Instant payments mode if the following conditions are met&#58;  1) the batch has no more than 50 payments  2) no more than 5 batches per day were uploaded  3) individual payments meet the conditions for Instant payments - see [Instant Payments](https://www.rb.cz/informacni-servis/platebni-styk/tuzemske-platby/okamzite-platby)
 
 ### Example
 

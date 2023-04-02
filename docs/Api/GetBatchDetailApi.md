@@ -4,7 +4,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
-| [**getBatchDetail()**](GetBatchDetailApi.md#getBatchDetail) | **GET** /rbcz/premium/mock/payments/batches/{batchFileId} |  |
+| [**getBatchDetail()**](GetBatchDetailApi.md#getBatchDetail) | **GET** /rbcz/premium/api/payments/batches/{batchFileId} |  |
 
 
 ## `getBatchDetail()`
@@ -14,7 +14,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 
 
-Getting details about state of processing of imported batch file and created batch transactions.
+Getting details about state of processing of imported batch file and created batch transactions.  The number of requests is limited to 10 per client per second and 5000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
 
 ### Example
 

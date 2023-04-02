@@ -1,4 +1,4 @@
-deffile=openapi-rbcz.yml
+deffile=01rbczpremiumapi.yaml
 
 rm -rf lib docs test README.md
 

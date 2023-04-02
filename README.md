@@ -93,13 +93,13 @@ All URIs are relative to *https://api.rb.cz*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DownloadStatementApi* | [**downloadStatement**](docs/Api/DownloadStatementApi.md#downloadstatement) | **POST** /rbcz/premium/mock/accounts/statements/download | 
-*GetAccountBalanceApi* | [**getBalance**](docs/Api/GetAccountBalanceApi.md#getbalance) | **GET** /rbcz/premium/mock/accounts/{accountNumber}/balance | 
-*GetAccountsApi* | [**getAccounts**](docs/Api/GetAccountsApi.md#getaccounts) | **GET** /rbcz/premium/mock/accounts | 
-*GetBatchDetailApi* | [**getBatchDetail**](docs/Api/GetBatchDetailApi.md#getbatchdetail) | **GET** /rbcz/premium/mock/payments/batches/{batchFileId} | 
-*GetStatementListApi* | [**getStatements**](docs/Api/GetStatementListApi.md#getstatements) | **POST** /rbcz/premium/mock/accounts/statements | 
-*GetTransactionListApi* | [**getTransactionList**](docs/Api/GetTransactionListApi.md#gettransactionlist) | **GET** /rbcz/premium/mock/accounts/{accountNumber}/{currencyCode}/transactions | 
-*UploadPaymentsApi* | [**importPayments**](docs/Api/UploadPaymentsApi.md#importpayments) | **POST** /rbcz/premium/mock/payments/batches | 
+*DownloadStatementApi* | [**downloadStatement**](docs/Api/DownloadStatementApi.md#downloadstatement) | **POST** /rbcz/premium/api/accounts/statements/download | 
+*GetAccountBalanceApi* | [**getBalance**](docs/Api/GetAccountBalanceApi.md#getbalance) | **GET** /rbcz/premium/api/accounts/{accountNumber}/balance | 
+*GetAccountsApi* | [**getAccounts**](docs/Api/GetAccountsApi.md#getaccounts) | **GET** /rbcz/premium/api/accounts | 
+*GetBatchDetailApi* | [**getBatchDetail**](docs/Api/GetBatchDetailApi.md#getbatchdetail) | **GET** /rbcz/premium/api/payments/batches/{batchFileId} | 
+*GetStatementListApi* | [**getStatements**](docs/Api/GetStatementListApi.md#getstatements) | **POST** /rbcz/premium/api/accounts/statements | 
+*GetTransactionListApi* | [**getTransactionList**](docs/Api/GetTransactionListApi.md#gettransactionlist) | **GET** /rbcz/premium/api/accounts/{accountNumber}/{currencyCode}/transactions | 
+*UploadPaymentsApi* | [**importPayments**](docs/Api/UploadPaymentsApi.md#importpayments) | **POST** /rbcz/premium/api/payments/batches | 
 
 ## Models
 

@@ -4,7 +4,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
-| [**getTransactionList()**](GetTransactionListApi.md#getTransactionList) | **GET** /rbcz/premium/mock/accounts/{accountNumber}/{currencyCode}/transactions |  |
+| [**getTransactionList()**](GetTransactionListApi.md#getTransactionList) | **GET** /rbcz/premium/api/accounts/{accountNumber}/{currencyCode}/transactions |  |
 
 
 ## `getTransactionList()`
@@ -15,7 +15,7 @@ getTransactionList( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $pa
 
 
 
-Get a list of posted transactions (including intraday). In addition, transactions must not be older than **90 days** - see request parameter `from`.  The list is returned as a sequence of pages - see request parameter `page`. The request parameter/flag `lastPage` indicates whether the returned page is the last one or if there are more pages that you can iterate.  The limit _Number of requests per second_ (see your subscription plan) is shared among all consumers. Your app needs to implement some delay when iterating pages. Also it needs to be ready to get HTTP 409 (too many requests).
+Get a list of posted transactions (including intraday). In addition, transactions must not be older than **90 days** - see request parameter `from`.  The list is returned as a sequence of pages - see request parameter `page`. The request parameter/flag `lastPage` indicates whether the returned page is the last one or if there are more pages that you can iterate.  The number of requests is limited to 10 per client per second and 5000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
 
 ### Example
 

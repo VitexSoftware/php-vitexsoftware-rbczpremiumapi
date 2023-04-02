@@ -4,7 +4,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
-| [**downloadStatement()**](DownloadStatementApi.md#downloadStatement) | **POST** /rbcz/premium/mock/accounts/statements/download |  |
+| [**downloadStatement()**](DownloadStatementApi.md#downloadStatement) | **POST** /rbcz/premium/api/accounts/statements/download |  |
 
 
 ## `downloadStatement()`
@@ -14,7 +14,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 
 
-Download the selected statement.  Returns one of the following `Content-type` header values depending on  the downloaded document type: <code>application/pdf</code>, <code>application/xml</code>, <code>text/mt940</code>, <code>application/json</code> (in case of an error).
+Download the selected statement.  Returns one of the following `Content-type` header values depending on  the downloaded document type: <code>application/pdf</code>, <code>application/xml</code>, <code>text/mt940</code>, <code>application/json</code> (in case of an error).  The number of requests is limited to 5 per client per second and 1500  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
 
 ### Example
 

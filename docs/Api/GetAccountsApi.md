@@ -4,7 +4,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
-| [**getAccounts()**](GetAccountsApi.md#getAccounts) | **GET** /rbcz/premium/mock/accounts |  |
+| [**getAccounts()**](GetAccountsApi.md#getAccounts) | **GET** /rbcz/premium/api/accounts |  |
 
 
 ## `getAccounts()`
@@ -15,7 +15,7 @@ getAccounts( $xRequestId,  $page, $size): object
 
 
 
-Get list of accounts for given certificate. First page is 1.
+Get list of accounts for given certificate. First page is 1.  The number of requests is limited to 10 per client per second and 5000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
 
 ### Example
 
