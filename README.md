@@ -44,6 +44,15 @@ require_once('/path/to/Raiffeisenbank Premium API client library/vendor/autoload
 
 ## Getting Started
 
+
+Example environment or contents of [.env](examples/example.env) file for basic library configuration
+```
+CERT_FILE=examples/test_cert.p12
+CERT_PASS=test12345678
+XIBMCLIENTID=FbboLD2r1WHDRcuKS4wWUbSRHxlDloWL
+API_DEBUG=True
+```
+
 Please follow the [installation procedure](#installation--usage) and then run the following:
 
 ```php
@@ -55,9 +64,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 $apiInstance = new VitexSoftware\Raiffeisenbank\Api\DownloadStatementApi(
-    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // If you want use custom http client, pass your client which implements 
+    // `GuzzleHttp\ClientInterface`.
     // This is optional, Internal `ApiClient` will be used as default.
-    // Else you must call setXIBMClientId($lientID) and $this->setSUIPAddress($clientPubIP) method to set API call properly      
+    // Else you must call setXIBMClientId($lientID) and $this->setSUIPAddress($clientPubIP) 
+    // methods to set API call properly      
 
     new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
 );
