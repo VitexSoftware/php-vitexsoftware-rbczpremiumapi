@@ -24,7 +24,7 @@
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
    inkscape:window-width="1920"
-   inkscape:window-height="1176"
+   inkscape:window-height="1130"
    id="namedview41"
    showgrid="false"
    inkscape:snap-to-guides="false"
@@ -32,10 +32,11 @@
    inkscape:zoom="1.5902085"
    inkscape:cx="355.60062"
    inkscape:cy="190.85548"
-   inkscape:window-x="3840"
+   inkscape:window-x="1920"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
-   inkscape:current-layer="svg3430" />
+   inkscape:current-layer="svg3430"
+   inkscape:document-rotation="0" />
   <title
    id="title3510">Official PHP Logo</title>
   <metadata
@@ -85,7 +86,12 @@
     </rdf:RDF>
   </metadata>
   <defs
-   id="defs3434">
+   id="defs3434"><rect
+   x="139.90817"
+   y="-11.91181"
+   width="51.728151"
+   height="43.214901"
+   id="rect189" />
     <clipPath
    clipPathUnits="userSpaceOnUse"
    id="clipPath3444">
@@ -141,7 +147,7 @@
   </defs>
   <g
    id="g3440"
-   transform="matrix(1.25,0,0,-1.25,-4.4,394.29875)">
+   transform="matrix(1.25,0,0,-1.25,-4.4000085,394.29875)">
       <g
    clip-path="url(#clipPath3444)"
    id="g3442">
@@ -158,7 +164,7 @@
       </g>
     </g><g
    id="g3464"
-   transform="matrix(1.25,0,0,-1.25,-4.4,394.29875)">
+   transform="matrix(1.25,0,0,-1.25,-4.3993835,394.29925)">
       <g
    clip-path="url(#clipPath3468)"
    id="g3466">
@@ -173,42 +179,51 @@
       </g>
     </g>
 <g
-   id="g125"
-   transform="matrix(16.970019,0,0,16.970019,667.35816,-2336.005)"><path
-     inkscape:connector-curvature="0"
-     id="path76"
-     style="fill:#ffed00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
-     d="m -28.241837,155.73873 h 13.51104 V 142.2277 h -13.51104 z" /><path
-     inkscape:connector-curvature="0"
-     id="path78"
-     style="fill:#ffed00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
-     d="m -28.416457,155.56375 h 13.56924 v -13.39462 h -13.56924 z" /><path
-     inkscape:connector-curvature="0"
-     id="path96"
-     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
-     d="m -28.513404,141.96375 h 13.975997 l 7.05e-4,13.98658 -13.976349,-0.006 z m 0.37465,13.595 13.196711,0.004 0.01094,-13.20483 -13.209058,-0.001 z" /><path
-     d="m -21.54696,150.63831 4.206875,4.197 1.647119,-1.64606 -4.211461,-4.20794 0.820914,-0.81421 v -1.63724 l 0.585258,-0.58526 0.0014,1.35855 0.571852,0.56268 2.054225,-2.05634 0.555273,0.54892 c 0,-0.35348 -0.104423,-1.57021 -1.081264,-2.52271 -1.094317,-1.0668 -2.189339,-0.44274 -2.566811,-0.066 l -1.98367,1.98402 0.493536,0.49248 -1.093258,1.08973 -1.091847,-1.08973 0.493183,-0.49248 -1.983316,-1.98402 c -0.377473,-0.37677 -1.472495,-1.00083 -2.567164,0.0663 -0.976489,0.95215 -1.058334,2.16958 -1.058334,2.52271 l 0.532695,-0.54927 2.053872,2.05634 0.572558,-0.56974 3.53e-4,-1.35149 0.585258,0.58526 -0.0011,1.63336 0.822325,0.81809 -4.169128,4.16525 1.645003,1.64218 z"
-     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
-     id="path106"
-     inkscape:connector-curvature="0" /></g><text
+   id="g204"
+   transform="translate(-43.675209,-4.7152706e-5)"><g
+     id="g125"
+     transform="matrix(16.970019,0,0,16.970019,667.35816,-2336.005)"><path
+       inkscape:connector-curvature="0"
+       id="path76"
+       style="fill:#ffed00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
+       d="m -28.241837,155.73873 h 13.51104 V 142.2277 h -13.51104 z" /><path
+       inkscape:connector-curvature="0"
+       id="path78"
+       style="fill:#ffed00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
+       d="m -28.416457,155.56375 h 13.56924 v -13.39462 h -13.56924 z" /><path
+       inkscape:connector-curvature="0"
+       id="path96"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
+       d="m -28.513404,141.96375 h 13.975997 l 7.05e-4,13.98658 -13.976349,-0.006 z m 0.37465,13.595 13.196711,0.004 0.01094,-13.20483 -13.209058,-0.001 z" /><path
+       d="m -21.54696,150.63831 4.206875,4.197 1.647119,-1.64606 -4.211461,-4.20794 0.820914,-0.81421 v -1.63724 l 0.585258,-0.58526 0.0014,1.35855 0.571852,0.56268 2.054225,-2.05634 0.555273,0.54892 c 0,-0.35348 -0.104423,-1.57021 -1.081264,-2.52271 -1.094317,-1.0668 -2.189339,-0.44274 -2.566811,-0.066 l -1.98367,1.98402 0.493536,0.49248 -1.093258,1.08973 -1.091847,-1.08973 0.493183,-0.49248 -1.983316,-1.98402 c -0.377473,-0.37677 -1.472495,-1.00083 -2.567164,0.0663 -0.976489,0.95215 -1.058334,2.16958 -1.058334,2.52271 l 0.532695,-0.54927 2.053872,2.05634 0.572558,-0.56974 3.53e-4,-1.35149 0.585258,0.58526 -0.0011,1.63336 0.822325,0.81809 -4.169128,4.16525 1.645003,1.64218 z"
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.352778"
+       id="path106"
+       inkscape:connector-curvature="0" /></g><text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none"
+     x="436.23837"
+     y="106.71086"
+     id="text188"><tspan
+       sodipodi:role="line"
+       id="tspan186"
+       x="436.23837"
+       y="106.71086">unofficial</tspan><tspan
+       sodipodi:role="line"
+       x="436.23837"
+       y="156.71086"
+       id="tspan185">API</tspan><tspan
+       sodipodi:role="line"
+       x="436.23837"
+       y="206.71086"
+       id="tspan190">client</tspan><tspan
+       sodipodi:role="line"
+       x="436.23837"
+       y="256.71088"
+       id="tspan192">Library</tspan><tspan
+       sodipodi:role="line"
+       x="436.23837"
+       y="306.71088"
+       id="tspan194">for PHP</tspan></text></g><text
    xml:space="preserve"
-   style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none"
-   x="436.23837"
-   y="131.09563"
-   id="text188"><tspan
-     sodipodi:role="line"
-     id="tspan186"
-     x="436.23837"
-     y="131.09563">API</tspan><tspan
-     sodipodi:role="line"
-     x="436.23837"
-     y="181.09563"
-     id="tspan190">client</tspan><tspan
-     sodipodi:role="line"
-     x="436.23837"
-     y="231.09563"
-     id="tspan192">Library</tspan><tspan
-     sodipodi:role="line"
-     x="436.23837"
-     y="281.09564"
-     id="tspan194">for PHP</tspan></text></svg>
+   id="text187"
+   style="fill:black;fill-opacity:1;line-height:1.25;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;white-space:pre;shape-inside:url(#rect189);" /></svg>
