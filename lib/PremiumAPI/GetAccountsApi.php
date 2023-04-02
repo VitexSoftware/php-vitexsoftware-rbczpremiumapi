@@ -141,7 +141,7 @@ class GetAccountsApi
      * @param  string $SUIPAddress IP address of a client 
      */
     public function setSUIPAddress($SUIPAddress) {
-        $this->$SUIPAddress;
+        $this->SUIPAddress;
     }
     
     /**
