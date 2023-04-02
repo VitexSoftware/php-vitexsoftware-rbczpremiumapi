@@ -77,6 +77,7 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * ClientID obtained from Developer Portal
+     * 
      * @return string
      */
     public function getXIBMClientId()
@@ -84,7 +85,11 @@ class ApiClient extends \GuzzleHttp\Client
         return $this->xIBMClientId;
     }
 
-    
+    /**
+     * Keep user public IP here
+     * 
+     * @return string
+     */
     public function getpSUIPAddress()
     {
         return $this->pSUIPAddress;
