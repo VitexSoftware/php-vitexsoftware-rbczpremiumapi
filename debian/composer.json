@@ -1,7 +1,7 @@
 {
   "name": "deb/rbczpremiumapi",
   "description": "An Core of PHP Framework for Ease of writing Applications (debianized)",
-  "version": "0.1",
+  "version": "1.0",
   "authors": [
     {
       "name": "Vítězslav Dvořák",
@@ -13,11 +13,11 @@
     "vendor-dir": "/var/lib/composer/php-vitexsoftware-rbczpremiumapi"
   },
   "autoload": {
-        "psr-4": { 
-            "VitexSoftware\\Raiffeisenbank\\" : "./",
-            "VitexSoftware\\Raiffeisenbank\\Model\\" : "./Model",
-            "VitexSoftware\\Raiffeisenbank\\PremiumAPI\\" : "./PremiumAPI"
-        }
+    "psr-4": {
+      "VitexSoftware\\Raiffeisenbank\\": "./",
+      "VitexSoftware\\Raiffeisenbank\\Model\\": "./Model",
+      "VitexSoftware\\Raiffeisenbank\\PremiumAPI\\": "./PremiumAPI"
+    }
   },
   "minimum-stability": "dev",
   "require": {
