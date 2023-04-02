@@ -1,5 +1,7 @@
 # Raiffeisenbank Premium API client library
 
+![Library Logo](library-logo.svg?raw=true)
+
 
  php client library for rbczpremiumapi 
 
