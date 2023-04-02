@@ -69,6 +69,19 @@ class GetAccountBalanceApi
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
@@ -93,8 +106,43 @@ class GetAccountBalanceApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -126,38 +174,34 @@ class GetAccountBalanceApi
     /**
      * Operation getBalance
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance200Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response
      */
-    public function getBalance($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalance( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
     {
-        list($response) = $this->getBalanceWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress, $contentType);
+        list($response) = $this->getBalanceWithHttpInfo( $xRequestId, $accountNumber, $contentType);
         return $response;
     }
 
     /**
      * Operation getBalanceWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of \VitexSoftware\Raiffeisenbank\Model\GetBalance200Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getBalanceWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceWithHttpInfo( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
     {
-        $request = $this->getBalanceRequest($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress, $contentType);
+        $request = $this->getBalanceRequest( $xRequestId, $accountNumber, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -338,18 +382,16 @@ class GetAccountBalanceApi
     /**
      * Operation getBalanceAsync
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBalanceAsync($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceAsync( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
     {
-        return $this->getBalanceAsyncWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress, $contentType)
+        return $this->getBalanceAsyncWithHttpInfo( $xRequestId, $accountNumber, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -360,19 +402,17 @@ class GetAccountBalanceApi
     /**
      * Operation getBalanceAsyncWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBalanceAsyncWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceAsyncWithHttpInfo( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
     {
         $returnType = '\VitexSoftware\Raiffeisenbank\Model\GetBalance200Response';
-        $request = $this->getBalanceRequest($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress, $contentType);
+        $request = $this->getBalanceRequest( $xRequestId, $accountNumber, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -413,25 +453,26 @@ class GetAccountBalanceApi
     /**
      * Create request for operation 'getBalance'
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getBalanceRequest($xIBMClientId, $xRequestId, $accountNumber, $pSUIPAddress = null, string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceRequest( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
     {
-
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+            
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getBalance'
             );
         }
-
+            
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -444,14 +485,14 @@ class GetAccountBalanceApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetAccountBalanceApi.getBalance, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-        
+                    
         // verify the required parameter 'accountNumber' is set
         if ($accountNumber === null || (is_array($accountNumber) && count($accountNumber) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $accountNumber when calling getBalance'
             );
         }
-
+            
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetAccountBalanceApi.getBalance, must be smaller than or equal to 39.');
         }

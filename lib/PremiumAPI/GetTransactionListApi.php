@@ -69,6 +69,19 @@ class GetTransactionListApi
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
@@ -93,8 +106,43 @@ class GetTransactionListApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -126,13 +174,11 @@ class GetTransactionListApi
     /**
      * Operation getTransactionList
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
      * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
      * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
      * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
@@ -140,22 +186,20 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return object|object|object|object|object|object
      */
-    public function getTransactionList($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionList( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        list($response) = $this->getTransactionListWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress, $page, $contentType);
+        list($response) = $this->getTransactionListWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
         return $response;
     }
 
     /**
      * Operation getTransactionListWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
      * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
      * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
      * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
@@ -163,9 +207,9 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getTransactionListWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        $request = $this->getTransactionListRequest($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress, $page, $contentType);
+        $request = $this->getTransactionListRequest( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -369,22 +413,20 @@ class GetTransactionListApi
     /**
      * Operation getTransactionListAsync
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
      * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
      * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
      * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTransactionListAsync($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListAsync( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        return $this->getTransactionListAsyncWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress, $page, $contentType)
+        return $this->getTransactionListAsyncWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -395,23 +437,21 @@ class GetTransactionListApi
     /**
      * Operation getTransactionListAsyncWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
      * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
      * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
      * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTransactionListAsyncWithHttpInfo($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListAsyncWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
         $returnType = 'object';
-        $request = $this->getTransactionListRequest($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress, $page, $contentType);
+        $request = $this->getTransactionListRequest( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -452,29 +492,30 @@ class GetTransactionListApi
     /**
      * Create request for operation 'getTransactionList'
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
      * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
      * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
      * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getTransactionListRequest($xIBMClientId, $xRequestId, $accountNumber, $currencyCode, $from, $to, $pSUIPAddress = null, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListRequest( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+            
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getTransactionList'
             );
         }
-
+            
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -487,7 +528,7 @@ class GetTransactionListApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-        
+                    
         // verify the required parameter 'accountNumber' is set
         if ($accountNumber === null || (is_array($accountNumber) && count($accountNumber) === 0)) {
             throw new \InvalidArgumentException(
@@ -500,7 +541,7 @@ class GetTransactionListApi
         if (!preg_match("/[0-9]{1,10}/", $accountNumber)) {
             throw new \InvalidArgumentException("invalid value for \"accountNumber\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[0-9]{1,10}/.");
         }
-        
+                    
         // verify the required parameter 'currencyCode' is set
         if ($currencyCode === null || (is_array($currencyCode) && count($currencyCode) === 0)) {
             throw new \InvalidArgumentException(
@@ -513,25 +554,25 @@ class GetTransactionListApi
         if (!preg_match("/[A-Z]{1,3}/", $currencyCode)) {
             throw new \InvalidArgumentException("invalid value for \"currencyCode\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[A-Z]{1,3}/.");
         }
-        
+                    
         // verify the required parameter 'from' is set
         if ($from === null || (is_array($from) && count($from) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $from when calling getTransactionList'
             );
         }
-
+            
         // verify the required parameter 'to' is set
         if ($to === null || (is_array($to) && count($to) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $to when calling getTransactionList'
             );
         }
-
+            
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 39.');
         }
-        
+                    
         if ($page !== null && $page > 99999) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 99999.');
         }

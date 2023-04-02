@@ -69,6 +69,19 @@ class GetAccountsApi
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
@@ -93,8 +106,43 @@ class GetAccountsApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -126,9 +174,7 @@ class GetAccountsApi
     /**
      * Operation getAccounts
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
@@ -137,18 +183,16 @@ class GetAccountsApi
      * @throws \InvalidArgumentException
      * @return object|object|object|object
      */
-    public function getAccounts($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getAccounts( $xRequestId,  $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        list($response) = $this->getAccountsWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType);
+        list($response) = $this->getAccountsWithHttpInfo( $xRequestId, $page, $size, $contentType);
         return $response;
     }
 
     /**
      * Operation getAccountsWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
@@ -157,9 +201,9 @@ class GetAccountsApi
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getAccountsWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getAccountsWithHttpInfo( $xRequestId,  $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        $request = $this->getAccountsRequest($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType);
+        $request = $this->getAccountsRequest( $xRequestId, $page, $size, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -317,9 +361,7 @@ class GetAccountsApi
     /**
      * Operation getAccountsAsync
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
@@ -327,9 +369,9 @@ class GetAccountsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccountsAsync($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getAccountsAsync( $xRequestId,  $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-        return $this->getAccountsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType)
+        return $this->getAccountsAsyncWithHttpInfo( $xRequestId, $page, $size, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -340,9 +382,7 @@ class GetAccountsApi
     /**
      * Operation getAccountsAsyncWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
@@ -350,10 +390,10 @@ class GetAccountsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccountsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getAccountsAsyncWithHttpInfo( $xRequestId,  $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
         $returnType = 'object';
-        $request = $this->getAccountsRequest($xIBMClientId, $xRequestId, $pSUIPAddress, $page, $size, $contentType);
+        $request = $this->getAccountsRequest( $xRequestId, $page, $size, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -394,9 +434,7 @@ class GetAccountsApi
     /**
      * Create request for operation 'getAccounts'
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccounts'] to see the possible values for this operation
@@ -404,16 +442,19 @@ class GetAccountsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getAccountsRequest($xIBMClientId, $xRequestId, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
+    public function getAccountsRequest( $xRequestId,  $page = null, $size = null, string $contentType = self::contentTypes['getAccounts'][0])
     {
-
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+            
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getAccounts'
             );
         }
-
+            
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -426,12 +467,12 @@ class GetAccountsApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetAccountsApi.getAccounts, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-        
+                    
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetAccountsApi.getAccounts, must be smaller than or equal to 39.');
         }
-        
-
+                    
+            
 
 
         $resourcePath = '/rbcz/premium/mock/accounts';

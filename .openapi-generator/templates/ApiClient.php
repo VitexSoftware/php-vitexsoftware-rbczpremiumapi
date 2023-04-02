@@ -23,13 +23,26 @@ class ApiClient extends \GuzzleHttp\Client
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
      */
-    private $xIBMClientId = null;
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 
+     * format. If the bank client (your user) uses a browser by which he 
+     * accesses your server app, we need to know the IP address of his browser. 
+     * Always provide the closest IP address to the real end-user possible. 
+     * (optional)
+     * 
+     * @var string
+     */
+    protected $pSUIPAddress = null;
+
 
     /**
      * @inheritDoc
      * 
      * $config['clientid'] - obtained from Developer Portal - when you registered your app with us.
      * $config['cert'] = ['/path/to/cert.p12','certificat password']
+     * $config['clientpubip'] = the closest IP address to the real end-user
      * 
      * @param array $config 
      * @throws Exception CERT_FILE is not set
@@ -54,6 +67,11 @@ class ApiClient extends \GuzzleHttp\Client
         if (array_key_exists('debug', $config) === false) {
             $config['debug'] = \Ease\Functions::cfg('API_DEBUG', false);
         }
+        
+        if(array_key_exists('clientpubip', $config)){
+            $this->pSUIPAddress = $config['clientpubip'];
+        }
+        
         parent::__construct($config);
     }
 
@@ -66,6 +84,12 @@ class ApiClient extends \GuzzleHttp\Client
         return $this->xIBMClientId;
     }
 
+    
+    public function getpSUIPAddress()
+    {
+        return $this->pSUIPAddress;
+    } 
+    
     /**
      * Obtain Your current Public IP
      * 

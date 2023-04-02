@@ -69,6 +69,19 @@ class GetStatementListApi
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
@@ -93,8 +106,43 @@ class GetStatementListApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -126,10 +174,8 @@ class GetStatementListApi
     /**
      * Operation getStatements
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest $requestBody requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getStatements'] to see the possible values for this operation
@@ -138,19 +184,17 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return object|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object
      */
-    public function getStatements($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatements( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-        list($response) = $this->getStatementsWithHttpInfo($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress, $page, $size, $contentType);
+        list($response) = $this->getStatementsWithHttpInfo( $xRequestId, $requestBody, $page, $size, $contentType);
         return $response;
     }
 
     /**
      * Operation getStatementsWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getStatements'] to see the possible values for this operation
@@ -159,9 +203,9 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getStatementsWithHttpInfo($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsWithHttpInfo( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-        $request = $this->getStatementsRequest($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress, $page, $size, $contentType);
+        $request = $this->getStatementsRequest( $xRequestId, $requestBody, $page, $size, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -365,10 +409,8 @@ class GetStatementListApi
     /**
      * Operation getStatementsAsync
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getStatements'] to see the possible values for this operation
@@ -376,9 +418,9 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getStatementsAsync($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsAsync( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-        return $this->getStatementsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress, $page, $size, $contentType)
+        return $this->getStatementsAsyncWithHttpInfo( $xRequestId, $requestBody, $page, $size, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -389,10 +431,8 @@ class GetStatementListApi
     /**
      * Operation getStatementsAsyncWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getStatements'] to see the possible values for this operation
@@ -400,10 +440,10 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getStatementsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsAsyncWithHttpInfo( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
         $returnType = 'object';
-        $request = $this->getStatementsRequest($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress, $page, $size, $contentType);
+        $request = $this->getStatementsRequest( $xRequestId, $requestBody, $page, $size, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -444,10 +484,8 @@ class GetStatementListApi
     /**
      * Create request for operation 'getStatements'
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  int $page Number of the requested page. Default is 1. (optional)
      * @param  int $size Number of items on the page. Default is 15. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getStatements'] to see the possible values for this operation
@@ -455,16 +493,19 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getStatementsRequest($xIBMClientId, $xRequestId, $requestBody, $pSUIPAddress = null, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsRequest( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+            
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getStatements'
             );
         }
-
+            
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -477,19 +518,19 @@ class GetStatementListApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetStatementListApi.getStatements, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-        
+                    
         // verify the required parameter 'requestBody' is set
         if ($requestBody === null || (is_array($requestBody) && count($requestBody) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $requestBody when calling getStatements'
             );
         }
-
+            
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetStatementListApi.getStatements, must be smaller than or equal to 39.');
         }
-        
-
+                    
+            
 
 
         $resourcePath = '/rbcz/premium/mock/accounts/statements';

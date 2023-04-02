@@ -69,6 +69,19 @@ class GetBatchDetailApi
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
@@ -93,8 +106,43 @@ class GetBatchDetailApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -126,38 +174,34 @@ class GetBatchDetailApi
     /**
      * Operation getBatchDetail
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  int $batchFileId Batch file id (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return object|object|object|object|object|object
      */
-    public function getBatchDetail($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetail( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        list($response) = $this->getBatchDetailWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType);
+        list($response) = $this->getBatchDetailWithHttpInfo( $xRequestId, $batchFileId, $contentType);
         return $response;
     }
 
     /**
      * Operation getBatchDetailWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  int $batchFileId Batch file id (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getBatchDetailWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailWithHttpInfo( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        $request = $this->getBatchDetailRequest($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType);
+        $request = $this->getBatchDetailRequest( $xRequestId, $batchFileId, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -361,18 +405,16 @@ class GetBatchDetailApi
     /**
      * Operation getBatchDetailAsync
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  int $batchFileId Batch file id (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBatchDetailAsync($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailAsync( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        return $this->getBatchDetailAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType)
+        return $this->getBatchDetailAsyncWithHttpInfo( $xRequestId, $batchFileId, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -383,19 +425,17 @@ class GetBatchDetailApi
     /**
      * Operation getBatchDetailAsyncWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  int $batchFileId Batch file id (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBatchDetailAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailAsyncWithHttpInfo( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
     {
         $returnType = 'object';
-        $request = $this->getBatchDetailRequest($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress, $contentType);
+        $request = $this->getBatchDetailRequest( $xRequestId, $batchFileId, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -436,25 +476,26 @@ class GetBatchDetailApi
     /**
      * Create request for operation 'getBatchDetail'
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  int $batchFileId Batch file id (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBatchDetail'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getBatchDetailRequest($xIBMClientId, $xRequestId, $batchFileId, $pSUIPAddress = null, string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailRequest( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+            
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getBatchDetail'
             );
         }
-
+            
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -467,14 +508,14 @@ class GetBatchDetailApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetBatchDetailApi.getBatchDetail, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-        
+                    
         // verify the required parameter 'batchFileId' is set
         if ($batchFileId === null || (is_array($batchFileId) && count($batchFileId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $batchFileId when calling getBatchDetail'
             );
         }
-
+            
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetBatchDetailApi.getBatchDetail, must be smaller than or equal to 39.');
         }

@@ -59,6 +59,19 @@ use {{invokerPackage}}\ObjectSerializer;
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [{{#operation}}
@@ -85,8 +98,43 @@ use {{invokerPackage}}\ObjectSerializer;
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -549,7 +597,13 @@ use {{invokerPackage}}\ObjectSerializer;
         $variables = array_key_exists('variables', $associative_array) ? $associative_array['variables'] : [];
 {{/servers.0}}
         $contentType = $associative_array['contentType'] ?? self::contentTypes['{{{operationId}}}'][0];
-        {{/vendorExtensions.x-group-parameters}}{{#allParams}}
+        
+        {{/vendorExtensions.x-group-parameters}}
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+        {{#allParams}}            
+            
         {{#required}}
         // verify the required parameter '{{paramName}}' is set
         if (${{paramName}} === null || (is_array(${{paramName}}) && count(${{paramName}}) === 0)) {

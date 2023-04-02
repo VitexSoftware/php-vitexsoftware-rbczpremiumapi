@@ -10,7 +10,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 ## `importPayments()`
 
 ```php
-importPayments($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName): object
+importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName): object
 ```
 
 
@@ -26,19 +26,15 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 $apiInstance = new VitexSoftware\Raiffeisenbank\Api\UploadPaymentsApi(
-    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-    // This is optional, `GuzzleHttp\Client` will be used as default.
-    new \VitexSoftware\Raiffeisenbank\ApiClient()
+    new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
 );
-$xIBMClientId = 'xIBMClientId_example'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $batchImportFormat = 'batchImportFormat_example'; // string | Format of imported batch. For CCT format please use option SEPA-XML.
 $requestBody = 'requestBody_example'; // string
-$pSUIPAddress = 'pSUIPAddress_example'; // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible.
 $batchName = 'batchName_example'; // string | Batch name, if not present then will be generated in format `ImportApi_<DDMMYYYY>`.  If the name is longer than 50 characters, it will be truncated
 
 try {
-    $result = $apiInstance->importPayments($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName);
+    $result = $apiInstance->importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling UploadPaymentsApi->importPayments: ', $e->getMessage(), PHP_EOL;
@@ -49,11 +45,9 @@ try {
 
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
-| **xIBMClientId** | **string**| ClientID obtained from Developer Portal - when you registered your app with us. | |
 | **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. | |
 | **batchImportFormat** | **string**| Format of imported batch. For CCT format please use option SEPA-XML. | |
 | **requestBody** | **string**|  | |
-| **pSUIPAddress** | **string**| IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. | [optional] |
 | **batchName** | **string**| Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated | [optional] |
 
 ### Return type

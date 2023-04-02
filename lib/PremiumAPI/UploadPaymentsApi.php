@@ -69,6 +69,19 @@ class UploadPaymentsApi
      * @var int Host index
      */
     protected $hostIndex;
+    
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     * @var string
+     */
+    protected $xIBMClientId = null;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
+     * 
+     * @var string Description
+     */
+    protected $SUIPAddress = null;
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
@@ -93,8 +106,43 @@ class UploadPaymentsApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+        if(method_exists($this->client, 'getXIBMClientId')){
+            $this->setXIBMClientId($this->client->getXIBMClientId());
+        }
+        if(method_exists($this->client, 'getpSUIPAddress')){
+            $this->setSUIPAddress($this->client->getpSUIPAddress());
+        }
     }
 
+    /**
+     * Keep ClientID obtained from Developer Portal
+     * 
+     * @param string $clientId Description
+     * 
+     * @return string
+     */
+    public function setXIBMClientId($clientId)
+    {
+        return $this->xIBMClientId = $clientId;
+    }
+    
+    /**
+     * Give you ClientID obtained from Developer Portal
+     * 
+     * @return string
+     */
+    public function getXIBMClientId()
+    {
+        return $this->xIBMClientId;
+    }
+
+    /**
+     * @param  string $SUIPAddress IP address of a client 
+     */
+    public function setSUIPAddress($SUIPAddress) {
+        $this->$SUIPAddress;
+    }
+    
     /**
      * Set the host index
      *
@@ -126,11 +174,9 @@ class UploadPaymentsApi
     /**
      * Operation importPayments
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
      * @param  string $requestBody requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
@@ -138,20 +184,18 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return object|\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response
      */
-    public function importPayments($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        list($response) = $this->importPaymentsWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType);
+        list($response) = $this->importPaymentsWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
         return $response;
     }
 
     /**
      * Operation importPaymentsWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
      * @param  string $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
@@ -159,9 +203,9 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return array of object|\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function importPaymentsWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        $request = $this->importPaymentsRequest($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType);
+        $request = $this->importPaymentsRequest( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -411,20 +455,18 @@ class UploadPaymentsApi
     /**
      * Operation importPaymentsAsync
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
      * @param  string $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function importPaymentsAsync($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsAsync( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        return $this->importPaymentsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType)
+        return $this->importPaymentsAsyncWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -435,21 +477,19 @@ class UploadPaymentsApi
     /**
      * Operation importPaymentsAsyncWithHttpInfo
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
      * @param  string $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function importPaymentsAsyncWithHttpInfo($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsAsyncWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
         $returnType = 'object';
-        $request = $this->importPaymentsRequest($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress, $batchName, $contentType);
+        $request = $this->importPaymentsRequest( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -490,27 +530,28 @@ class UploadPaymentsApi
     /**
      * Create request for operation 'importPayments'
      *
-     * @param  string $xIBMClientId ClientID obtained from Developer Portal - when you registered your app with us. (required)
      * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
      * @param  string $batchImportFormat Format of imported batch. For CCT format please use option SEPA-XML. (required)
      * @param  string $requestBody (required)
-     * @param  string $pSUIPAddress IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * @param  string $batchName Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['importPayments'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function importPaymentsRequest($xIBMClientId, $xRequestId, $batchImportFormat, $requestBody, $pSUIPAddress = null, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsRequest( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-
+        $xIBMClientId = $this->getXIBMClientId();
+        $pSUIPAddress = $this->SUIPAddress;
+        
+            
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling importPayments'
             );
         }
-
+            
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -523,25 +564,25 @@ class UploadPaymentsApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling UploadPaymentsApi.importPayments, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-        
+                    
         // verify the required parameter 'batchImportFormat' is set
         if ($batchImportFormat === null || (is_array($batchImportFormat) && count($batchImportFormat) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $batchImportFormat when calling importPayments'
             );
         }
-
+            
         // verify the required parameter 'requestBody' is set
         if ($requestBody === null || (is_array($requestBody) && count($requestBody) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $requestBody when calling importPayments'
             );
         }
-
+            
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 39.');
         }
-        
+                    
         if ($batchName !== null && strlen($batchName) > 50) {
             throw new \InvalidArgumentException('invalid length for "$batchName" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 50.');
         }
