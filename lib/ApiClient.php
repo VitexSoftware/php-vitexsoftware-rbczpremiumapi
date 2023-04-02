@@ -82,7 +82,7 @@ class ApiClient extends \GuzzleHttp\Client
      */
     public function getXIBMClientId()
     {
-        return $this->xIBMClientId;
+        return $this->xIBMClientID;
     }
 
     /**
