@@ -57,12 +57,17 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 {{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
 {{> php_doc_auth_partial}}
+
 $apiInstance = new {{invokerPackage}}\Api\{{classname}}(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-    // This is optional, `GuzzleHttp\Client` will be used as default.
-    new \VitexSoftware\Raiffeisenbank\ApiClient(){{#hasAuthMethods}},
+    // This is optional, Internal `ApiClient` will be used as default.
+    // Else you must call setXIBMClientId($lientID) and $this->setSUIPAddress($clientPubIP) method to set API call properly      
+
+    new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true]){{#hasAuthMethods}},
     $config{{/hasAuthMethods}}
 );
+
+
 {{#allParams}}${{paramName}} = {{{example}}}; // {{{dataType}}}{{#description}} | {{{.}}}{{/description}}
 {{/allParams}}
 

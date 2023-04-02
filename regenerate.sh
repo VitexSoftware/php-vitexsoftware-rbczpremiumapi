@@ -12,11 +12,11 @@ sed -i 's/ $pSUIPAddress,//' lib/PremiumAPI/*
 sed -i '/@param  string $pSUIPAddress IP address/d' lib/PremiumAPI/*
 
 
-sed -i '/xIBMClientId_example/d' docs/Api/*
-sed -i '/pSUIPAddress_example/d' docs/Api/*
+sed -i '/xIBMClientId_example/d' docs/Api/* README.md
+sed -i '/pSUIPAddress_example/d' docs/Api/* README.md
 
-sed -i 's/$xIBMClientId,//' docs/Api/*
-sed -i 's/$pSUIPAddress,//' docs/Api/*
+sed -i 's/$xIBMClientId,//' docs/Api/* README.md
+sed -i 's/$pSUIPAddress,//' docs/Api/* README.md
 
 sed -i '/IBMClientId/d' docs/Api/*
 sed -i '/SUIPAddress/d' docs/Api/*

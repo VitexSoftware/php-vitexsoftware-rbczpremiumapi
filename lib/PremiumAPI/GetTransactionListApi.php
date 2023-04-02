@@ -35,6 +35,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
+use \VitexSoftware\Raiffeisenbank\ApiClient
 use VitexSoftware\Raiffeisenbank\ApiException;
 use VitexSoftware\Raiffeisenbank\Configuration;
 use VitexSoftware\Raiffeisenbank\HeaderSelector;
@@ -102,7 +103,7 @@ class GetTransactionListApi
         HeaderSelector $selector = null,
         $hostIndex = 0
     ) {
-        $this->client = $client ?: new Client();
+        $this->client = $client ?: new ApiClient();
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;

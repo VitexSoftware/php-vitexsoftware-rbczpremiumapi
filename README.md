@@ -53,19 +53,22 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
+
 $apiInstance = new VitexSoftware\Raiffeisenbank\Api\DownloadStatementApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-    // This is optional, `GuzzleHttp\Client` will be used as default.
-    new \VitexSoftware\Raiffeisenbank\ApiClient()
+    // This is optional, Internal `ApiClient` will be used as default.
+    // Else you must call setXIBMClientId($lientID) and $this->setSUIPAddress($clientPubIP) method to set API call properly      
+
+    new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
 );
-$xIBMClientId = 'xIBMClientId_example'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
+
+
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $acceptLanguage = 'acceptLanguage_example'; // string | The Accept-Language request HTTP header is used to determine document  language. Supported languages are `cs` and `en`.
 $requestBody = new \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest(); // \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest
-$pSUIPAddress = 'pSUIPAddress_example'; // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible.
 
 try {
-    $result = $apiInstance->downloadStatement($xIBMClientId, $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress);
+    $result = $apiInstance->downloadStatement( $xRequestId, $acceptLanguage, $requestBody, $pSUIPAddress);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling DownloadStatementApi->downloadStatement: ', $e->getMessage(), PHP_EOL;
