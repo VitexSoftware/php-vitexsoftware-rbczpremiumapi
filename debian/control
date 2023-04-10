@@ -17,7 +17,7 @@ Description: php client library for rbczpremiumapi
  See Accont Balance, Download statements etc.
 
 Package: php-vitexsoftware-rbczpremiumapi-dev
-Depends: ${misc:Depends}, php-vitexsoftware-rbczpremiumapi, phpunit,
+Depends: ${misc:Depends}, php-vitexsoftware-rbczpremiumapi, phpunit, php-vitexsoftware-ease-core-dev
 Architecture: all
 Section: devel
 Priority: optional
