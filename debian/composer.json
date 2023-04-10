@@ -22,7 +22,34 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=7"
+    "guzzlehttp/guzzle": "^7.3",
+    
   },
+
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/usr/share/php/EaseCore"
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/EaseHtml"
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/AbraFlexi"
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/Raiffeisenbank"
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/GuzzleHttp"
+        }
+    ],
+
+
   "type": "library",
   "homepage": "http://v.s.cz/ease.php",
   "license": "GPL-2.0+",

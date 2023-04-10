@@ -26,7 +26,7 @@ set -e
 case "$1" in
     configure)
         composer-debian php-vitexsoftware-rbczpremiumapi-dev
-	su - `composer-webuser` -s /bin/bash -c 'phpunit --bootstrap /usr/share/php/EaseCore/Test/Bootstrap.php --configuration /usr/share/php/EaseCore/Test/phpunit.xml'
+	su - `composer-webuser` -s /bin/bash -c 'phpunit --bootstrap /usr/share/php/Raiffeisenbank/Test/bootstrap.php --configuration /usr/share/php/Raiffeisenbank/Test/phpunit.xml'
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
