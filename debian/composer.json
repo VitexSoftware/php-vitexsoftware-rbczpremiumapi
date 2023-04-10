@@ -45,5 +45,6 @@
   ],
   "type": "library",
   "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi",
-  "license": "GPL-2.0+"
+  "license": "MIT",
+  "version": "1.0.0"
 }
