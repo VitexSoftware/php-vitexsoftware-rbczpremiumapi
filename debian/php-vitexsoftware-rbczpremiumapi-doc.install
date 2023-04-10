@@ -1,16 +1,16 @@
-phpdoc/classes/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/classes
+phpdoc/classes/*	usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/classes
 phpdoc/css/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/css
 phpdoc/files/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/files
 phpdoc/graphs/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/graphs
-phpdoc/index.html		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/
-phpdoc/indices/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/indices
+phpdoc/index.html	usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/
+phpdoc/indices/*	usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/indices
 phpdoc/js/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/js
-phpdoc/namespaces/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/namespaces
-phpdoc/packages/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/packages
-phpdoc/reports/*		usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/reports
+phpdoc/namespaces/*	usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/namespaces
+phpdoc/packages/*	usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/packages
+phpdoc/reports/*	usr/share/doc/php-vitexsoftware-rbczpremiumapi/html/reports
 
-docs/Api/*                      usr/share/doc/php-vitexsoftware-rbczpremiumapi/Api/
-docs/Model/*                      usr/share/doc/php-vitexsoftware-rbczpremiumapi/Model/
+docs/Api/*              usr/share/doc/php-vitexsoftware-rbczpremiumapi/Api/
+docs/Model/*            usr/share/doc/php-vitexsoftware-rbczpremiumapi/Model/
 
 debian/php-vitexsoftware-rbczpremiumapi-doc.conf	usr/share/doc/php-vitexsoftware-rbczpremiumapi-doc/apache
-README.md			usr/share/doc/php-vitexsoftware-rbczpremiumapi
+README.md		usr/share/doc/php-vitexsoftware-rbczpremiumapi

@@ -6,7 +6,7 @@
     {
       "name": "Vítězslav Dvořák",
       "email": "info@vitexsoftware.cz",
-      "homepage": "http://v.s.cz/"
+      "homepage": "https://vitexsoftware.com/"
     }
   ],
   "config": {
@@ -21,37 +21,29 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "php": ">=7"
+    "php": ">=7.1",
     "guzzlehttp/guzzle": "^7.3",
-    
+    "deb/ease-core": "*"
   },
-
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/usr/share/php/EaseCore"
-        },
-        {
-            "type": "path",
-            "url": "/usr/share/php/EaseHtml"
-        },
-        {
-            "type": "path",
-            "url": "/usr/share/php/AbraFlexi"
-        },
-        {
-            "type": "path",
-            "url": "/usr/share/php/Raiffeisenbank"
-        },
-        {
-            "type": "path",
-            "url": "/usr/share/php/GuzzleHttp"
-        }
-    ],
-
-
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/usr/share/php/EaseCore"
+    },
+    {
+      "type": "path",
+      "url": "/usr/share/php/AbraFlexi"
+    },
+    {
+      "type": "path",
+      "url": "/usr/share/php/Raiffeisenbank"
+    },
+    {
+      "type": "path",
+      "url": "/usr/share/php/GuzzleHttp"
+    }
+  ],
   "type": "library",
-  "homepage": "http://v.s.cz/ease.php",
-  "license": "GPL-2.0+",
-  "address": "1.11"
+  "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi",
+  "license": "GPL-2.0+"
 }
