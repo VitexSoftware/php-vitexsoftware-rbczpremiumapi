@@ -1,9 +1,9 @@
 test/Api/*       		usr/share/php/Raiffeisenbank/Test/Api
 test/Model/*    		usr/share/php/Raiffeisenbank/Test/Model
 
-debian/test/phpunit.xml        usr/share/php/Raiffeisenbank/Test
+debian/test/phpunit.xml         usr/share/php/Raiffeisenbank/Test
 #debian/test/composer.json	usr/lib/php-vitexsoftware-rbczpremiumapi-dev
 debian/composer.json    	usr/lib/php-vitexsoftware-rbczpremiumapi-dev
-#debian/test/bootstrap.php	usr/share/php/Raiffeisenbank/Test
+debian/test/bootstrap.php	usr/share/php/Raiffeisenbank/Test
 
 examples/*      		usr/share/doc/php-vitexsoftware-rbczpremiumapi-dev
