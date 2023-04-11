@@ -1,8 +1,9 @@
 #!groovy
 
-// Buster's php is too old
+// Buster's php is too old 
+// Jammy is too new
 
-String[] distributions = [ 'debian:bullseye', 'debian:bookworm', 'ubuntu:focal', 'ubuntu:jammy']
+String[] distributions = [ 'debian:bullseye', 'debian:bookworm', 'ubuntu:focal']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
