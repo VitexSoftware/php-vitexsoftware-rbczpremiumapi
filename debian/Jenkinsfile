@@ -3,7 +3,7 @@
 // Buster's php is too old 
 // Jammy is too new
 
-String[] distributions = [ 'debian:bullseye', 'debian:bookworm', 'ubuntu:focal']
+String[] distributions = [ 'debian:bullseye', 'debian:bookworm', 'ubuntu:focal', 'ubuntu:kinetic']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
