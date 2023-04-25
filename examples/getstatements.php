@@ -3,7 +3,7 @@
 namespace VitexSoftware\Raiffeisenbank;
 
 require_once( '../vendor/autoload.php');
-$apiInstance = new PremiumAPI\GetStatementListApi(new ApiClient());
+\Ease\Shared::init([], 'example.env');
 $x_ibm_client_id = 'FbboLD2r1WHDRcuKS4wWUbSRHxlDloWL'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
 $x_request_id = time(); // string | Unique request id provided by consumer application for reference and auditing.
 $accept_language = 'cs'; // string | The Accept-Language request HTTP header is used to determine document  language. Supported languages are `cs` and `en`.
@@ -15,8 +15,12 @@ $request_body = new Model\GetStatementsRequest(['account_number' => '1899297002'
 $page = 56; // int | Number of the requested page. Default is 1.
 $size = 56; // int | Number of items on the page. Default is 15.
 
+$apiInstance = new PremiumAPI\GetStatementListApi(new ApiClient([
+            'clientpubip' => $psu_ip_address,
+            'clientid' => $x_ibm_client_id
+        ]));
 try {
-    $result = $apiInstance->getStatements($x_ibm_client_id, $x_request_id, $request_body, $psu_ip_address, $page, $size);
+    $result = $apiInstance->getStatements($x_request_id, $request_body, $page, $size);
     print_r($result);
 } catch (\Ease\Exception $e) {
     echo 'Exception when calling GetStatementListApi->getStatements: ', $e->getMessage(), PHP_EOL;
