@@ -57,7 +57,9 @@ class ApiClient extends \GuzzleHttp\Client
     public function __construct(array $config = [])
     {
         if (array_key_exists('clientid', $config) === false) {
-            $this->xIBMClientID = \Ease\Functions::cfg('XIBMCLIENTID');
+            $this->xIBMClientId = \Ease\Functions::cfg('XIBMCLIENTID');
+        } else {
+            $this->xIBMClientId = $config['clientid'];
         }
 
         if (array_key_exists('cert', $config) === false) {
@@ -72,7 +74,7 @@ class ApiClient extends \GuzzleHttp\Client
 
         if (array_key_exists('debug', $config) === false) {
             $config['debug'] = \Ease\Functions::cfg('API_DEBUG', false);
-        }
+        } 
         
         if(array_key_exists('clientpubip', $config)){
             $this->pSUIPAddress = $config['clientpubip'];

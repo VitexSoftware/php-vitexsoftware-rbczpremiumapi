@@ -1,9 +1,10 @@
-php-vitexsoftware-rbczpremiumapi (1.0) UNRELEASED; urgency=medium
+php-vitexsoftware-rbczpremiumapi (1.1.0) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * initial content
 
   [ vitex ]
   * Production Endoint Used
+  * mocking ability added
 
- -- vitex <info@vitexsoftware.cz>  Sun, 02 Apr 2023 11:49:51 +0200
+ -- vitex <info@vitexsoftware.cz>  Tue, 25 Apr 2023 23:46:16 +0200

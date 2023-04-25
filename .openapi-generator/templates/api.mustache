@@ -148,7 +148,7 @@ use {{invokerPackage}}\ObjectSerializer;
      * @param boolean $mocking Use mocking api for development purposes ?
      */
     public function setMockMode($mocking) {
-        $his->mockMode = $mocking;
+        $this->mockMode = $mocking;
     }
     
     /**
@@ -668,7 +668,7 @@ use {{invokerPackage}}\ObjectSerializer;
 
         $resourcePath = '{{{path}}}';
         if($this->mockMode === true){
-            $resoucePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $sourcePath);
+            $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
         $queryParams = [];

@@ -78,6 +78,11 @@ class GetBatchDetailApi
     protected $xIBMClientId = null;
 
     /**
+     * Use the /rbcz/premium/mock/* path for endpoints ?
+     */
+    protected  $mockMode = false;
+    
+    /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * 
      * @var string Description
@@ -113,6 +118,9 @@ class GetBatchDetailApi
         if(method_exists($this->client, 'getpSUIPAddress')){
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
+        if(method_exists($this->client, 'getMockMode')){
+            $this->setMockMode($this->client->getMockMode());
+        }
     }
 
     /**
@@ -142,6 +150,13 @@ class GetBatchDetailApi
      */
     public function setSUIPAddress($SUIPAddress) {
         $this->SUIPAddress;
+    }
+    
+    /**
+     * @param boolean $mocking Use mocking api for development purposes ?
+     */
+    public function setMockMode($mocking) {
+        $this->mockMode = $mocking;
     }
     
     /**
@@ -523,6 +538,9 @@ class GetBatchDetailApi
         
 
         $resourcePath = '/rbcz/premium/api/payments/batches/{batchFileId}';
+        if($this->mockMode === true){
+            $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
+        }
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
