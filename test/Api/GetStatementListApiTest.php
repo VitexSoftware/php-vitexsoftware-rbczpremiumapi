@@ -42,7 +42,11 @@ use \PHPUnit\Framework\TestCase,
  */
 class GetStatementListApiTest extends TestCase
 {
-
+    /**
+     * 
+     * @var GetStatementListApi
+     */
+    protected  $object;
     /**
      * Setup before running any test cases
      */

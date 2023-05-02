@@ -3,7 +3,9 @@
 // Buster's php is too old 
 // Jammy is too new
 
-String[] distributions = [ 'debian:bullseye', 'debian:bookworm', 'ubuntu:focal', 'ubuntu:kinetic', 'ubuntu:jammy']
+// 'debian:bookworm', has problem with new ssl
+
+String[] distributions = [ 'debian:bullseye', 'ubuntu:focal', 'ubuntu:kinetic', 'ubuntu:jammy']
 
 String vendor = 'vitexsoftware'
 String distribution = ''

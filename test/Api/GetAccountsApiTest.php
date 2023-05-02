@@ -32,6 +32,10 @@ use \PHPUnit\Framework\TestCase,
 class GetAccountsApiTest extends TestCase
 {
 
+    /**
+     * 
+     * @var GetAccountsApi
+     */
     protected $object;
 
     /**

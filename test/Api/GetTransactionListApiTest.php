@@ -36,6 +36,11 @@ use \PHPUnit\Framework\TestCase,
  */
 class GetTransactionListApiTest extends TestCase
 {
+    /**
+     * 
+     * @var GetTransactionListApi
+     */
+    protected $object;
 
     /**
      * Setup before running any test cases
