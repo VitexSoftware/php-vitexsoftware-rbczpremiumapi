@@ -1,0 +1,53 @@
+{
+    "name": "deb/rbczpremiumapi-dev",
+    "description": "An Core of PHP Framework for Ease of writing Applications (debianized)",
+    "version": "1.1.0",
+    "authors": [
+        {
+            "name": "Vítězslav Dvořák",
+            "email": "info@vitexsoftware.cz",
+            "homepage": "https://vitexsoftware.com/"
+        }
+    ],
+    "config": {
+        "vendor-dir": "/var/lib/composer/php-vitexsoftware-rbczpremiumapi-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "VitexSoftware\\Raiffeisenbank\\": "/usr/share/php/Raiffeisenbank/",
+            "VitexSoftware\\Raiffeisenbank\\Model\\": "/usr/share/php/Raiffeisenbank/Model",
+            "VitexSoftware\\Raiffeisenbank\\PremiumAPI\\": "/usr/share/php/Raiffeisenbank/PremiumAPI"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { 
+            "VitexSoftware\\Raiffeisenbank\\Test\\": "/usr/share/php/Raiffeisenbank/Test/",
+            "VitexSoftware\\Raiffeisenbank\\Test\\Model\\": "/usr/share/php/Raiffeisenbank/Test/Model",
+            "VitexSoftware\\Raiffeisenbank\\Test\\PremiumAPI\\": "/usr/share/php/Raiffeisenbank/Test/PremiumAPI"
+        }
+    },
+
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "^7.3",
+        "deb/ease-core": "*"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/usr/share/php/EaseCore"
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/Raiffeisenbank"
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/GuzzleHttp"
+        }
+    ],
+    "type": "library",
+    "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi",
+    "license": "MIT"
+}

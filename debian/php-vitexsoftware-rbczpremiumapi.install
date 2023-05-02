@@ -2,4 +2,3 @@ lib/*                           usr/share/php/Raiffeisenbank
 lib/Model/*                     usr/share/php/Raiffeisenbank/Model
 lib/PremiumAPI/*                usr/share/php/Raiffeisenbank/PremiumAPI
 debian/composer.json		usr/share/php/Raiffeisenbank
-

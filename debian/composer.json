@@ -14,9 +14,9 @@
   },
   "autoload": {
     "psr-4": {
-      "VitexSoftware\\Raiffeisenbank\\": "./",
-      "VitexSoftware\\Raiffeisenbank\\Model\\": "./Model",
-      "VitexSoftware\\Raiffeisenbank\\PremiumAPI\\": "./PremiumAPI"
+      "VitexSoftware\\Raiffeisenbank\\": "/usr/share/php/Raiffeisenbank/",
+      "VitexSoftware\\Raiffeisenbank\\Model\\": "/usr/share/php/Raiffeisenbank/Model",
+      "VitexSoftware\\Raiffeisenbank\\PremiumAPI\\": "/usr/share/php/Raiffeisenbank/PremiumAPI"
     }
   },
   "minimum-stability": "dev",
