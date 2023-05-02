@@ -3,9 +3,9 @@
 // Buster's php is too old 
 // Jammy is too new
 
-// 'debian:bookworm', has problem with new ssl
+// 'ubuntu:kinetic', 'debian:bookworm', * could not parse PKCS12 file, check password, OpenSSL error error:0308010C:digital envelope routines::unsupported
 
-String[] distributions = [ 'debian:bullseye', 'ubuntu:focal', 'ubuntu:kinetic', 'ubuntu:jammy']
+String[] distributions = [ 'debian:bullseye', 'ubuntu:focal',  'ubuntu:jammy']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
