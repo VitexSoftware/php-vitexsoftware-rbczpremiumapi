@@ -25,7 +25,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new VitexSoftware\Raiffeisenbank\Api\GetStatementListApi(
+$apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\GetStatementListApi(
     new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
 );
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.

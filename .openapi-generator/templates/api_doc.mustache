@@ -40,7 +40,7 @@ All URIs are relative to {{basePath}}, except if the operation defines another b
 require_once(__DIR__ . '/vendor/autoload.php');
 
 {{> php_doc_auth_partial}}
-$apiInstance = new {{invokerPackage}}\Api\{{classname}}(
+$apiInstance = new \{{invokerPackage}}\PremiumAPI\{{classname}}(
     new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true]){{#hasAuthMethods}},
     $config{{/hasAuthMethods}}
 );
