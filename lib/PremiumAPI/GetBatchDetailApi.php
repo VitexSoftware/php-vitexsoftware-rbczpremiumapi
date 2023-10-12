@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetBatchDetailApi
  * PHP version 7.4
@@ -35,7 +36,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use \VitexSoftware\Raiffeisenbank\ApiClient;
+use VitexSoftware\Raiffeisenbank\ApiClient;
 use VitexSoftware\Raiffeisenbank\ApiException;
 use VitexSoftware\Raiffeisenbank\Configuration;
 use VitexSoftware\Raiffeisenbank\HeaderSelector;
@@ -70,7 +71,7 @@ class GetBatchDetailApi
      * @var int Host index
      */
     protected $hostIndex;
-    
+
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -80,11 +81,11 @@ class GetBatchDetailApi
     /**
      * Use the /rbcz/premium/mock/* path for endpoints ?
      */
-    protected  $mockMode = false;
-    
+    protected $mockMode = false;
+
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * 
+     *
      * @var string Description
      */
     protected $SUIPAddress = null;
@@ -112,32 +113,32 @@ class GetBatchDetailApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
-        if(method_exists($this->client, 'getXIBMClientId')){
+        if (method_exists($this->client, 'getXIBMClientId')) {
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
-        if(method_exists($this->client, 'getpSUIPAddress')){
+        if (method_exists($this->client, 'getpSUIPAddress')) {
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
-        if(method_exists($this->client, 'getMockMode')){
+        if (method_exists($this->client, 'getMockMode')) {
             $this->setMockMode($this->client->getMockMode());
         }
     }
 
     /**
      * Keep ClientID obtained from Developer Portal
-     * 
+     *
      * @param string $clientId Description
-     * 
+     *
      * @return string
      */
     public function setXIBMClientId($clientId)
     {
         return $this->xIBMClientId = $clientId;
     }
-    
+
     /**
      * Give you ClientID obtained from Developer Portal
-     * 
+     *
      * @return string
      */
     public function getXIBMClientId()
@@ -146,19 +147,21 @@ class GetBatchDetailApi
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client 
+     * @param  string $SUIPAddress IP address of a client
      */
-    public function setSUIPAddress($SUIPAddress) {
+    public function setSUIPAddress($SUIPAddress)
+    {
         $this->SUIPAddress;
     }
-    
+
     /**
      * @param boolean $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking) {
+    public function setMockMode($mocking)
+    {
         $this->mockMode = $mocking;
     }
-    
+
     /**
      * Set the host index
      *
@@ -198,9 +201,9 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @return object|object|object|object|object|object
      */
-    public function getBatchDetail( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetail($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        list($response) = $this->getBatchDetailWithHttpInfo( $xRequestId, $batchFileId, $contentType);
+        list($response) = $this->getBatchDetailWithHttpInfo($xRequestId, $batchFileId, $contentType);
         return $response;
     }
 
@@ -215,9 +218,9 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getBatchDetailWithHttpInfo( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailWithHttpInfo($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        $request = $this->getBatchDetailRequest( $xRequestId, $batchFileId, $contentType);
+        $request = $this->getBatchDetailRequest($xRequestId, $batchFileId, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -254,7 +257,7 @@ class GetBatchDetailApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -362,7 +365,6 @@ class GetBatchDetailApi
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
@@ -428,9 +430,9 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBatchDetailAsync( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailAsync($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
-        return $this->getBatchDetailAsyncWithHttpInfo( $xRequestId, $batchFileId, $contentType)
+        return $this->getBatchDetailAsyncWithHttpInfo($xRequestId, $batchFileId, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -448,10 +450,10 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBatchDetailAsyncWithHttpInfo( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailAsyncWithHttpInfo($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
         $returnType = 'object';
-        $request = $this->getBatchDetailRequest( $xRequestId, $batchFileId, $contentType);
+        $request = $this->getBatchDetailRequest($xRequestId, $batchFileId, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -499,19 +501,19 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getBatchDetailRequest( $xRequestId, $batchFileId,  string $contentType = self::contentTypes['getBatchDetail'][0])
+    public function getBatchDetailRequest($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
-        
-            
+
+
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getBatchDetail'
             );
         }
-            
+
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -524,21 +526,21 @@ class GetBatchDetailApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetBatchDetailApi.getBatchDetail, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-                    
+
         // verify the required parameter 'batchFileId' is set
         if ($batchFileId === null || (is_array($batchFileId) && count($batchFileId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $batchFileId when calling getBatchDetail'
             );
         }
-            
+
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetBatchDetailApi.getBatchDetail, must be smaller than or equal to 39.');
         }
-        
+
 
         $resourcePath = '/rbcz/premium/api/payments/batches/{batchFileId}';
-        if($this->mockMode === true){
+        if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
@@ -592,7 +594,6 @@ class GetBatchDetailApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetStatementListApi
  * PHP version 7.4
@@ -35,7 +36,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use \VitexSoftware\Raiffeisenbank\ApiClient;
+use VitexSoftware\Raiffeisenbank\ApiClient;
 use VitexSoftware\Raiffeisenbank\ApiException;
 use VitexSoftware\Raiffeisenbank\Configuration;
 use VitexSoftware\Raiffeisenbank\HeaderSelector;
@@ -70,7 +71,7 @@ class GetStatementListApi
      * @var int Host index
      */
     protected $hostIndex;
-    
+
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -80,11 +81,11 @@ class GetStatementListApi
     /**
      * Use the /rbcz/premium/mock/* path for endpoints ?
      */
-    protected  $mockMode = false;
-    
+    protected $mockMode = false;
+
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * 
+     *
      * @var string Description
      */
     protected $SUIPAddress = null;
@@ -112,32 +113,32 @@ class GetStatementListApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
-        if(method_exists($this->client, 'getXIBMClientId')){
+        if (method_exists($this->client, 'getXIBMClientId')) {
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
-        if(method_exists($this->client, 'getpSUIPAddress')){
+        if (method_exists($this->client, 'getpSUIPAddress')) {
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
-        if(method_exists($this->client, 'getMockMode')){
+        if (method_exists($this->client, 'getMockMode')) {
             $this->setMockMode($this->client->getMockMode());
         }
     }
 
     /**
      * Keep ClientID obtained from Developer Portal
-     * 
+     *
      * @param string $clientId Description
-     * 
+     *
      * @return string
      */
     public function setXIBMClientId($clientId)
     {
         return $this->xIBMClientId = $clientId;
     }
-    
+
     /**
      * Give you ClientID obtained from Developer Portal
-     * 
+     *
      * @return string
      */
     public function getXIBMClientId()
@@ -146,19 +147,21 @@ class GetStatementListApi
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client 
+     * @param  string $SUIPAddress IP address of a client
      */
-    public function setSUIPAddress($SUIPAddress) {
+    public function setSUIPAddress($SUIPAddress)
+    {
         $this->SUIPAddress;
     }
-    
+
     /**
      * @param boolean $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking) {
+    public function setMockMode($mocking)
+    {
         $this->mockMode = $mocking;
     }
-    
+
     /**
      * Set the host index
      *
@@ -200,9 +203,9 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return object|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object
      */
-    public function getStatements( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatements($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-        list($response) = $this->getStatementsWithHttpInfo( $xRequestId, $requestBody, $page, $size, $contentType);
+        list($response) = $this->getStatementsWithHttpInfo($xRequestId, $requestBody, $page, $size, $contentType);
         return $response;
     }
 
@@ -219,9 +222,9 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getStatementsWithHttpInfo( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsWithHttpInfo($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-        $request = $this->getStatementsRequest( $xRequestId, $requestBody, $page, $size, $contentType);
+        $request = $this->getStatementsRequest($xRequestId, $requestBody, $page, $size, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -258,7 +261,7 @@ class GetStatementListApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -366,7 +369,6 @@ class GetStatementListApi
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
@@ -434,9 +436,9 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getStatementsAsync( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsAsync($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
-        return $this->getStatementsAsyncWithHttpInfo( $xRequestId, $requestBody, $page, $size, $contentType)
+        return $this->getStatementsAsyncWithHttpInfo($xRequestId, $requestBody, $page, $size, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -456,10 +458,10 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getStatementsAsyncWithHttpInfo( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsAsyncWithHttpInfo($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
         $returnType = 'object';
-        $request = $this->getStatementsRequest( $xRequestId, $requestBody, $page, $size, $contentType);
+        $request = $this->getStatementsRequest($xRequestId, $requestBody, $page, $size, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -509,19 +511,19 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getStatementsRequest( $xRequestId, $requestBody,  $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
+    public function getStatementsRequest($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
-        
-            
+
+
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getStatements'
             );
         }
-            
+
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -534,23 +536,23 @@ class GetStatementListApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetStatementListApi.getStatements, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-                    
+
         // verify the required parameter 'requestBody' is set
         if ($requestBody === null || (is_array($requestBody) && count($requestBody) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $requestBody when calling getStatements'
             );
         }
-            
+
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetStatementListApi.getStatements, must be smaller than or equal to 39.');
         }
-                    
-            
+
+
 
 
         $resourcePath = '/rbcz/premium/api/accounts/statements';
-        if($this->mockMode === true){
+        if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
@@ -621,7 +623,6 @@ class GetStatementListApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);

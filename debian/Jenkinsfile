@@ -1,11 +1,6 @@
 #!groovy
 
-// Buster's php is too old 
-// Jammy is too new
-
-// 'ubuntu:kinetic', 'debian:bookworm', * could not parse PKCS12 file, check password, OpenSSL error error:0308010C:digital envelope routines::unsupported
-
-String[] distributions = [ 'debian:bullseye', 'ubuntu:focal',  'ubuntu:jammy']
+String[] distributions = ['debian:bullseye', 'debian:bookworm', 'ubuntu:focal', 'ubuntu:jammy']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
@@ -35,16 +30,16 @@ distributions.each {
 
     def buildImage = ''
 
-    node("amd64") {
+    node {
         ansiColor('xterm') {
             stage('Checkout ' + distribution) {
                 buildImage = docker.image(vendor + '/' + distribution)
 		sh 'git checkout debian/changelog'
-                def VERSION = sh (
+                def version = sh (
                     script: 'dpkg-parsechangelog --show-field Version',
                     returnStdout: true
                 ).trim()
-                ver = VERSION + '~' + distroCodename + '~' + env.BUILD_NUMBER
+                ver = version + '.' + env.BUILD_NUMBER  + '~' + distroCodename
             }
             stage('Build ' + distribution) {
                 buildImage.inside {

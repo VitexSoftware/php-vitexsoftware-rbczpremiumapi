@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetStatementsRequest
  *
@@ -29,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use \ArrayAccess;
-use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use ArrayAccess;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetStatementsRequest Class Doc Comment
@@ -88,10 +89,10 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
       */
     protected static array $openAPINullables = [
         'accountNumber' => false,
-		'currency' => false,
-		'statementLine' => false,
-		'dateFrom' => false,
-		'dateTo' => false
+        'currency' => false,
+        'statementLine' => false,
+        'dateFrom' => false,
+        'dateTo' => false
     ];
 
     /**
@@ -553,7 +554,7 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -579,5 +580,3 @@ class GetStatementsRequest implements ModelInterface, ArrayAccess, \JsonSerializ
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-

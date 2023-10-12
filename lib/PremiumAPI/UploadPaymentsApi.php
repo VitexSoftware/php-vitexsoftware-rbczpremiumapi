@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UploadPaymentsApi
  * PHP version 7.4
@@ -35,7 +36,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use \VitexSoftware\Raiffeisenbank\ApiClient;
+use VitexSoftware\Raiffeisenbank\ApiClient;
 use VitexSoftware\Raiffeisenbank\ApiException;
 use VitexSoftware\Raiffeisenbank\Configuration;
 use VitexSoftware\Raiffeisenbank\HeaderSelector;
@@ -70,7 +71,7 @@ class UploadPaymentsApi
      * @var int Host index
      */
     protected $hostIndex;
-    
+
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -80,11 +81,11 @@ class UploadPaymentsApi
     /**
      * Use the /rbcz/premium/mock/* path for endpoints ?
      */
-    protected  $mockMode = false;
-    
+    protected $mockMode = false;
+
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * 
+     *
      * @var string Description
      */
     protected $SUIPAddress = null;
@@ -112,32 +113,32 @@ class UploadPaymentsApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
-        if(method_exists($this->client, 'getXIBMClientId')){
+        if (method_exists($this->client, 'getXIBMClientId')) {
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
-        if(method_exists($this->client, 'getpSUIPAddress')){
+        if (method_exists($this->client, 'getpSUIPAddress')) {
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
-        if(method_exists($this->client, 'getMockMode')){
+        if (method_exists($this->client, 'getMockMode')) {
             $this->setMockMode($this->client->getMockMode());
         }
     }
 
     /**
      * Keep ClientID obtained from Developer Portal
-     * 
+     *
      * @param string $clientId Description
-     * 
+     *
      * @return string
      */
     public function setXIBMClientId($clientId)
     {
         return $this->xIBMClientId = $clientId;
     }
-    
+
     /**
      * Give you ClientID obtained from Developer Portal
-     * 
+     *
      * @return string
      */
     public function getXIBMClientId()
@@ -146,19 +147,21 @@ class UploadPaymentsApi
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client 
+     * @param  string $SUIPAddress IP address of a client
      */
-    public function setSUIPAddress($SUIPAddress) {
+    public function setSUIPAddress($SUIPAddress)
+    {
         $this->SUIPAddress;
     }
-    
+
     /**
      * @param boolean $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking) {
+    public function setMockMode($mocking)
+    {
         $this->mockMode = $mocking;
     }
-    
+
     /**
      * Set the host index
      *
@@ -200,9 +203,9 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return object|\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response
      */
-    public function importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPayments($xRequestId, $batchImportFormat, $requestBody, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        list($response) = $this->importPaymentsWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
+        list($response) = $this->importPaymentsWithHttpInfo($xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
         return $response;
     }
 
@@ -219,9 +222,9 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return array of object|\VitexSoftware\Raiffeisenbank\Model\ImportPayments400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments413Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\ImportPayments415Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function importPaymentsWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsWithHttpInfo($xRequestId, $batchImportFormat, $requestBody, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        $request = $this->importPaymentsRequest( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
+        $request = $this->importPaymentsRequest($xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -258,7 +261,7 @@ class UploadPaymentsApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -396,7 +399,6 @@ class UploadPaymentsApi
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
@@ -480,9 +482,9 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function importPaymentsAsync( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsAsync($xRequestId, $batchImportFormat, $requestBody, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
-        return $this->importPaymentsAsyncWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType)
+        return $this->importPaymentsAsyncWithHttpInfo($xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -502,10 +504,10 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function importPaymentsAsyncWithHttpInfo( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsAsyncWithHttpInfo($xRequestId, $batchImportFormat, $requestBody, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
         $returnType = 'object';
-        $request = $this->importPaymentsRequest( $xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
+        $request = $this->importPaymentsRequest($xRequestId, $batchImportFormat, $requestBody, $batchName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -555,19 +557,19 @@ class UploadPaymentsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function importPaymentsRequest( $xRequestId, $batchImportFormat, $requestBody,  $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
+    public function importPaymentsRequest($xRequestId, $batchImportFormat, $requestBody, $batchName = null, string $contentType = self::contentTypes['importPayments'][0])
     {
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
-        
-            
+
+
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling importPayments'
             );
         }
-            
+
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -580,32 +582,32 @@ class UploadPaymentsApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling UploadPaymentsApi.importPayments, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-                    
+
         // verify the required parameter 'batchImportFormat' is set
         if ($batchImportFormat === null || (is_array($batchImportFormat) && count($batchImportFormat) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $batchImportFormat when calling importPayments'
             );
         }
-            
+
         // verify the required parameter 'requestBody' is set
         if ($requestBody === null || (is_array($requestBody) && count($requestBody) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $requestBody when calling importPayments'
             );
         }
-            
+
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 39.');
         }
-                    
+
         if ($batchName !== null && strlen($batchName) > 50) {
             throw new \InvalidArgumentException('invalid length for "$batchName" when calling UploadPaymentsApi.importPayments, must be smaller than or equal to 50.');
         }
-        
+
 
         $resourcePath = '/rbcz/premium/api/payments/batches';
-        if($this->mockMode === true){
+        if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
@@ -666,7 +668,6 @@ class UploadPaymentsApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);

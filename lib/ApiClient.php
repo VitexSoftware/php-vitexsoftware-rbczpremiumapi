@@ -1,11 +1,11 @@
 <?php
 
 /**
- * 
+ *
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright 2023 Vitex@hippy.cz (G)
- * 
+ *
  * PHP 7
  */
 
@@ -18,7 +18,6 @@ namespace VitexSoftware\Raiffeisenbank;
  */
 class ApiClient extends \GuzzleHttp\Client
 {
-
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -26,12 +25,12 @@ class ApiClient extends \GuzzleHttp\Client
     protected $xIBMClientId = null;
 
     /**
-     * the end IP address of the client application (no server) in IPv4 or IPv6 
-     * format. If the bank client (your user) uses a browser by which he 
-     * accesses your server app, we need to know the IP address of his browser. 
-     * Always provide the closest IP address to the real end-user possible. 
+     * the end IP address of the client application (no server) in IPv4 or IPv6
+     * format. If the bank client (your user) uses a browser by which he
+     * accesses your server app, we need to know the IP address of his browser.
+     * Always provide the closest IP address to the real end-user possible.
      * (optional)
-     * 
+     *
      * @var string
      */
     protected $pSUIPAddress = null;
@@ -44,13 +43,13 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * @inheritDoc
-     * 
+     *
      * $config['clientid'] - obtained from Developer Portal - when you registered your app with us.
      * $config['cert'] = ['/path/to/cert.p12','certificat password']
      * $config['clientpubip'] = the closest IP address to the real end-user
      * $config['mocking'] = true to use /rbcz/premium/mock/* endpoints
-     * 
-     * @param array $config 
+     *
+     * @param array $config
      * @throws \Exception CERT_FILE is not set
      * @throws \Exception CERT_PASS is not set
      */
@@ -74,22 +73,22 @@ class ApiClient extends \GuzzleHttp\Client
 
         if (array_key_exists('debug', $config) === false) {
             $config['debug'] = \Ease\Functions::cfg('API_DEBUG', false);
-        } 
-        
-        if(array_key_exists('clientpubip', $config)){
+        }
+
+        if (array_key_exists('clientpubip', $config)) {
             $this->pSUIPAddress = $config['clientpubip'];
         }
 
-        if(array_key_exists('mocking', $config)){
+        if (array_key_exists('mocking', $config)) {
             $this->mockMode = boolval($config['mocking']);
         }
-        
+
         parent::__construct($config);
     }
 
     /**
      * ClientID obtained from Developer Portal
-     * 
+     *
      * @return string
      */
     public function getXIBMClientId()
@@ -99,27 +98,27 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * Keep user public IP here
-     * 
+     *
      * @return string
      */
     public function getpSUIPAddress()
     {
         return $this->pSUIPAddress;
-    } 
+    }
 
     /**
      * Use mocking uri for api calls ?
-     * 
+     *
      * @return boolean
      */
     public function getMockMode()
     {
         return $this->mockMode;
     }
-    
+
     /**
      * Obtain Your current Public IP
-     * 
+     *
      * @return string
      */
     public static function getPublicIP()

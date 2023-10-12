@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetBalance200Response
  *
@@ -29,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use \ArrayAccess;
-use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use ArrayAccess;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance200Response Class Doc Comment
@@ -86,9 +87,9 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
       */
     protected static array $openAPINullables = [
         'numberPart1' => false,
-		'numberPart2' => false,
-		'bankCode' => false,
-		'currencyFolders' => false
+        'numberPart2' => false,
+        'bankCode' => false,
+        'currencyFolders' => false
     ];
 
     /**
@@ -489,7 +490,7 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -515,5 +516,3 @@ class GetBalance200Response implements ModelInterface, ArrayAccess, \JsonSeriali
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-

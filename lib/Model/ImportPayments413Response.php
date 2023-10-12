@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ImportPayments413Response
  *
@@ -29,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use \ArrayAccess;
-use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use ArrayAccess;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * ImportPayments413Response Class Doc Comment
@@ -81,7 +82,7 @@ class ImportPayments413Response implements ModelInterface, ArrayAccess, \JsonSer
       */
     protected static array $openAPINullables = [
         'error' => false,
-		'errorDescription' => false
+        'errorDescription' => false
     ];
 
     /**
@@ -446,7 +447,7 @@ class ImportPayments413Response implements ModelInterface, ArrayAccess, \JsonSer
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -472,5 +473,3 @@ class ImportPayments413Response implements ModelInterface, ArrayAccess, \JsonSer
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
-
-
