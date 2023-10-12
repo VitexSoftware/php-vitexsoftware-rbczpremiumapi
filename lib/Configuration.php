@@ -211,7 +211,7 @@ class Configuration
     /**
      * Sets boolean format for query string.
      *
-     * @param string $booleanFormatForQueryString Boolean format for query string
+     * @param string $booleanFormat Boolean format for query string
      *
      * @return $this
      */
@@ -484,9 +484,10 @@ class Configuration
     /**
     * Returns URL based on host settings, index and variables
     *
-    * @param array      $hostSettings array of host settings, generated from getHostSettings() or equivalent from the API clients
-    * @param int        $hostIndex    index of the host settings
-    * @param array|null $variables    hash of variable and the corresponding value (optional)
+    * @param array      $hostsSettings array of host settings, generated from getHostSettings() or equivalent from the API clients
+    * @param int        $hostIndex     index of the host settings
+    * @param array|null $variables     hash of variable and the corresponding value (optional)
+     *
     * @return string URL based on host settings
     */
     public static function getHostString(array $hostsSettings, $hostIndex, array $variables = null)
