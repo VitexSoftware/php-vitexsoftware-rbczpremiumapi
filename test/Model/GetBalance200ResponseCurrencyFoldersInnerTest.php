@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetBalance200ResponseCurrencyFoldersInnerTest
  *
@@ -42,7 +43,6 @@ use PHPUnit\Framework\TestCase;
  */
 class GetBalance200ResponseCurrencyFoldersInnerTest extends TestCase
 {
-
     /**
      * Setup before running any test case
      */

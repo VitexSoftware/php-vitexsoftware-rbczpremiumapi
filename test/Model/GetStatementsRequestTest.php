@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetStatementsRequestTest
  *
@@ -42,7 +43,6 @@ use PHPUnit\Framework\TestCase;
  */
 class GetStatementsRequestTest extends TestCase
 {
-
     /**
      * Setup before running any test case
      */

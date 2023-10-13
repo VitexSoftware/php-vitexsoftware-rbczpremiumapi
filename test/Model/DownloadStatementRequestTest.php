@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DownloadStatementRequestTest
  *
@@ -42,7 +43,6 @@ use PHPUnit\Framework\TestCase;
  */
 class DownloadStatementRequestTest extends TestCase
 {
-
     /**
      * Setup before running any test case
      */

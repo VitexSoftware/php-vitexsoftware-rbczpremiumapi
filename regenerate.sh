@@ -1,3 +1,5 @@
+export PHP_POST_PROCESS_FILE="phpcbf --colors --standard=PSR12 --extensions=php --ignore=vendor/ lib/ examples/ test/"
+
 deffile=01rbczpremiumapi.yaml
 
 rm -rf lib docs test README.md
@@ -20,3 +22,5 @@ sed -i 's/$pSUIPAddress,//' docs/Api/* README.md
 
 sed -i '/IBMClientId/d' docs/Api/*
 sed -i '/SUIPAddress/d' docs/Api/*
+
+

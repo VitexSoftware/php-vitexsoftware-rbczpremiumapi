@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetBalance404ResponseTest
  *
@@ -42,7 +43,6 @@ use PHPUnit\Framework\TestCase;
  */
 class GetBalance404ResponseTest extends TestCase
 {
-
     /**
      * Setup before running any test case
      */
