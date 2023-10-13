@@ -56,13 +56,13 @@ class ApiClient extends \GuzzleHttp\Client
     public function __construct(array $config = [])
     {
         if (array_key_exists('clientid', $config) === false) {
-            $this->xIBMClientId = \Ease\Functions::cfg('XIBMCLIENTID');
+            $this->xIBMClientId = \Ease\Shared::cfg('XIBMCLIENTID');
         } else {
             $this->xIBMClientId = $config['clientid'];
         }
 
         if (array_key_exists('cert', $config) === false) {
-            $config['cert'] = [\Ease\Functions::cfg('CERT_FILE'), \Ease\Functions::cfg('CERT_PASS')];
+            $config['cert'] = [\Ease\Shared::cfg('CERT_FILE'), \Ease\Shared::cfg('CERT_PASS')];
             if (empty($config['cert'][0])) {
                 throw new \Exception('Certificate (CERT_FILE) not specified');
             }
@@ -72,7 +72,7 @@ class ApiClient extends \GuzzleHttp\Client
         }
 
         if (array_key_exists('debug', $config) === false) {
-            $config['debug'] = \Ease\Functions::cfg('API_DEBUG', false);
+            $config['debug'] = \Ease\Shared::cfg('API_DEBUG', false);
         }
 
         if (array_key_exists('clientpubip', $config)) {

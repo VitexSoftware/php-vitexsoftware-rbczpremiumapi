@@ -7,5 +7,6 @@ php-vitexsoftware-rbczpremiumapi (1.1.1) UNRELEASED; urgency=medium
   * Production Endoint Used
   * mocking ability added
   * Better tests
+  * Update
 
- -- vitex <info@vitexsoftware.cz>  Tue, 02 May 2023 22:48:38 +0200
+ -- vitex <info@vitexsoftware.cz>  Fri, 13 Oct 2023 14:15:25 +0200

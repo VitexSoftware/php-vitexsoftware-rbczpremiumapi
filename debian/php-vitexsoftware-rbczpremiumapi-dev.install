@@ -1,6 +1,6 @@
 test/Api/*       		usr/share/php/Raiffeisenbank/Test/Api
 test/Model/*    		usr/share/php/Raiffeisenbank/Test/Model
-test/test.env                   var/lib/composer/php-vitexsoftware-rbczpremiumapi-dev/
+examples/example.env            var/lib/composer/php-vitexsoftware-rbczpremiumapi-dev/
 
 debian/test/phpunit.xml         usr/share/php/Raiffeisenbank/Test
 
