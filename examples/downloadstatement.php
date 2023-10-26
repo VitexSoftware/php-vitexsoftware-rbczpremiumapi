@@ -14,7 +14,7 @@ $psu_ip_address = ApiClient::getPublicIP(); // string | IP address of a client -
 
 $request_body = new Model\DownloadStatementRequest(['account_number' => '1899297002', 'currency' => 'CZK', 'statementFormat' => 'xml', 'statementId' => 'f729e637-acf9-4261-8200-8a4e83421759']);
 try {
-    $result = $apiInstance->downloadStatement($x_ibm_client_id, $x_request_id, $accept_language, $request_body, $psu_ip_address);
+    $result = $apiInstance->downloadStatement($x_request_id, $accept_language, $request_body, $psu_ip_address);
     print_r($result);
 } catch (\Ease\Exception $e) {
     echo 'Exception when calling DownloadStatementApi->downloadStatement: ', $e->getMessage(), PHP_EOL;

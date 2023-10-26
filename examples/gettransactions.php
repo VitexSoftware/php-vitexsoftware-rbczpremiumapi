@@ -3,7 +3,7 @@
 namespace VitexSoftware\Raiffeisenbank;
 
 require_once('../vendor/autoload.php');
-$apiInstance = new GetTransactionListApi(new ApiClient());
+$apiInstance = new PremiumAPI\GetTransactionListApi(new ApiClient());
 $account_number = '1899297002'; // string | Account number for which to get list of transactions in national format without 0 padding.
 $currency_code = 'CZK'; // string | Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd)
 $from = new \DateTime(); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
@@ -18,7 +18,7 @@ $psu_ip_address = ApiClient::getPublicIP(); // string | IP address of a client -
 
 
 try {
-    $result = $apiInstance->getTransactionList($x_ibm_client_id, $x_request_id, $account_number, $currency_code, $from, $to, $psu_ip_address, $page);
+    $result = $apiInstance->getTransactionList($x_request_id, $account_number, $currency_code, $from, $to, $page);
     print_r($result);
 } catch (\Ease\Exception $e) {
     echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), PHP_EOL;
