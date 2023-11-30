@@ -16,8 +16,7 @@ namespace VitexSoftware\Raiffeisenbank;
  *
  * @author vitex
  */
-class ApiClient extends \GuzzleHttp\Client
-{
+class ApiClient extends \GuzzleHttp\Client {
 
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
@@ -54,8 +53,7 @@ class ApiClient extends \GuzzleHttp\Client
      * @throws \Exception CERT_FILE is not set
      * @throws \Exception CERT_PASS is not set
      */
-    public function __construct(array $config = [])
-    {
+    public function __construct(array $config = []) {
         if (array_key_exists('clientid', $config) === false) {
             $this->xIBMClientId = \Ease\Functions::cfg('XIBMCLIENTID');
         } else {
@@ -74,16 +72,16 @@ class ApiClient extends \GuzzleHttp\Client
 
         if (array_key_exists('debug', $config) === false) {
             $config['debug'] = \Ease\Functions::cfg('API_DEBUG', false);
-        } 
-        
-        if(array_key_exists('clientpubip', $config)){
+        }
+
+        if (array_key_exists('clientpubip', $config)) {
             $this->pSUIPAddress = $config['clientpubip'];
         }
 
-        if(array_key_exists('mocking', $config)){
+        if (array_key_exists('mocking', $config)) {
             $this->mockMode = boolval($config['mocking']);
         }
-        
+
         parent::__construct($config);
     }
 
@@ -92,8 +90,7 @@ class ApiClient extends \GuzzleHttp\Client
      * 
      * @return string
      */
-    public function getXIBMClientId()
-    {
+    public function getXIBMClientId() {
         return $this->xIBMClientId;
     }
 
@@ -102,28 +99,27 @@ class ApiClient extends \GuzzleHttp\Client
      * 
      * @return string
      */
-    public function getpSUIPAddress()
-    {
+    public function getpSUIPAddress() {
         return $this->pSUIPAddress;
-    } 
+    }
 
     /**
      * Use mocking uri for api calls ?
      * 
      * @return boolean
      */
-    public function getMockMode()
-    {
+    public function getMockMode() {
         return $this->mockMode;
     }
-    
+
     /**
      * Obtain Your current Public IP
      * 
+     * @deprecated since version 0.1 - Do not use in production Environment!
+     * 
      * @return string
      */
-    public static function getPublicIP()
-    {
+    public static function getPublicIP() {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "http://httpbin.org/ip");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -131,5 +127,39 @@ class ApiClient extends \GuzzleHttp\Client
         curl_close($curl);
         $ip = json_decode($output, true);
         return $ip['origin'];
+    }
+
+    /**
+     * Source Identifier
+     * 
+     * @deprecated since version 0.1 - Do not use in production Environment!
+     * 
+     * @return string
+     */
+    public static function sourceString() {
+        return substr(__FILE__ . '@' . gethostname(), -50);
+    }
+
+    /**
+     * Try to check certificate readibilty
+     * 
+     * @param string $certFile path to certificate
+     */
+    public static function checkCertificatePresence($certFile) {
+        if ((file_exists($certFile) === false) || (is_readable($certFile) === false)) {
+            fwrite(STDERR, 'Cannot read specified certificate file: ' . $certFile . PHP_EOL);
+            exit;
+        }
+    }
+
+    /**
+     * Request Identifier
+     * 
+     * @deprecated since version 0.1 - Do not use in production Environment!
+     * 
+     * @return string
+     */
+    public static function getxRequestId() {
+        return substr(self::sourceString() . '#' . time(),-59);
     }
 }
