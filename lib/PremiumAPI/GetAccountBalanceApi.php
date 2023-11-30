@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetAccountBalanceApi
  * PHP version 7.4
@@ -35,7 +36,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use \VitexSoftware\Raiffeisenbank\ApiClient;
+use VitexSoftware\Raiffeisenbank\ApiClient;
 use VitexSoftware\Raiffeisenbank\ApiException;
 use VitexSoftware\Raiffeisenbank\Configuration;
 use VitexSoftware\Raiffeisenbank\HeaderSelector;
@@ -70,7 +71,7 @@ class GetAccountBalanceApi
      * @var int Host index
      */
     protected $hostIndex;
-    
+
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -80,11 +81,11 @@ class GetAccountBalanceApi
     /**
      * Use the /rbcz/premium/mock/* path for endpoints ?
      */
-    protected  $mockMode = false;
-    
+    protected $mockMode = false;
+
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * 
+     *
      * @var string Description
      */
     protected $SUIPAddress = null;
@@ -112,32 +113,32 @@ class GetAccountBalanceApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
-        if(method_exists($this->client, 'getXIBMClientId')){
+        if (method_exists($this->client, 'getXIBMClientId')) {
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
-        if(method_exists($this->client, 'getpSUIPAddress')){
+        if (method_exists($this->client, 'getpSUIPAddress')) {
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
-        if(method_exists($this->client, 'getMockMode')){
+        if (method_exists($this->client, 'getMockMode')) {
             $this->setMockMode($this->client->getMockMode());
         }
     }
 
     /**
      * Keep ClientID obtained from Developer Portal
-     * 
+     *
      * @param string $clientId Description
-     * 
+     *
      * @return string
      */
     public function setXIBMClientId($clientId)
     {
         return $this->xIBMClientId = $clientId;
     }
-    
+
     /**
      * Give you ClientID obtained from Developer Portal
-     * 
+     *
      * @return string
      */
     public function getXIBMClientId()
@@ -146,19 +147,21 @@ class GetAccountBalanceApi
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client 
+     * @param  string $SUIPAddress IP address of a client
      */
-    public function setSUIPAddress($SUIPAddress) {
+    public function setSUIPAddress($SUIPAddress)
+    {
         $this->SUIPAddress;
     }
-    
+
     /**
      * @param boolean $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking) {
+    public function setMockMode($mocking)
+    {
         $this->mockMode = $mocking;
     }
-    
+
     /**
      * Set the host index
      *
@@ -198,9 +201,9 @@ class GetAccountBalanceApi
      * @throws \InvalidArgumentException
      * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance200Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response
      */
-    public function getBalance( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalance($xRequestId, $accountNumber, string $contentType = self::contentTypes['getBalance'][0])
     {
-        list($response) = $this->getBalanceWithHttpInfo( $xRequestId, $accountNumber, $contentType);
+        list($response) = $this->getBalanceWithHttpInfo($xRequestId, $accountNumber, $contentType);
         return $response;
     }
 
@@ -215,9 +218,9 @@ class GetAccountBalanceApi
      * @throws \InvalidArgumentException
      * @return array of \VitexSoftware\Raiffeisenbank\Model\GetBalance200Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getBalanceWithHttpInfo( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceWithHttpInfo($xRequestId, $accountNumber, string $contentType = self::contentTypes['getBalance'][0])
     {
-        $request = $this->getBalanceRequest( $xRequestId, $accountNumber, $contentType);
+        $request = $this->getBalanceRequest($xRequestId, $accountNumber, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -254,7 +257,7 @@ class GetAccountBalanceApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance200Response' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -347,7 +350,6 @@ class GetAccountBalanceApi
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
@@ -405,9 +407,9 @@ class GetAccountBalanceApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBalanceAsync( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceAsync($xRequestId, $accountNumber, string $contentType = self::contentTypes['getBalance'][0])
     {
-        return $this->getBalanceAsyncWithHttpInfo( $xRequestId, $accountNumber, $contentType)
+        return $this->getBalanceAsyncWithHttpInfo($xRequestId, $accountNumber, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -425,10 +427,10 @@ class GetAccountBalanceApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getBalanceAsyncWithHttpInfo( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceAsyncWithHttpInfo($xRequestId, $accountNumber, string $contentType = self::contentTypes['getBalance'][0])
     {
         $returnType = '\VitexSoftware\Raiffeisenbank\Model\GetBalance200Response';
-        $request = $this->getBalanceRequest( $xRequestId, $accountNumber, $contentType);
+        $request = $this->getBalanceRequest($xRequestId, $accountNumber, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -476,19 +478,19 @@ class GetAccountBalanceApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getBalanceRequest( $xRequestId, $accountNumber,  string $contentType = self::contentTypes['getBalance'][0])
+    public function getBalanceRequest($xRequestId, $accountNumber, string $contentType = self::contentTypes['getBalance'][0])
     {
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
-        
-            
+
+
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getBalance'
             );
         }
-            
+
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -501,21 +503,21 @@ class GetAccountBalanceApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetAccountBalanceApi.getBalance, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-                    
+
         // verify the required parameter 'accountNumber' is set
         if ($accountNumber === null || (is_array($accountNumber) && count($accountNumber) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $accountNumber when calling getBalance'
             );
         }
-            
+
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetAccountBalanceApi.getBalance, must be smaller than or equal to 39.');
         }
-        
+
 
         $resourcePath = '/rbcz/premium/api/accounts/{accountNumber}/balance';
-        if($this->mockMode === true){
+        if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
@@ -569,7 +571,6 @@ class GetAccountBalanceApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);

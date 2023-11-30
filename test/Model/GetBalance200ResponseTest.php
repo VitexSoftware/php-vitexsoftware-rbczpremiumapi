@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetBalance200ResponseTest
  *
@@ -42,7 +43,6 @@ use PHPUnit\Framework\TestCase;
  */
 class GetBalance200ResponseTest extends TestCase
 {
-
     /**
      * Setup before running any test case
      */

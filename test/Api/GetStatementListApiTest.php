@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetStatementListApiTest
  * PHP version 7.4
@@ -28,9 +29,10 @@
 
 namespace VitexSoftware\Raiffeisenbank\Test\Api;
 
-use \PHPUnit\Framework\TestCase,
-    \VitexSoftware\Raiffeisenbank\ApiClient,
-    \VitexSoftware\Raiffeisenbank\PremiumAPI\GetStatementListApi;
+use VitexSoftware\Raiffeisenbank\Configuration;
+use VitexSoftware\Raiffeisenbank\ApiException;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * GetStatementListApiTest Class Doc Comment
@@ -43,11 +45,6 @@ use \PHPUnit\Framework\TestCase,
 class GetStatementListApiTest extends TestCase
 {
     /**
-     * 
-     * @var GetStatementListApi
-     */
-    protected  $object;
-    /**
      * Setup before running any test cases
      */
     public static function setUpBeforeClass(): void
@@ -59,7 +56,6 @@ class GetStatementListApiTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->object = new GetStatementListApi(new ApiClient(['mocking' => true]));
     }
 
     /**

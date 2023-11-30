@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ImportPayments400ResponseTest
  *
@@ -42,7 +43,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ImportPayments400ResponseTest extends TestCase
 {
-
     /**
      * Setup before running any test case
      */

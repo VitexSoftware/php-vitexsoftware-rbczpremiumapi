@@ -1,4 +1,5 @@
 <?php
+
 /**
  * GetTransactionListApi
  * PHP version 7.4
@@ -35,7 +36,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use \VitexSoftware\Raiffeisenbank\ApiClient;
+use VitexSoftware\Raiffeisenbank\ApiClient;
 use VitexSoftware\Raiffeisenbank\ApiException;
 use VitexSoftware\Raiffeisenbank\Configuration;
 use VitexSoftware\Raiffeisenbank\HeaderSelector;
@@ -70,7 +71,7 @@ class GetTransactionListApi
      * @var int Host index
      */
     protected $hostIndex;
-    
+
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -80,11 +81,11 @@ class GetTransactionListApi
     /**
      * Use the /rbcz/premium/mock/* path for endpoints ?
      */
-    protected  $mockMode = false;
-    
+    protected $mockMode = false;
+
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     * 
+     *
      * @var string Description
      */
     protected $SUIPAddress = null;
@@ -112,32 +113,32 @@ class GetTransactionListApi
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
-        if(method_exists($this->client, 'getXIBMClientId')){
+        if (method_exists($this->client, 'getXIBMClientId')) {
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
-        if(method_exists($this->client, 'getpSUIPAddress')){
+        if (method_exists($this->client, 'getpSUIPAddress')) {
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
-        if(method_exists($this->client, 'getMockMode')){
+        if (method_exists($this->client, 'getMockMode')) {
             $this->setMockMode($this->client->getMockMode());
         }
     }
 
     /**
      * Keep ClientID obtained from Developer Portal
-     * 
+     *
      * @param string $clientId Description
-     * 
+     *
      * @return string
      */
     public function setXIBMClientId($clientId)
     {
         return $this->xIBMClientId = $clientId;
     }
-    
+
     /**
      * Give you ClientID obtained from Developer Portal
-     * 
+     *
      * @return string
      */
     public function getXIBMClientId()
@@ -146,19 +147,21 @@ class GetTransactionListApi
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client 
+     * @param  string $SUIPAddress IP address of a client
      */
-    public function setSUIPAddress($SUIPAddress) {
+    public function setSUIPAddress($SUIPAddress)
+    {
         $this->SUIPAddress;
     }
-    
+
     /**
      * @param boolean $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking) {
+    public function setMockMode($mocking)
+    {
         $this->mockMode = $mocking;
     }
-    
+
     /**
      * Set the host index
      *
@@ -202,9 +205,9 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return object|object|object|object|object|object
      */
-    public function getTransactionList( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionList($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        list($response) = $this->getTransactionListWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
+        list($response) = $this->getTransactionListWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
         return $response;
     }
 
@@ -223,9 +226,9 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getTransactionListWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        $request = $this->getTransactionListRequest( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
+        $request = $this->getTransactionListRequest($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -262,7 +265,7 @@ class GetTransactionListApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -370,7 +373,6 @@ class GetTransactionListApi
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
@@ -440,9 +442,9 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTransactionListAsync( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListAsync($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        return $this->getTransactionListAsyncWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType)
+        return $this->getTransactionListAsyncWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -464,10 +466,10 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTransactionListAsyncWithHttpInfo( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListAsyncWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
         $returnType = 'object';
-        $request = $this->getTransactionListRequest( $xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
+        $request = $this->getTransactionListRequest($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -519,19 +521,19 @@ class GetTransactionListApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getTransactionListRequest( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
+    public function getTransactionListRequest($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
-        
-            
+
+
         // verify the required parameter 'xIBMClientId' is set
         if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $xIBMClientId when calling getTransactionList'
             );
         }
-            
+
         // verify the required parameter 'xRequestId' is set
         if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
@@ -544,7 +546,7 @@ class GetTransactionListApi
         if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
             throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
         }
-                    
+
         // verify the required parameter 'accountNumber' is set
         if ($accountNumber === null || (is_array($accountNumber) && count($accountNumber) === 0)) {
             throw new \InvalidArgumentException(
@@ -557,7 +559,7 @@ class GetTransactionListApi
         if (!preg_match("/[0-9]{1,10}/", $accountNumber)) {
             throw new \InvalidArgumentException("invalid value for \"accountNumber\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[0-9]{1,10}/.");
         }
-                    
+
         // verify the required parameter 'currencyCode' is set
         if ($currencyCode === null || (is_array($currencyCode) && count($currencyCode) === 0)) {
             throw new \InvalidArgumentException(
@@ -570,35 +572,35 @@ class GetTransactionListApi
         if (!preg_match("/[A-Z]{1,3}/", $currencyCode)) {
             throw new \InvalidArgumentException("invalid value for \"currencyCode\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[A-Z]{1,3}/.");
         }
-                    
+
         // verify the required parameter 'from' is set
         if ($from === null || (is_array($from) && count($from) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $from when calling getTransactionList'
             );
         }
-            
+
         // verify the required parameter 'to' is set
         if ($to === null || (is_array($to) && count($to) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $to when calling getTransactionList'
             );
         }
-            
+
         if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 39.');
         }
-                    
+
         if ($page !== null && $page > 99999) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 99999.');
         }
         if ($page !== null && $page < 1) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be bigger than or equal to 1.');
         }
-        
+
 
         $resourcePath = '/rbcz/premium/api/accounts/{accountNumber}/{currencyCode}/transactions';
-        if($this->mockMode === true){
+        if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
@@ -687,7 +689,6 @@ class GetTransactionListApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);

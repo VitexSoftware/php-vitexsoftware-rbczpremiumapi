@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ApiException
  * PHP version 7.4
@@ -28,7 +29,7 @@
 
 namespace VitexSoftware\Raiffeisenbank;
 
-use \Exception;
+use Exception;
 
 /**
  * ApiException Class Doc Comment

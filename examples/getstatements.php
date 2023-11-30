@@ -2,13 +2,14 @@
 
 namespace VitexSoftware\Raiffeisenbank;
 
-require_once( '../vendor/autoload.php');
-\Ease\Shared::init([], 'example.env');
-$x_ibm_client_id = 'FbboLD2r1WHDRcuKS4wWUbSRHxlDloWL'; // string | ClientID obtained from Developer Portal - when you registered your app with us.
+require_once('../vendor/autoload.php');
+\Ease\Shared::init(['XIBMCLIENTID' // string | ClientID obtained from Developer Portal - when you registered your app with us.
+    ], 'example.env');
+
 $x_request_id = time(); // string | Unique request id provided by consumer application for reference and auditing.
 $accept_language = 'cs'; // string | The Accept-Language request HTTP header is used to determine document  language. Supported languages are `cs` and `en`.
-$psu_ip_address = ApiClient::getPublicIP(); // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format. 
-//If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. 
+$psu_ip_address = ApiClient::getPublicIP(); // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format.
+//If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser.
 //Always provide the closest IP address to the real end-user possible.
 
 $request_body = new Model\GetStatementsRequest(['account_number' => '1899297002', 'currency' => 'CZK', 'statementLine' => 'MAIN']);
@@ -17,7 +18,7 @@ $size = 80; // int | Number of items on the page. Default is 15.
 
 $apiInstance = new PremiumAPI\GetStatementListApi(new ApiClient([
             'clientpubip' => $psu_ip_address,
-            'clientid' => $x_ibm_client_id,
+            'clientid' => \Ease\Shared::cfg('XIBMCLIENTID'),
             'mocking' => true
         ]));
 try {
@@ -76,7 +77,7 @@ Content-Length: 41
 < via: kong/2.8.1.1-enterprise-edition
 < set-cookie: 00cdf75109dda7379df35556e601cac3=bf1c63b65fd3d882f20faa636a31ad8b; path=/; HttpOnly; Secure; SameSite=None
 < X-Correlation-Id: 1682458803
-< 
+<
 * Connection #0 to host api.rb.cz left intact
 Array
 (
