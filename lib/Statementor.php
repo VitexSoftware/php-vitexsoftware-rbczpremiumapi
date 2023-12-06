@@ -14,18 +14,18 @@ namespace VitexSoftware\Raiffeisenbank;
  *
  * @author vitex
  */
-class Statementor extends \Ease\Sand {
-
+class Statementor extends \Ease\Sand
+{
     use \Ease\Logger\Logging;
 
     /**
-     * 
+     *
      * @var \DateTime
      */
     protected $since;
 
     /**
-     * 
+     *
      * @var \DateTime
      */
     protected $until;
@@ -43,7 +43,8 @@ class Statementor extends \Ease\Sand {
     public static $dateFormat = 'Y-m-d';
     private $accountNumber;
 
-    public function __construct($accountNumber = null) {
+    public function __construct($accountNumber = null)
+    {
         if ($accountNumber) {
             $this->setAccountNumber($accountNumber);
         }
@@ -51,26 +52,28 @@ class Statementor extends \Ease\Sand {
 
     /**
      * Set AccountNumber for further operations
-     * 
+     *
      * @param string $accountNumber
-     * 
+     *
      * @return Statementor
      */
-    public function setAccountNumber($accountNumber) {
+    public function setAccountNumber($accountNumber)
+    {
         $this->accountNumber = $accountNumber;
-        $this->setObjectName($accountNumber.'@'. get_class($this));
+        $this->setObjectName($accountNumber . '@' . get_class($this));
         return $this;
     }
 
     /**
      * Obtain Statements from RB
-     * 
+     *
      * @param string $currencyCode CZK,USD etc
-     * @param string $statementLine 
-     * 
+     * @param string $statementLine
+     *
      * @return array
      */
-    public function getStatements($currencyCode = 'CZK', $statementLine = 'MAIN') {
+    public function getStatements($currencyCode = 'CZK', $statementLine = 'MAIN')
+    {
         $apiInstance = new PremiumAPI\GetStatementListApi();
         $page = 0;
         $statements = [];
@@ -105,12 +108,13 @@ class Statementor extends \Ease\Sand {
 
     /**
      * Prepare processing interval
-     * 
-     * @param string $scope 
-     * 
+     *
+     * @param string $scope
+     *
      * @throws \Exception
      */
-    function setScope($scope) {
+    function setScope($scope)
+    {
         switch ($scope) {
             case 'yesterday':
                 $this->since = (new \DateTime('yesterday'))->setTime(0, 0);
@@ -167,15 +171,16 @@ class Statementor extends \Ease\Sand {
 
     /**
      * Save Statement PDF files
-     * 
+     *
      * @param string $saveTo
      * @param array  $statements
      * @param string $format pdf|xml
      * @param string $currencyCode
-     * 
+     *
      * @return string
      */
-    public function download(string $saveTo, array $statements, $format = 'pdf', $currencyCode = 'CZK') {
+    public function download(string $saveTo, array $statements, $format = 'pdf', $currencyCode = 'CZK')
+    {
         $saved = [];
         $apiInstance = new PremiumAPI\DownloadStatementApi();
         $success = 0;
@@ -183,7 +188,7 @@ class Statementor extends \Ease\Sand {
             $statementFilename = str_replace('/', '_', $statement->statementNumber) . '_' .
                     $statement->accountNumber . '_' .
                     $statement->accountId . '_' .
-                    $statement->currency . '_' . $statement->dateFrom . '.'.$format;
+                    $statement->currency . '_' . $statement->dateFrom . '.' . $format;
             $requestBody = new \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest([
                 'accountNumber' => $this->accountNumber,
                 'currency' => $currencyCode,
