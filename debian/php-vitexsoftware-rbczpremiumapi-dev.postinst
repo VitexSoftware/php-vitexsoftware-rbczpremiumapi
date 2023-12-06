@@ -27,7 +27,12 @@ case "$1" in
     configure)
         composer-debian php-vitexsoftware-rbczpremiumapi-dev
         chmod a+rwX /usr/share/php/Raiffeisenbank/Test/ -R
-	su - `composer-webuser` -s /bin/bash -c 'phpunit --bootstrap /usr/share/php/Raiffeisenbank/Test/bootstrap.php --configuration /usr/share/php/Raiffeisenbank/Test/phpunit.xml'
+	if [ -z "$XIBMCLIENTID" ]
+	then
+	    echo XIBMCLIENTID is not set. Skipping Test
+	else
+	    su - `composer-webuser` -s /bin/bash -c 'phpunit --bootstrap /usr/share/php/Raiffeisenbank/Test/bootstrap.php --configuration /usr/share/php/Raiffeisenbank/Test/phpunit.xml'
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
