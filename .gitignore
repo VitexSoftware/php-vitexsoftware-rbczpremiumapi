@@ -27,3 +27,4 @@ composer.phar
 /nbproject/
 /phpdoc/
 /.phpdoc/
+/.env

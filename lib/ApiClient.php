@@ -18,6 +18,7 @@ namespace VitexSoftware\Raiffeisenbank;
  */
 class ApiClient extends \GuzzleHttp\Client
 {
+
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
@@ -118,7 +119,9 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * Obtain Your current Public IP
-     *
+     * 
+     * @deprecated since version 0.1 - Do not use in production Environment!
+     * 
      * @return string
      */
     public static function getPublicIP()
@@ -130,5 +133,39 @@ class ApiClient extends \GuzzleHttp\Client
         curl_close($curl);
         $ip = json_decode($output, true);
         return $ip['origin'];
+    }
+
+    /**
+     * Source Identifier
+     * 
+     * @deprecated since version 0.1 - Do not use in production Environment!
+     * 
+     * @return string
+     */
+    public static function sourceString() {
+        return substr(__FILE__ . '@' . gethostname(), -50);
+    }
+
+    /**
+     * Try to check certificate readibilty
+     * 
+     * @param string $certFile path to certificate
+     */
+    public static function checkCertificatePresence($certFile) {
+        if ((file_exists($certFile) === false) || (is_readable($certFile) === false)) {
+            fwrite(STDERR, 'Cannot read specified certificate file: ' . $certFile . PHP_EOL);
+            exit;
+        }
+    }
+
+    /**
+     * Request Identifier
+     * 
+     * @deprecated since version 0.1 - Do not use in production Environment!
+     * 
+     * @return string
+     */
+    public static function getxRequestId() {
+        return substr(self::sourceString() . '#' . time(),-59);
     }
 }
