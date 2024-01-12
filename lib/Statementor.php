@@ -120,6 +120,10 @@ class Statementor extends \Ease\Sand
                 $this->since = (new \DateTime('yesterday'))->setTime(0, 0);
                 $this->until = (new \DateTime('yesterday'))->setTime(23, 59);
                 break;
+            case 'last_week':
+                $this->since = new \DateTime("first day of last week");
+                $this->until = new \DateTime("last day of last week");
+                break;
             case 'current_month':
                 $this->since = new \DateTime("first day of this month");
                 $this->until = new \DateTime();
@@ -205,5 +209,25 @@ class Statementor extends \Ease\Sand
         }
         $this->addStatusMessage('Download done. ' . $success . ' of ' . count($statements) . ' saved');
         return $saved;
+    }
+
+    /**
+     * Since time getter
+     *
+     * @return \DateTime
+     */
+    public function getSince()
+    {
+        return $this->since;
+    }
+
+    /**
+     * Until time getter
+     *
+     * @return \DateTime
+     */
+    public function getUntil()
+    {
+        return $this->until;
     }
 }
