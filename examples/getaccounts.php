@@ -4,8 +4,8 @@ namespace VitexSoftware\Raiffeisenbank;
 
 require_once('../vendor/autoload.php');
 
-\Ease\Shared::init(['CERT_FILE','CERT_PASS','XIBMCLIENTID'],__DIR__.'/example.env');
-        
+\Ease\Shared::init(['CERT_FILE','CERT_PASS','XIBMCLIENTID'], __DIR__ . '/example.env');
+
 $apiInstance = new PremiumAPI\GetAccountsApi();
 $x_request_id = time(); // string | Unique request id provided by consumer application for reference and auditing.
 //If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser.

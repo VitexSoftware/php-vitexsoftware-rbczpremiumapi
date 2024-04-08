@@ -8,7 +8,8 @@
         "php",
         "sdk",
         "rest",
-        "api"
+        "api",
+        "raiffeisenbank"
     ],
     "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-raiffeisenbank",
     "license": "MIT",

@@ -102,7 +102,7 @@ class Configuration
      *
      * @var string
      */
-    protected $userAgent = 'VitexSoftware/RBCZPremiumAPI/0.1.0/PHP';
+    protected $userAgent = 'VitexSoftware/RBCZPremiumAPI/0.2.0/PHP';
 
     /**
      * Debug switch (default set to false)
@@ -211,7 +211,7 @@ class Configuration
     /**
      * Sets boolean format for query string.
      *
-     * @param string $booleanFormat Boolean format for query string
+     * @param string $booleanFormatForQueryString Boolean format for query string
      *
      * @return $this
      */
@@ -435,7 +435,7 @@ class Configuration
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
         $report .= '    The version of the OpenAPI document: 1.1.20230222' . PHP_EOL;
-        $report .= '    SDK Package Version: 0.1.0' . PHP_EOL;
+        $report .= '    SDK Package Version: 0.2.0' . PHP_EOL;
         $report .= '    Temp Folder Path: ' . self::getDefaultConfiguration()->getTempFolderPath() . PHP_EOL;
 
         return $report;
@@ -484,7 +484,7 @@ class Configuration
     /**
     * Returns URL based on host settings, index and variables
     *
-    * @param array      $hostSettings array of host settings, generated from getHostSettings() or equivalent from the API clients
+    * @param array      $hostsSettings array of host settings, generated from getHostSettings() or equivalent from the API clients
     * @param int        $hostIndex    index of the host settings
     * @param array|null $variables    hash of variable and the corresponding value (optional)
     * @return string URL based on host settings

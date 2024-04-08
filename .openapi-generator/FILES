@@ -50,6 +50,8 @@ lib/PremiumAPI/GetBatchDetailApi.php
 lib/PremiumAPI/GetStatementListApi.php
 lib/PremiumAPI/GetTransactionListApi.php
 lib/PremiumAPI/UploadPaymentsApi.php
+lib/Statementor.php
+lib/Transactor.php
 phpunit.xml.dist
 test/Api/DownloadStatementApiTest.php
 test/Api/GetAccountBalanceApiTest.php

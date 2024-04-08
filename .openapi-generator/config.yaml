@@ -7,15 +7,21 @@ additionalProperties:
   RepoId: php-vitexsoftware-rbczpremiumapi
   infoEmail: info@vitexsoftware.cz
   allowUnicodeIdentifiers: true
-  artifactVersion: 0.1.0
+  artifactVersion: 0.2.0
   invokerPackage: VitexSoftware\Raiffeisenbank
   modelPackage: Model
   variableNamingConvention: camelCase
 files:
   AUTHORS.md: {}
   composer.json: {}
-  ApiClient.php: 
+  ApiClient.mustache:
       folder: lib
+      destinationFilename: ApiClient.php
+  Statementor.mustache:
+      folder: lib
+      destinationFilename: Statementor.php
+  Transactor.mustache:
+      folder: lib
+      destinationFilename: Transactor.php
   bootstrap.php:
       folder: test
-

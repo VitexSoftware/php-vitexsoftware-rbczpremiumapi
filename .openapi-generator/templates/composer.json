@@ -8,7 +8,8 @@
         "php",
         "sdk",
         "rest",
-        "api"
+        "api",
+        "raiffeisenbank"
     ],
     "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-raiffeisenbank",
     "license": "MIT",
@@ -25,7 +26,7 @@
         "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^7.3",
         "guzzlehttp/psr7": "^1.7 || ^2.0",
-        "vitexsoftware/ease-core": "dev-main"
+        "vitexsoftware/ease-core": ">=1.41"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0 || ^9.0",

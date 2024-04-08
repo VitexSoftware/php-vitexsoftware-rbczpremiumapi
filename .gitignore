@@ -28,3 +28,4 @@ composer.phar
 /phpdoc/
 /.phpdoc/
 /.env
+/node_modules/
