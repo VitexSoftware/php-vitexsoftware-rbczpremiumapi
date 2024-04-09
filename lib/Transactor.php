@@ -21,8 +21,8 @@ class Transactor extends ApiClient
     /**
      * Transaction Handler
      *
-     * @param null $init
-     * @param array $options
+     * @param string $bankAccount
+     * @param array  $options
      */
     public function __construct($bankAccount, $options = [])
     {
@@ -49,6 +49,9 @@ class Transactor extends ApiClient
                 }
                 if (array_key_exists('transactions', $result)) {
                     $transactions = array_merge($transactions, $result['transactions']);
+                }
+                if (array_key_exists('lastPage', $result) === false) {
+                    $result['lastPage'] = true;
                 }
             } while ($result['lastPage'] === false);
         } catch (Exception $e) {

@@ -96,6 +96,7 @@ class Statementor extends \Ease\Sand
                 if (empty($result)) {
                     $this->addStatusMessage(sprintf(_('No transactions from %s to %s'), $this->since->format(self::$dateFormat), $this->until->format(self::$dateFormat)));
                     $result['lastPage'] = true;
+                    $result['last'] = true;
                 }
                 if (array_key_exists('statements', $result)) {
                     $statements = array_merge($statements, $result['statements']);
