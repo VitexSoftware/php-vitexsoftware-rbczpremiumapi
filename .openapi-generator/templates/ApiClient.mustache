@@ -150,14 +150,26 @@ class ApiClient extends \GuzzleHttp\Client
     /**
      * Try to check certificate readibilty
      * 
-     * @param string $certFile path to certificate
+     * @throws Exception - Certificate file not found
+     * 
+     * @param string  $certFile path to certificate
+     * @param boolean $die      throw exception or return false ?
+     * 
+     * @return boolean cetrificate file
      */
-    public static function checkCertificatePresence($certFile)
+    public static function checkCertificatePresence($certFile, $die = false)
     {
+        $found = false;
         if ((file_exists($certFile) === false) || (is_readable($certFile) === false)) {
-            fwrite(STDERR, 'Cannot read specified certificate file: ' . $certFile . PHP_EOL);
-            exit;
+            $errMsg = 'Cannot read specified certificate file: ' . $certFile;
+            fwrite(STDERR, $errMsg . PHP_EOL);
+            if($die){
+                throw new Exception($errMsg);
+            }
+        } else {
+            $found = true;
         }
+        return  $found;
     }
     
     /**
