@@ -163,7 +163,7 @@ class ApiClient extends \GuzzleHttp\Client
             $errMsg = 'Cannot read specified certificate file: ' . $certFile;
             fwrite(STDERR, $errMsg . PHP_EOL);
             if ($die) {
-                throw new Exception($errMsg);
+                throw new \Exception($errMsg);
             }
         } else {
             $found = true;
