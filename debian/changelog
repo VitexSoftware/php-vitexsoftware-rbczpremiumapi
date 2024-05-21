@@ -1,4 +1,10 @@
-php-vitexsoftware-rbczpremiumapi (1.2.0) UNRELEASED; urgency=medium
+php-vitexsoftware-rbczpremiumapi (1.2.1) UNRELEASED; urgency=medium
+
+  * checkCertificatePresence() now can return bool or throw exeption
+
+ --  <vitezslav.dvorak@spojenet.cz>  Tue, 21 May 2024 17:28:04 +0200
+
+php-vitexsoftware-rbczpremiumapi (1.2.0) unstable; urgency=medium
 
   [ Vítězslav Dvořák ]
   * initial content
@@ -9,4 +15,4 @@ php-vitexsoftware-rbczpremiumapi (1.2.0) UNRELEASED; urgency=medium
   * Better tests
   * Statementor class added
 
- -- vitex <info@vitexsoftware.cz>  Thu, 30 Nov 2023 17:28:37 +0100
+ --  <vitezslav.dvorak@spojenet.cz>  Tue, 21 May 2024 17:27:51 +0200
