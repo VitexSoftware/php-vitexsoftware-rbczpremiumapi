@@ -208,6 +208,8 @@ class Statementor extends \Ease\Sand
                 $this->addStatusMessage($statementFilename . ' saved', 'success');
                 unset($pdfStatementRaw);
                 $success++;
+            } else {
+                throw new \Exception('Cannot save ' . realpath($saveTo . '/' . $statementFilename));
             }
         }
         $this->addStatusMessage('Download done. ' . $success . ' of ' . count($statements) . ' saved');
