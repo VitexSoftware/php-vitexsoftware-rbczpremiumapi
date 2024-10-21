@@ -68,8 +68,6 @@ distributions.each {
                         if (deb_file.endsWith('.deb')) {
                             sh 'echo -e "${GREEN} installing ' + deb_file + ' on `lsb_release -sc` ${ENDCOLOR} "'
                             sh 'sudo DEBIAN_FRONTEND=noninteractive DEBCONF_DEBUG=' + debconf_debug + ' apt-get -y install $WORKSPACE/dist/debian/' + deb_file
-                        } else {
-                            artifacts.remove(deb_file)
                         }
                     }
                 }
@@ -77,7 +75,7 @@ distributions.each {
             stage('Copy artifacts ' + distribution ) {
                 buildImage.inside {
                     artifacts.each { deb_file ->
-                        archiveArtifacts artifacts: deb_file
+                        archiveArtifacts artifacts: 'dist/debian/' + deb_file
                     }
                     sh 'mv $WORKSPACE/dist/debian/*.deb $WORKSPACE'
                 }
