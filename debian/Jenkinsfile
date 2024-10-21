@@ -74,7 +74,7 @@ distributions.each {
             }
             stage('Copy artifacts ' + distribution ) {
                 buildImage.inside {
-                    archiveArtifacts artifacts: artifacts, fingerprint: true
+                    archiveArtifacts artifacts: artifacts.join(', '), fingerprint: true
                     sh 'mv $WORKSPACE/dist/debian/*.deb $WORKSPACE'
                 }
             }
