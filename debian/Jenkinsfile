@@ -1,6 +1,6 @@
 #!groovy
 
-String[] distributions = ['debian:bullseye', 'debian:bookworm', 'ubuntu:focal', 'ubuntu:jammy']
+String[] distributions = ['debian:bullseye', 'debian:bookworm', 'debian:trixie', 'ubuntu:focal', 'ubuntu:jammy', 'ubuntu:noble']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
@@ -25,7 +25,6 @@ distributions.each {
     println  "Dist:" + distribution
 
     def dist = distribution.split(':')
-    //      distroFamily = dist[0]
     distroCodename = dist[1]
 
     def buildImage = ''
@@ -34,7 +33,7 @@ distributions.each {
         ansiColor('xterm') {
             stage('Checkout ' + distribution) {
                 buildImage = docker.image(vendor + '/' + distribution)
-		sh 'git checkout debian/changelog'
+                sh 'git checkout debian/changelog'
                 def version = sh (
                     script: 'dpkg-parsechangelog --show-field Version',
                     returnStdout: true
@@ -51,15 +50,14 @@ distributions.each {
                 }
             }
 
-            stage('Test ' + distribution) {
+            stage('Package installation Test ' + distribution) {
                 buildImage.inside {
                     def debconf_debug = 0 //Set to "5" or "developer" to debug debconf
                     sh 'cd $WORKSPACE/dist/debian/ ; dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz; cd $WORKSPACE'
                     sh 'echo "deb [trusted=yes] file://///$WORKSPACE/dist/debian/ ./" | sudo tee /etc/apt/sources.list.d/local.list'
                     sh 'sudo apt-get update --allow-releaseinfo-change'
-                    sh 'sudo apt -y install php-mbstring'
                     sh 'echo "INSTALATION"'
-                    sh 'IFS="\n\b"; for package in  `ls $WORKSPACE/dist/debian/ | grep .deb | awk -F_ \'{print \$1}\'` ; do  echo -e "${GREEN} installing ${package} on `lsb_release -sc` ${ENDCOLOR} " ; sudo  DEBIAN_FRONTEND=noninteractive DEBCONF_DEBUG=' + debconf_debug  + ' apt-get -y install $package ; done;'
+                    sh 'IFS="\n\b"; for package in  `cat debian/files | awk -F_ \'{print \$1}\'` ; do  echo -e "${GREEN} installing ${package} on `lsb_release -sc` ${ENDCOLOR} " ; sudo  DEBIAN_FRONTEND=noninteractive DEBCONF_DEBUG=' + debconf_debug  + ' apt-get -y install $WORKSPACE/dist/debian/$package ; done;'
                     stash includes: 'dist/**', name: 'dist-' + distroCodename
                 }
             }

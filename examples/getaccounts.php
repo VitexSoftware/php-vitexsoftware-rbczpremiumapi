@@ -4,7 +4,8 @@ namespace VitexSoftware\Raiffeisenbank;
 
 require_once('../vendor/autoload.php');
 
-\Ease\Shared::init(['CERT_FILE','CERT_PASS','XIBMCLIENTID'], __DIR__ . '/example.env');
+//\Ease\Shared::init(['CERT_FILE','CERT_PASS','XIBMCLIENTID'], __DIR__ . '/example.env');
+\Ease\Shared::init(['CERT_PASS', 'XIBMCLIENTID', 'ACCOUNT_NUMBER'], isset($argv[1]) ? $argv[1] : '../.env');
 
 $apiInstance = new PremiumAPI\GetAccountsApi();
 $x_request_id = time(); // string | Unique request id provided by consumer application for reference and auditing.

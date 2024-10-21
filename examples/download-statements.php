@@ -11,7 +11,7 @@ namespace VitexSoftware\Raiffeisenbank;
 
 require_once('../vendor/autoload.php');
 /**
- * Get today's tramsactons list
+ * Get today's transactions list
  */
 \Ease\Shared::init(['CERT_PASS', 'XIBMCLIENTID', 'ACCOUNT_NUMBER'], isset($argv[1]) ? $argv[1] : '../.env');
 ApiClient::checkCertificatePresence(\Ease\Functions::cfg('CERT_FILE'));
