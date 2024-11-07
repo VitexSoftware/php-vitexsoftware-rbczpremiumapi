@@ -24,7 +24,7 @@ class Transactor extends ApiClient
      * @param string $bankAccount
      * @param array  $options
      */
-    public function __construct($bankAccount, $options = [])
+    public function __construct(string $bankAccount, $options = [])
     {
         parent::__construct($bankAccount, $options);
     }
@@ -178,11 +178,9 @@ class Transactor extends ApiClient
     /**
      * Prepare processing interval
      *
-     * @param string $scope
-     *
      * @throws \Exception
      */
-    function setScope($scope)
+    function setScope(string $scope)
     {
         switch ($scope) {
             case 'today':
@@ -194,17 +192,24 @@ class Transactor extends ApiClient
                 $this->until = (new \DateTime('yesterday'))->setTime(23, 59, 59, 999);
                 break;
             case 'auto':
-                $latestRecord = $this->getColumnsFromPohoda(['id', 'lastUpdate'], ['limit' => 1, 'order' => 'lastUpdate@A', 'source' => $this->sourceString(), 'banka' => $this->bank]);
-                if (array_key_exists(0, $latestRecord) && array_key_exists('lastUpdate', $latestRecord[0])) {
-                    $this->since = $latestRecord[0]['lastUpdate'];
-                } else {
-                    $this->addStatusMessage('Previous record for "auto since" not found. Defaulting to today\'s 00:00', 'warning');
-                    $this->since = (new \DateTime('yesterday'))->setTime(0, 0);
-                }
-                $this->until = (new \DateTime('two days ago'))->setTime(0, 0); //Now
+                $this->since = (new \DateTime('89 days ago'))->setTime(0, 0);
+                $this->until = new \DateTime();
                 break;
             default:
-                throw new \Exception('Unknown scope ' . $scope);
+                if (strstr($scope, '>')) {
+                    [$begin, $end] = explode('>', $scope);
+                    $this->since = new \DateTime($begin);
+                    $this->until = new \DateTime($end);
+                } else {
+                    if (preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', $scope)) {
+                        $this->since = (new \DateTime($scope))->setTime(0, 0);
+                        $this->until = (new \DateTime($scope))->setTime(23, 59, 59, 999);
+
+                        break;
+                    }
+
+                    throw new \InvalidArgumentException('Unknown scope '.$scope);
+                }
                 break;
         }
         if ($scope != 'auto' && $scope != 'today' && $scope != 'yesterday') {

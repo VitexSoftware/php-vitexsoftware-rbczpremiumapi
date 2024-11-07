@@ -154,7 +154,7 @@ class ApiClient extends \GuzzleHttp\Client
      * @param string  $certFile path to certificate
      * @param boolean $die      throw exception or return false ?
      *
-     * @return boolean cetrificate file
+     * @return boolean certificate file
      */
     public static function checkCertificatePresence($certFile, $die = false)
     {
