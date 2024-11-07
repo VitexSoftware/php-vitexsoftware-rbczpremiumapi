@@ -44,7 +44,7 @@ use VitexSoftware\Raiffeisenbank\Model\ModelInterface;
 class ObjectSerializer
 {
     /** @var string */
-    private static $dateTimeFormat = \DateTime::ATOM;
+    private static $dateTimeFormat = 'Y-m-d\TH:i:s.v\Z';
 
     /**
      * Change the date format
@@ -239,7 +239,7 @@ class ObjectSerializer
         }
 
         # Handle DateTime objects in query
-        if ($openApiType === "\\DateTime" && $value instanceof \DateTime) {
+        if ( (($openApiType === "\\DateTime") || $openApiType === 'string')  && $value instanceof \DateTime) {
             return ["{$paramName}" => $value->format(self::$dateTimeFormat)];
         }
 
