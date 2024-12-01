@@ -42,11 +42,11 @@ class Statementor extends \Ease\Sand
         if ($accountNumber) {
             $this->setAccountNumber($accountNumber);
         }
-        
-        if ($scope){
+
+        if ($scope) {
             $this->setScope($scope);
         }
-        
+
     }
 
     /**
@@ -71,7 +71,7 @@ class Statementor extends \Ease\Sand
      *
      * @return array
      */
-    public function getStatements($currencyCode = 'CZK', $statementLine = 'MAIN')
+    public function getStatements($currencyCode = 'CZK', $statementLine = 'MAIN'): array
     {
         $apiInstance = new PremiumAPI\GetStatementListApi();
         $page = 0;
@@ -213,13 +213,13 @@ class Statementor extends \Ease\Sand
      * Save Statement PDF files
      *
      * @param string $saveTo
-     * @param array  $statements
+     * @param array<mixed>  $statements - produced by getStatements() function
      * @param string $format pdf|xml
      * @param string $currencyCode
      *
-     * @return string
+     * @return array
      */
-    public function download(string $saveTo, array $statements, $format = 'pdf', $currencyCode = 'CZK')
+    public function download(string $saveTo, array $statements, string $format = 'pdf', string $currencyCode = 'CZK'): array
     {
         $saved = [];
         $apiInstance = new PremiumAPI\DownloadStatementApi();
@@ -252,7 +252,7 @@ class Statementor extends \Ease\Sand
      *
      * @return \DateTime
      */
-    public function getSince()
+    public function getSince(): \DateTime
     {
         return $this->since;
     }
@@ -262,7 +262,7 @@ class Statementor extends \Ease\Sand
      *
      * @return \DateTime
      */
-    public function getUntil()
+    public function getUntil(): \DateTime
     {
         return $this->until;
     }

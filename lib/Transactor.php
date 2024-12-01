@@ -65,7 +65,7 @@ class Transactor extends ApiClient
      */
     public function import()
     {
-//        $allMoves = $this->getColumnsFromPohoda('id', ['limit' => 0, 'banka' => $this->bank]);
+        //        $allMoves = $this->getColumnsFromPohoda('id', ['limit' => 0, 'banka' => $this->bank]);
         $allTransactions = $this->getTransactions();
         $this->addStatusMessage(count($allTransactions) . ' transactions obtained via API', 'debug');
         $success = 0;
@@ -85,7 +85,7 @@ class Transactor extends ApiClient
      */
     public function takeTransactionData($transactionData)
     {
-//        $this->setMyKey(\Pohoda\RO::code('RB' . $transactionData->entryReference));
+        //        $this->setMyKey(\Pohoda\RO::code('RB' . $transactionData->entryReference));
         $moveTrans = [
             'DBIT' => 'expense',
             'CRDT' => 'receipt'
@@ -96,53 +96,53 @@ class Transactor extends ApiClient
         $this->setDataValue('intNote', _('Automatic Import') . ': ' . \Ease\Shared::appName() . ' ' . \Ease\Shared::appVersion() . ' ' . $transactionData->entryReference);
         $this->setDataValue('statementNumber', ['statementNumber' => $transactionData->bankTransactionCode->code]);
         $counterAccount = $transactionData->entryDetails->transactionDetails->relatedParties->counterParty;
-//$bankRecord = [
-////    "MOSS" => ['ids' => 'AB'],
-//    'account' => 'KB',
-////    "accounting",
-////    "accountingPeriodMOSS",
-////    "activity" => 'testing',
-//    'bankType' => 'receipt',
-////    "centre",
-////    "classificationKVDPH",
-////    "classificationVAT",
-//    "contract" => 'n/a',
-//    "datePayment" => date('Y-m-d'),
-//    "dateStatement" => date('Y-m-d'),
-////    "evidentiaryResourcesMOSS",
-//    "intNote" => 'Import works well',
-////    "myIdentity",
-//    "note" => 'Automated import',
-//    'partnerIdentity' => ['address' => ['street' => 'dlouha'], 'shipToAddress' => ['street' => 'kratka']],
-//    "paymentAccount" => ['accountNo' => '1234', 'bankCode' => '5500'],
-//    'statementNumber' => [
-//        'statementNumber' => (string) time(),
-//    //'numberMovement' => (string) time()
-//    ],
-////    "symConst" => 'XX',
-//// ?"symPar",
-//    "symSpec" => '23',
-//    "symVar" => (string) time(),
-//    "text" => 'Testing income ' . time(),
-//    'homeCurrency' => ['priceNone' => '1001']
-//];
-//        $this->setDataValue('cisDosle', $transactionData->entryReference);
+        //$bankRecord = [
+        ////    "MOSS" => ['ids' => 'AB'],
+        //    'account' => 'KB',
+        ////    "accounting",
+        ////    "accountingPeriodMOSS",
+        ////    "activity" => 'testing',
+        //    'bankType' => 'receipt',
+        ////    "centre",
+        ////    "classificationKVDPH",
+        ////    "classificationVAT",
+        //    "contract" => 'n/a',
+        //    "datePayment" => date('Y-m-d'),
+        //    "dateStatement" => date('Y-m-d'),
+        ////    "evidentiaryResourcesMOSS",
+        //    "intNote" => 'Import works well',
+        ////    "myIdentity",
+        //    "note" => 'Automated import',
+        //    'partnerIdentity' => ['address' => ['street' => 'dlouha'], 'shipToAddress' => ['street' => 'kratka']],
+        //    "paymentAccount" => ['accountNo' => '1234', 'bankCode' => '5500'],
+        //    'statementNumber' => [
+        //        'statementNumber' => (string) time(),
+        //    //'numberMovement' => (string) time()
+        //    ],
+        ////    "symConst" => 'XX',
+        //// ?"symPar",
+        //    "symSpec" => '23',
+        //    "symVar" => (string) time(),
+        //    "text" => 'Testing income ' . time(),
+        //    'homeCurrency' => ['priceNone' => '1001']
+        //];
+        //        $this->setDataValue('cisDosle', $transactionData->entryReference);
         if (property_exists($transactionData->entryDetails->transactionDetails->remittanceInformation, 'creditorReferenceInformation')) {
             if (property_exists($transactionData->entryDetails->transactionDetails->remittanceInformation->creditorReferenceInformation, 'variable')) {
                 $this->setDataValue('symVar', $transactionData->entryDetails->transactionDetails->remittanceInformation->creditorReferenceInformation->variable);
             }
-//            if (property_exists($transactionData->entryDetails->transactionDetails->remittanceInformation->creditorReferenceInformation, 'constant')) {
-//                $conSym = $transactionData->entryDetails->transactionDetails->remittanceInformation->creditorReferenceInformation->constant;
-//                if (intval($conSym)) {
-//                    $conSym = sprintf('%04d', $conSym);
-//                    $this->ensureKSExists($conSym);
-//                    $this->setDataValue('konSym', \Pohoda\RO::code($conSym));
-//                }
-//            }
+            //            if (property_exists($transactionData->entryDetails->transactionDetails->remittanceInformation->creditorReferenceInformation, 'constant')) {
+            //                $conSym = $transactionData->entryDetails->transactionDetails->remittanceInformation->creditorReferenceInformation->constant;
+            //                if (intval($conSym)) {
+            //                    $conSym = sprintf('%04d', $conSym);
+            //                    $this->ensureKSExists($conSym);
+            //                    $this->setDataValue('konSym', \Pohoda\RO::code($conSym));
+            //                }
+            //            }
         }
 
 
-//        $this->setDataValue('datVyst', $transactionData->bookingDate);
+        //        $this->setDataValue('datVyst', $transactionData->bookingDate);
         //$this->setDataValue('duzpPuv', $transactionData->valueDate);
         if (property_exists($transactionData->entryDetails->transactionDetails->remittanceInformation, 'originatorMessage')) {
             $this->setDataValue('text', $transactionData->entryDetails->transactionDetails->remittanceInformation->originatorMessage);
@@ -151,7 +151,7 @@ class Transactor extends ApiClient
         $this->setDataValue('note', 'Import Job ' . \Ease\Shared::cfg('JOB_ID', 'n/a'));
         if (property_exists($transactionData->entryDetails->transactionDetails->relatedParties, 'counterParty')) {
             if (property_exists($transactionData->entryDetails->transactionDetails->relatedParties->counterParty, 'name')) {
-//TODO                $this->setDataValue('nazFirmy', $transactionData->entryDetails->transactionDetails->relatedParties->counterParty->name);
+                //TODO                $this->setDataValue('nazFirmy', $transactionData->entryDetails->transactionDetails->relatedParties->counterParty->name);
             }
 
 
@@ -164,15 +164,15 @@ class Transactor extends ApiClient
             $this->setDataValue('paymentAccount', ['accountNo' => $accountNumber, 'bankCode' => $counterAccount->organisationIdentification->bankCode]);
 
             $amount = strval(abs($transactionData->amount->value));
-            if ($transactionData->amount->currency == 'CZK') {
+            if ($transactionData->amount->currency === 'CZK') {
                 $this->setDataValue('homeCurrency', ['priceNone' => $amount]);
             } else {
                 $this->setDataValue('foreginCurrency', ['priceNone' => $amount]); //TODO: Not tested
             }
         }
 
-//        $this->setDataValue('source', $this->sourceString());
-//        echo $this->getJsonizedData() . "\n";
+        //        $this->setDataValue('source', $this->sourceString());
+        //        echo $this->getJsonizedData() . "\n";
     }
 
     /**
@@ -180,7 +180,7 @@ class Transactor extends ApiClient
      *
      * @throws \Exception
      */
-    function setScope(string $scope)
+    public function setScope(string $scope)
     {
         switch ($scope) {
             case 'today':
@@ -212,7 +212,7 @@ class Transactor extends ApiClient
                 }
                 break;
         }
-        if ($scope != 'auto' && $scope != 'today' && $scope != 'yesterday') {
+        if ($scope !== 'auto' && $scope !== 'today' && $scope !== 'yesterday') {
             $this->since = $this->since->setTime(0, 0);
             $this->until = $this->until->setTime(0, 0);
         }

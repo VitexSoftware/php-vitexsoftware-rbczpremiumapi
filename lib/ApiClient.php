@@ -149,10 +149,10 @@ class ApiClient extends \GuzzleHttp\Client
     /**
      * Try to check certificate readibilty
      *
-     * @throws Exception - Certificate file not found
      *
      * @param string  $certFile path to certificate
      * @param boolean $die      throw exception or return false ?
+     * @throws Exception - Certificate file not found
      *
      * @return boolean certificate file
      */
