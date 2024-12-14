@@ -26,4 +26,4 @@ sed -i 's/$pSUIPAddress,//' docs/Api/* README.md
 sed -i '/IBMClientId/d' docs/Api/*
 sed -i '/SUIPAddress/d' docs/Api/*
 
-phpcbf --colors --standard=PSR12 --extensions=php --ignore=vendor/ lib/ examples/ test/
+make cs

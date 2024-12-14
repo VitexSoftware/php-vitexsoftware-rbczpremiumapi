@@ -20,7 +20,7 @@ return $config->setRules([
         'strict_param' => true,
         'no_trailing_whitespace' => false,
         'no_trailing_whitespace_in_comment' => false,
-        'braces' => false,
+        'single_space_around_construct' => true,
         'single_blank_line_at_eof' => false,
         'blank_line_after_namespace' => false,
         'no_leading_import_slash' => false,
