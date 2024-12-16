@@ -157,7 +157,7 @@ class ApiClient extends \GuzzleHttp\Client
      * 
      * @return boolean certificate file
      */
-    public static function checkCertificatePresence($certFile, $die = false)
+    public static function checkCertificatePresence(string $certFile, bool $die = false): bool
     {
         $found = false;
         if ((file_exists($certFile) === false) || (is_readable($certFile) === false)) {
@@ -171,6 +171,20 @@ class ApiClient extends \GuzzleHttp\Client
         }
         return  $found;
     }
+    
+    public static function checkCertificate($certFile,$password): bool {
+        return  self::checkCertificatePresence($certFile) && self::checkCertificatePassword( $certFile,$password);
+    }
+    
+    public static function checkCertificatePassword(string $certFile, string $password): bool {
+        $certContent = file_get_contents($certFile);
+        if (openssl_pkcs12_read($certContent, $certs, $password) === false) {
+            fwrite(\STDERR, 'Cannot read PKCS12 certificate file: '.$certFile.\PHP_EOL);
+            exit(1);
+        }
+        return true;
+    }
+    
     
     /**
      * Request Identifier
