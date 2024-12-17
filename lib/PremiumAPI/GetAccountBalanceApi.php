@@ -2,7 +2,7 @@
 
 /**
  * GetAccountBalanceApi
- * PHP version 7.4
+ * PHP version 7.4+
  *
  * @category Class
  * @package  VitexSoftware\Raiffeisenbank
@@ -98,11 +98,11 @@ class GetAccountBalanceApi
     ];
 
     /**
-         * @param ClientInterface $client
-         * @param Configuration   $config
-         * @param HeaderSelector  $selector
-         * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
-         */
+     * @param ClientInterface $client
+     * @param Configuration   $config
+     * @param HeaderSelector  $selector
+     * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
+     */
     public function __construct(
         ClientInterface $client = null,
         Configuration $config = null,
@@ -197,7 +197,7 @@ class GetAccountBalanceApi
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance200Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response
      */
@@ -214,7 +214,7 @@ class GetAccountBalanceApi
      * @param  string $accountNumber The number of account without prefix and bankCode (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getBalance'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \VitexSoftware\Raiffeisenbank\Model\GetBalance200Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
      */
@@ -244,18 +244,6 @@ class GetAccountBalanceApi
 
             $statusCode = $response->getStatusCode();
 
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
 
             switch ($statusCode) {
                 case 200:
@@ -264,7 +252,19 @@ class GetAccountBalanceApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance200Response' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -279,7 +279,19 @@ class GetAccountBalanceApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -294,7 +306,19 @@ class GetAccountBalanceApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -309,7 +333,19 @@ class GetAccountBalanceApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -324,7 +360,19 @@ class GetAccountBalanceApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -335,13 +383,38 @@ class GetAccountBalanceApi
                     ];
             }
 
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
             $returnType = '\VitexSoftware\Raiffeisenbank\Model\GetBalance200Response';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content);
+                    try {
+                        $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                    } catch (\JsonException $exception) {
+                        throw new ApiException(
+                            sprintf(
+                                'Error JSON decoding server response (%s)',
+                                $request->getUri()
+                            ),
+                            $statusCode,
+                            $response->getHeaders(),
+                            $content
+                        );
+                    }
                 }
             }
 

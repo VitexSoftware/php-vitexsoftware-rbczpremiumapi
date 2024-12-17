@@ -30,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use ArrayAccess;
-use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use \ArrayAccess;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * ImportPayments400Response Class Doc Comment
@@ -477,3 +477,5 @@ class ImportPayments400Response implements ModelInterface, ArrayAccess, \JsonSer
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
+
+

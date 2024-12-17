@@ -1,5 +1,4 @@
 <?php
-
 /**
  * GetStatementListApiTest
  * PHP version 7.4
@@ -29,9 +28,9 @@
 
 namespace VitexSoftware\Raiffeisenbank\Test\Api;
 
-use VitexSoftware\Raiffeisenbank\Configuration;
-use VitexSoftware\Raiffeisenbank\ApiException;
-use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\Configuration;
+use \VitexSoftware\Raiffeisenbank\ApiException;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,6 +43,7 @@ use PHPUnit\Framework\TestCase;
  */
 class GetStatementListApiTest extends TestCase
 {
+
     /**
      * Setup before running any test cases
      */

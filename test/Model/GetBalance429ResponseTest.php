@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GetBalance404ResponseTest
+ * GetBalance429ResponseTest
  *
  * PHP version 7.4
  *
@@ -33,16 +32,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetBalance404ResponseTest Class Doc Comment
+ * GetBalance429ResponseTest Class Doc Comment
  *
  * @category    Class
- * @description GetBalance404Response
+ * @description GetBalance429Response
  * @package     VitexSoftware\Raiffeisenbank
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class GetBalance404ResponseTest extends TestCase
+class GetBalance429ResponseTest extends TestCase
 {
+
     /**
      * Setup before running any test case
      */
@@ -72,9 +72,9 @@ class GetBalance404ResponseTest extends TestCase
     }
 
     /**
-     * Test "GetBalance404Response"
+     * Test "GetBalance429Response"
      */
-    public function testGetBalance404Response()
+    public function testGetBalance429Response()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

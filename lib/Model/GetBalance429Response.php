@@ -30,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use ArrayAccess;
-use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use \ArrayAccess;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance429Response Class Doc Comment
@@ -473,3 +473,5 @@ class GetBalance429Response implements ModelInterface, ArrayAccess, \JsonSeriali
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
+
+

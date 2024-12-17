@@ -2,7 +2,7 @@
 
 /**
  * HeaderSelector
- * PHP version 7.4
+ * PHP version 7.4+
  *
  * @category Class
  * @package  VitexSoftware\Raiffeisenbank
@@ -87,7 +87,7 @@ class HeaderSelector
         }
 
         # If none of the available Accept headers is of type "json", then just use all them
-        $headersWithJson = preg_grep('~(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$~', $accept);
+        $headersWithJson = $this->selectJsonMimeList($accept);
         if (count($headersWithJson) === 0) {
             return implode(',', $accept);
         }
@@ -96,6 +96,35 @@ class HeaderSelector
         # to give the highest priority to json-like headers - recalculating the existing ones, if needed
         return $this->getAcceptHeaderWithAdjustedWeight($accept, $headersWithJson);
     }
+
+    /**
+    * Detects whether a string contains a valid JSON mime type
+    *
+    * @param string $searchString
+    * @return bool
+    */
+    public function isJsonMime(string $searchString): bool
+    {
+        return preg_match('~^application/(json|[\w!#$&.+-^_]+\+json)\s*(;|$)~', $searchString) === 1;
+    }
+
+    /**
+    * Select all items from a list containing a JSON mime type
+    *
+    * @param array $mimeList
+    * @return array
+    */
+    private function selectJsonMimeList(array $mimeList): array
+    {
+        $jsonMimeList = [];
+        foreach ($mimeList as $mime) {
+            if ($this->isJsonMime($mime)) {
+                $jsonMimeList[] = $mime;
+            }
+        }
+        return $jsonMimeList;
+    }
+
 
     /**
     * Create an Accept header string from the given "Accept" headers array, recalculating all weights
@@ -114,6 +143,7 @@ class HeaderSelector
         ];
 
         foreach ($accept as $header) {
+
             $headerData = $this->getHeaderAndWeight($header);
 
             if (stripos($headerData['header'], 'application/json') === 0) {

@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GetBalance200ResponseCurrencyFoldersInnerBalancesInnerTest
+ * ImportPayments415ResponseTest
  *
  * PHP version 7.4
  *
@@ -33,16 +32,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetBalance200ResponseCurrencyFoldersInnerBalancesInnerTest Class Doc Comment
+ * ImportPayments415ResponseTest Class Doc Comment
  *
  * @category    Class
- * @description GetBalance200ResponseCurrencyFoldersInnerBalancesInner
+ * @description ImportPayments415Response
  * @package     VitexSoftware\Raiffeisenbank
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class GetBalance200ResponseCurrencyFoldersInnerBalancesInnerTest extends TestCase
+class ImportPayments415ResponseTest extends TestCase
 {
+
     /**
      * Setup before running any test case
      */
@@ -72,36 +72,27 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInnerTest extends TestCas
     }
 
     /**
-     * Test "GetBalance200ResponseCurrencyFoldersInnerBalancesInner"
+     * Test "ImportPayments415Response"
      */
-    public function testGetBalance200ResponseCurrencyFoldersInnerBalancesInner()
+    public function testImportPayments415Response()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "balanceType"
+     * Test attribute "error"
      */
-    public function testPropertyBalanceType()
+    public function testPropertyError()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "currency"
+     * Test attribute "errorDescription"
      */
-    public function testPropertyCurrency()
-    {
-        // TODO: implement
-        $this->markTestIncomplete('Not implemented');
-    }
-
-    /**
-     * Test attribute "value"
-     */
-    public function testPropertyValue()
+    public function testPropertyErrorDescription()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

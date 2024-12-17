@@ -30,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use ArrayAccess;
-use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use \ArrayAccess;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * GetBalance200ResponseCurrencyFoldersInnerBalancesInner Class Doc Comment
@@ -484,3 +484,5 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
+
+

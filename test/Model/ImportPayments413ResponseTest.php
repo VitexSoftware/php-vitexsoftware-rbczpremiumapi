@@ -1,7 +1,6 @@
 <?php
-
 /**
- * ImportPayments400ResponseTest
+ * ImportPayments413ResponseTest
  *
  * PHP version 7.4
  *
@@ -33,16 +32,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ImportPayments400ResponseTest Class Doc Comment
+ * ImportPayments413ResponseTest Class Doc Comment
  *
  * @category    Class
- * @description ImportPayments400Response
+ * @description ImportPayments413Response
  * @package     VitexSoftware\Raiffeisenbank
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class ImportPayments400ResponseTest extends TestCase
+class ImportPayments413ResponseTest extends TestCase
 {
+
     /**
      * Setup before running any test case
      */
@@ -72,9 +72,9 @@ class ImportPayments400ResponseTest extends TestCase
     }
 
     /**
-     * Test "ImportPayments400Response"
+     * Test "ImportPayments413Response"
      */
-    public function testImportPayments400Response()
+    public function testImportPayments413Response()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

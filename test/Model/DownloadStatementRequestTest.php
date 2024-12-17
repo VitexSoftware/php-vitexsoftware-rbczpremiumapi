@@ -1,7 +1,6 @@
 <?php
-
 /**
- * ImportPayments413ResponseTest
+ * DownloadStatementRequestTest
  *
  * PHP version 7.4
  *
@@ -33,16 +32,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ImportPayments413ResponseTest Class Doc Comment
+ * DownloadStatementRequestTest Class Doc Comment
  *
  * @category    Class
- * @description ImportPayments413Response
+ * @description Request values for the statement download.
  * @package     VitexSoftware\Raiffeisenbank
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class ImportPayments413ResponseTest extends TestCase
+class DownloadStatementRequestTest extends TestCase
 {
+
     /**
      * Setup before running any test case
      */
@@ -72,27 +72,45 @@ class ImportPayments413ResponseTest extends TestCase
     }
 
     /**
-     * Test "ImportPayments413Response"
+     * Test "DownloadStatementRequest"
      */
-    public function testImportPayments413Response()
+    public function testDownloadStatementRequest()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "error"
+     * Test attribute "accountNumber"
      */
-    public function testPropertyError()
+    public function testPropertyAccountNumber()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "errorDescription"
+     * Test attribute "currency"
      */
-    public function testPropertyErrorDescription()
+    public function testPropertyCurrency()
+    {
+        // TODO: implement
+        $this->markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "statementId"
+     */
+    public function testPropertyStatementId()
+    {
+        // TODO: implement
+        $this->markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "statementFormat"
+     */
+    public function testPropertyStatementFormat()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

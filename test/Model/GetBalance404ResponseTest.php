@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GetBalance200ResponseCurrencyFoldersInnerTest
+ * GetBalance404ResponseTest
  *
  * PHP version 7.4
  *
@@ -33,16 +32,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetBalance200ResponseCurrencyFoldersInnerTest Class Doc Comment
+ * GetBalance404ResponseTest Class Doc Comment
  *
  * @category    Class
- * @description GetBalance200ResponseCurrencyFoldersInner
+ * @description GetBalance404Response
  * @package     VitexSoftware\Raiffeisenbank
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class GetBalance200ResponseCurrencyFoldersInnerTest extends TestCase
+class GetBalance404ResponseTest extends TestCase
 {
+
     /**
      * Setup before running any test case
      */
@@ -72,36 +72,27 @@ class GetBalance200ResponseCurrencyFoldersInnerTest extends TestCase
     }
 
     /**
-     * Test "GetBalance200ResponseCurrencyFoldersInner"
+     * Test "GetBalance404Response"
      */
-    public function testGetBalance200ResponseCurrencyFoldersInner()
+    public function testGetBalance404Response()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "currency"
+     * Test attribute "error"
      */
-    public function testPropertyCurrency()
+    public function testPropertyError()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "status"
+     * Test attribute "errorDescription"
      */
-    public function testPropertyStatus()
-    {
-        // TODO: implement
-        $this->markTestIncomplete('Not implemented');
-    }
-
-    /**
-     * Test attribute "balances"
-     */
-    public function testPropertyBalances()
+    public function testPropertyErrorDescription()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

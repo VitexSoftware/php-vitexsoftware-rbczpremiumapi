@@ -111,7 +111,7 @@ class Statementor extends \Ease\Sand
      *
      * @throws \Exception
      */
-    public function setScope(string $scope): void
+    public function setScope($scope): \DatePeriod
     {
         switch ($scope) {
             case 'yesterday':
@@ -194,7 +194,6 @@ class Statementor extends \Ease\Sand
                         $this->since = new \DateTime($scope);
                         $this->until = (new \DateTime($scope))->setTime(23, 59, 59, 999);
 
-                        break;
                     }
 
                     throw new \InvalidArgumentException('Unknown scope '.$scope);

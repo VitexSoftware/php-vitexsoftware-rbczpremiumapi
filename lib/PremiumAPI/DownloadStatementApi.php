@@ -2,7 +2,7 @@
 
 /**
  * DownloadStatementApi
- * PHP version 7.4
+ * PHP version 7.4+
  *
  * @category Class
  * @package  VitexSoftware\Raiffeisenbank
@@ -98,11 +98,11 @@ class DownloadStatementApi
     ];
 
     /**
-         * @param ClientInterface $client
-         * @param Configuration   $config
-         * @param HeaderSelector  $selector
-         * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
-         */
+     * @param ClientInterface $client
+     * @param Configuration   $config
+     * @param HeaderSelector  $selector
+     * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
+     */
     public function __construct(
         ClientInterface $client = null,
         Configuration $config = null,
@@ -198,7 +198,7 @@ class DownloadStatementApi
      * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody requestBody (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \SplFileObject|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object
      */
@@ -216,7 +216,7 @@ class DownloadStatementApi
      * @param  \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest $requestBody (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['downloadStatement'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \SplFileObject|object|object|object|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|object, HTTP status code, HTTP response headers (array of strings)
      */
@@ -246,18 +246,6 @@ class DownloadStatementApi
 
             $statusCode = $response->getStatusCode();
 
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
 
             switch ($statusCode) {
                 case 200:
@@ -266,7 +254,19 @@ class DownloadStatementApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\SplFileObject' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -281,7 +281,19 @@ class DownloadStatementApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -296,7 +308,19 @@ class DownloadStatementApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -311,7 +335,19 @@ class DownloadStatementApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -326,7 +362,19 @@ class DownloadStatementApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -341,7 +389,19 @@ class DownloadStatementApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -352,13 +412,38 @@ class DownloadStatementApi
                     ];
             }
 
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
             $returnType = '\SplFileObject';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content);
+                    try {
+                        $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                    } catch (\JsonException $exception) {
+                        throw new ApiException(
+                            sprintf(
+                                'Error JSON decoding server response (%s)',
+                                $request->getUri()
+                            ),
+                            $statusCode,
+                            $response->getHeaders(),
+                            $content
+                        );
+                    }
                 }
             }
 

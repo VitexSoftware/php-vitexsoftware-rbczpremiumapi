@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "@openapitools/openapi-generator-cli": "^2.15.3",
     "npx": "^10.2.2"
   }
 }

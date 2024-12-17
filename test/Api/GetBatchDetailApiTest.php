@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GetAccountBalanceApiTest
+ * GetBatchDetailApiTest
  * PHP version 7.4
  *
  * @category Class
@@ -29,21 +28,22 @@
 
 namespace VitexSoftware\Raiffeisenbank\Test\Api;
 
-use VitexSoftware\Raiffeisenbank\Configuration;
-use VitexSoftware\Raiffeisenbank\ApiException;
-use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use \VitexSoftware\Raiffeisenbank\Configuration;
+use \VitexSoftware\Raiffeisenbank\ApiException;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetAccountBalanceApiTest Class Doc Comment
+ * GetBatchDetailApiTest Class Doc Comment
  *
  * @category Class
  * @package  VitexSoftware\Raiffeisenbank
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class GetAccountBalanceApiTest extends TestCase
+class GetBatchDetailApiTest extends TestCase
 {
+
     /**
      * Setup before running any test cases
      */
@@ -73,12 +73,12 @@ class GetAccountBalanceApiTest extends TestCase
     }
 
     /**
-     * Test case for getBalance
+     * Test case for getBatchDetail
      *
      * .
      *
      */
-    public function testGetBalance()
+    public function testGetBatchDetail()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

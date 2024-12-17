@@ -30,8 +30,8 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use ArrayAccess;
-use VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use \ArrayAccess;
+use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
  * DownloadStatementRequest Class Doc Comment
@@ -555,3 +555,5 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
 }
+
+

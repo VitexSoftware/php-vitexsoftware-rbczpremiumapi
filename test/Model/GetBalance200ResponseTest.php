@@ -1,7 +1,6 @@
 <?php
-
 /**
- * GetBalance429ResponseTest
+ * GetBalance200ResponseTest
  *
  * PHP version 7.4
  *
@@ -33,16 +32,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetBalance429ResponseTest Class Doc Comment
+ * GetBalance200ResponseTest Class Doc Comment
  *
  * @category    Class
- * @description GetBalance429Response
+ * @description Account with balances
  * @package     VitexSoftware\Raiffeisenbank
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class GetBalance429ResponseTest extends TestCase
+class GetBalance200ResponseTest extends TestCase
 {
+
     /**
      * Setup before running any test case
      */
@@ -72,27 +72,45 @@ class GetBalance429ResponseTest extends TestCase
     }
 
     /**
-     * Test "GetBalance429Response"
+     * Test "GetBalance200Response"
      */
-    public function testGetBalance429Response()
+    public function testGetBalance200Response()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "error"
+     * Test attribute "numberPart1"
      */
-    public function testPropertyError()
+    public function testPropertyNumberPart1()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "errorDescription"
+     * Test attribute "numberPart2"
      */
-    public function testPropertyErrorDescription()
+    public function testPropertyNumberPart2()
+    {
+        // TODO: implement
+        $this->markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "bankCode"
+     */
+    public function testPropertyBankCode()
+    {
+        // TODO: implement
+        $this->markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "currencyFolders"
+     */
+    public function testPropertyCurrencyFolders()
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
