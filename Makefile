@@ -21,12 +21,8 @@ vendor: composer.json composer.lock ## Installs composer dependencies
 
 .PHONY: cs
 cs: ## Update Coding Standards
-	vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --verbose
+	vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --verbose --allow-risky=yes
 
 .PHONY: phpunit
 phpunit: ## Run Tests
 	vendor/bin/phpunit tests
-
-
-
-

@@ -2,7 +2,7 @@
 
 /**
  * GetTransactionListApi
- * PHP version 7.4
+ * PHP version 7.4+
  *
  * @category Class
  * @package  VitexSoftware\Raiffeisenbank
@@ -85,7 +85,7 @@ class GetTransactionListApi
 
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     *
+     * 
      * @var string Description
      */
     protected $SUIPAddress = null;
@@ -98,11 +98,11 @@ class GetTransactionListApi
     ];
 
     /**
-         * @param ClientInterface $client
-         * @param Configuration   $config
-         * @param HeaderSelector  $selector
-         * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
-         */
+     * @param ClientInterface $client
+     * @param Configuration   $config
+     * @param HeaderSelector  $selector
+     * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
+     */
     public function __construct(
         ClientInterface $client = null,
         Configuration $config = null,
@@ -126,9 +126,9 @@ class GetTransactionListApi
 
     /**
      * Keep ClientID obtained from Developer Portal
-     *
+     * 
      * @param string $clientId Description
-     *
+     * 
      * @return string
      */
     public function setXIBMClientId($clientId)
@@ -138,7 +138,7 @@ class GetTransactionListApi
 
     /**
      * Give you ClientID obtained from Developer Portal
-     *
+     * 
      * @return string
      */
     public function getXIBMClientId()
@@ -147,7 +147,7 @@ class GetTransactionListApi
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client
+     * @param  string $SUIPAddress IP address of a client 
      */
     public function setSUIPAddress($SUIPAddress)
     {
@@ -201,7 +201,7 @@ class GetTransactionListApi
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return object|object|object|object|object|object
      */
@@ -222,7 +222,7 @@ class GetTransactionListApi
      * @param  int $page Page number to be requested. The first page is 1. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
@@ -252,18 +252,6 @@ class GetTransactionListApi
 
             $statusCode = $response->getStatusCode();
 
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    sprintf(
-                        '[%d] Error connecting to the API (%s)',
-                        $statusCode,
-                        (string) $request->getUri()
-                    ),
-                    $statusCode,
-                    $response->getHeaders(),
-                    (string) $response->getBody()
-                );
-            }
 
             switch ($statusCode) {
                 case 200:
@@ -272,7 +260,19 @@ class GetTransactionListApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -287,7 +287,19 @@ class GetTransactionListApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -302,7 +314,19 @@ class GetTransactionListApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -317,7 +341,19 @@ class GetTransactionListApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -332,7 +368,19 @@ class GetTransactionListApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -347,7 +395,19 @@ class GetTransactionListApi
                     } else {
                         $content = (string) $response->getBody();
                         if ('object' !== 'string') {
-                            $content = json_decode($content);
+                            try {
+                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                            } catch (\JsonException $exception) {
+                                throw new ApiException(
+                                    sprintf(
+                                        'Error JSON decoding server response (%s)',
+                                        $request->getUri()
+                                    ),
+                                    $statusCode,
+                                    $response->getHeaders(),
+                                    $content
+                                );
+                            }
                         }
                     }
 
@@ -358,13 +418,38 @@ class GetTransactionListApi
                     ];
             }
 
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
             $returnType = 'object';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ($returnType !== 'string') {
-                    $content = json_decode($content);
+                    try {
+                        $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                    } catch (\JsonException $exception) {
+                        throw new ApiException(
+                            sprintf(
+                                'Error JSON decoding server response (%s)',
+                                $request->getUri()
+                            ),
+                            $statusCode,
+                            $response->getHeaders(),
+                            $content
+                        );
+                    }
                 }
             }
 
@@ -373,6 +458,7 @@ class GetTransactionListApi
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
+
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
@@ -689,6 +775,7 @@ class GetTransactionListApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
+
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);

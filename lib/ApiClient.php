@@ -1,11 +1,11 @@
 <?php
 
 /**
- *
+ * 
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright 2023 Vitex@hippy.cz (G)
- *
+ * 
  * PHP 7
  */
 
@@ -25,12 +25,12 @@ class ApiClient extends \GuzzleHttp\Client
     protected $xIBMClientId = null;
 
     /**
-     * the end IP address of the client application (no server) in IPv4 or IPv6
-     * format. If the bank client (your user) uses a browser by which he
-     * accesses your server app, we need to know the IP address of his browser.
-     * Always provide the closest IP address to the real end-user possible.
+     * the end IP address of the client application (no server) in IPv4 or IPv6 
+     * format. If the bank client (your user) uses a browser by which he 
+     * accesses your server app, we need to know the IP address of his browser. 
+     * Always provide the closest IP address to the real end-user possible. 
      * (optional)
-     *
+     * 
      * @var string
      */
     protected $pSUIPAddress = null;
@@ -43,13 +43,13 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * @inheritDoc
-     *
+     * 
      * $config['clientid'] - obtained from Developer Portal - when you registered your app with us.
      * $config['cert'] = ['/path/to/cert.p12','certificat password']
      * $config['clientpubip'] = the closest IP address to the real end-user
      * $config['mocking'] = true to use /rbcz/premium/mock/* endpoints
-     *
-     * @param array $config
+     * 
+     * @param array $config 
      * @throws \Exception CERT_FILE is not set
      * @throws \Exception CERT_PASS is not set
      */
@@ -73,7 +73,7 @@ class ApiClient extends \GuzzleHttp\Client
 
         if (array_key_exists('debug', $config) === false) {
             $config['debug'] = \Ease\Shared::cfg('API_DEBUG', false);
-        }
+        } 
 
         if (array_key_exists('clientpubip', $config)) {
             $this->pSUIPAddress = $config['clientpubip'];
@@ -88,7 +88,7 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * ClientID obtained from Developer Portal
-     *
+     * 
      * @return string
      */
     public function getXIBMClientId()
@@ -98,17 +98,17 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * Keep user public IP here
-     *
+     * 
      * @return string
      */
     public function getpSUIPAddress()
     {
         return $this->pSUIPAddress;
-    }
+    } 
 
     /**
      * Use mocking uri for api calls ?
-     *
+     * 
      * @return boolean
      */
     public function getMockMode()
@@ -118,9 +118,9 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * Obtain Your current Public IP
-     *
+     * 
      * @deprecated since version 0.1 - Do not use in production Environment!
-     *
+     * 
      * @return string
      */
     public static function getPublicIP()
@@ -136,9 +136,9 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * Source Identifier
-     *
+     * 
      * @deprecated since version 0.1 - Do not use in production Environment!
-     *
+     * 
      * @return string
      */
     public static function sourceString()
@@ -148,15 +148,15 @@ class ApiClient extends \GuzzleHttp\Client
 
     /**
      * Try to check certificate readibilty
-     *
-     *
+     * 
+     * 
      * @param string  $certFile path to certificate
      * @param boolean $die      throw exception or return false ?
      * @throws Exception - Certificate file not found
-     *
+     * 
      * @return boolean certificate file
      */
-    public static function checkCertificatePresence($certFile, $die = false)
+    public static function checkCertificatePresence(string $certFile, bool $die = false): bool
     {
         $found = false;
         if ((file_exists($certFile) === false) || (is_readable($certFile) === false)) {
@@ -168,14 +168,30 @@ class ApiClient extends \GuzzleHttp\Client
         } else {
             $found = true;
         }
-        return  $found;
+        return $found;
     }
+
+    public static function checkCertificate($certFile, $password): bool
+    {
+        return self::checkCertificatePresence($certFile) && self::checkCertificatePassword($certFile, $password);
+    }
+
+    public static function checkCertificatePassword(string $certFile, string $password): bool
+    {
+        $certContent = file_get_contents($certFile);
+        if (openssl_pkcs12_read($certContent, $certs, $password) === false) {
+            fwrite(\STDERR, 'Cannot read PKCS12 certificate file: '.$certFile.\PHP_EOL);
+            exit(1);
+        }
+        return true;
+    }
+
 
     /**
      * Request Identifier
-     *
+     * 
      * @deprecated since version 0.1 - Do not use in production Environment!
-     *
+     * 
      * @return string
      */
     public static function getxRequestId()
