@@ -11,6 +11,7 @@ additionalProperties:
   invokerPackage: VitexSoftware\Raiffeisenbank
   modelPackage: Model
   variableNamingConvention: camelCase
+  composerPackageName: vitexsoftware/rbczpremiumapi
 files:
   AUTHORS.md: {}
   composer.json: {}
