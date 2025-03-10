@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * DownloadStatementRequest
+ * This file is part of the MultiFlexi package
  *
- * PHP version 7.4
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Production
+ * Production.
  *
  * Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.  Before making a call to Premium API, you need to register your app at our _Developer portal_. At _Developer Portal_ you obtain ClientID that your app must send in the request as `X-IBM-Client-Id`. These are your keys that grant your app access to the API. However, this is not enough, for a successful call your app needs to use mTLS. Thus, you not only need _https_ but also a client certificate issued by us. Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\\*p12** file for establishing mTLS connection to the bank.   Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.  **Note**: Be aware, that in certain error situations, API can return different error structure along with broader set of http status codes, than the one defined below
  *
@@ -30,77 +32,153 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use \ArrayAccess;
-use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * DownloadStatementRequest Class Doc Comment
+ * DownloadStatementRequest Class Doc Comment.
  *
  * @category Class
+ *
  * @description Request values for the statement download.
- * @package  VitexSoftware\Raiffeisenbank
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class DownloadStatementRequest implements \ArrayAccess, \JsonSerializable, ModelInterface
 {
     public const DISCRIMINATOR = null;
+    public const STATEMENT_FORMAT_PDF = 'pdf';
+    public const STATEMENT_FORMAT_XML = 'xml';
+    public const STATEMENT_FORMAT_MT940 = 'MT940';
 
     /**
-      * The original name of the model.
-      *
-      * @var string
-      */
-    protected static $openAPIModelName = 'downloadStatement_request';
+     * The original name of the model.
+     */
+    protected static string $openAPIModelName = 'downloadStatement_request';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
-    protected static $openAPITypes = [
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     */
+    protected static array $openAPITypes = [
         'accountNumber' => 'string',
         'currency' => 'string',
         'statementId' => 'string',
-        'statementFormat' => 'string'
+        'statementFormat' => 'string',
     ];
 
     /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      * @phpstan-var array<string, string|null>
-      * @psalm-var array<string, string|null>
-      */
-    protected static $openAPIFormats = [
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     *
+     * @phpstan-var array<string, string|null>
+     *
+     * @psalm-var array<string, string|null>
+     */
+    protected static array $openAPIFormats = [
         'accountNumber' => null,
         'currency' => null,
         'statementId' => null,
-        'statementFormat' => null
+        'statementFormat' => null,
     ];
 
     /**
-      * Array of nullable properties. Used for (de)serialization
-      *
-      * @var boolean[]
-      */
+     * Array of nullable properties. Used for (de)serialization.
+     *
+     * @var bool[]
+     */
     protected static array $openAPINullables = [
         'accountNumber' => false,
         'currency' => false,
         'statementId' => false,
-        'statementFormat' => false
+        'statementFormat' => false,
     ];
 
     /**
-      * If a nullable field gets set to null, insert it here
-      *
-      * @var boolean[]
-      */
+     * If a nullable field gets set to null, insert it here.
+     *
+     * @var bool[]
+     */
     protected array $openAPINullablesSetToNull = [];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization
+     * Array of attributes where the key is the local name,
+     * and the value is the original name.
+     *
+     * @var string[]
+     */
+    protected static array $attributeMap = [
+        'accountNumber' => 'accountNumber',
+        'currency' => 'currency',
+        'statementId' => 'statementId',
+        'statementFormat' => 'statementFormat',
+    ];
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses).
+     *
+     * @var string[]
+     */
+    protected static array $setters = [
+        'accountNumber' => 'setAccountNumber',
+        'currency' => 'setCurrency',
+        'statementId' => 'setStatementId',
+        'statementFormat' => 'setStatementFormat',
+    ];
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests).
+     *
+     * @var string[]
+     */
+    protected static array $getters = [
+        'accountNumber' => 'getAccountNumber',
+        'currency' => 'getCurrency',
+        'statementId' => 'getStatementId',
+        'statementFormat' => 'getStatementFormat',
+    ];
+
+    /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected array $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(?array $data = null)
+    {
+        $this->setIfExists('accountNumber', $data ?? [], null);
+        $this->setIfExists('currency', $data ?? [], null);
+        $this->setIfExists('statementId', $data ?? [], null);
+        $this->setIfExists('statementFormat', $data ?? [], null);
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            \JSON_PRETTY_PRINT,
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
      *
      * @return array
      */
@@ -110,7 +188,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Array of property to format mappings. Used for (de)serialization
+     * Array of property to format mappings. Used for (de)serialization.
      *
      * @return array
      */
@@ -120,40 +198,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Array of nullable properties
-     *
-     * @return array
-     */
-    protected static function openAPINullables(): array
-    {
-        return self::$openAPINullables;
-    }
-
-    /**
-     * Array of nullable field names deliberately set to null
-     *
-     * @return boolean[]
-     */
-    private function getOpenAPINullablesSetToNull(): array
-    {
-        return $this->openAPINullablesSetToNull;
-    }
-
-    /**
-     * Setter - Array of nullable field names deliberately set to null
-     *
-     * @param boolean[] $openAPINullablesSetToNull
-     */
-    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
-    {
-        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
-    }
-
-    /**
-     * Checks if a property is nullable
-     *
-     * @param string $property
-     * @return bool
+     * Checks if a property is nullable.
      */
     public static function isNullable(string $property): bool
     {
@@ -162,55 +207,15 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
 
     /**
      * Checks if a nullable property is set to null.
-     *
-     * @param string $property
-     * @return bool
      */
     public function isNullableSetToNull(string $property): bool
     {
-        return in_array($property, $this->getOpenAPINullablesSetToNull(), true);
+        return \in_array($property, $this->getOpenAPINullablesSetToNull(), true);
     }
 
     /**
      * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @var string[]
-     */
-    protected static $attributeMap = [
-        'accountNumber' => 'accountNumber',
-        'currency' => 'currency',
-        'statementId' => 'statementId',
-        'statementFormat' => 'statementFormat'
-    ];
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @var string[]
-     */
-    protected static $setters = [
-        'accountNumber' => 'setAccountNumber',
-        'currency' => 'setCurrency',
-        'statementId' => 'setStatementId',
-        'statementFormat' => 'setStatementFormat'
-    ];
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @var string[]
-     */
-    protected static $getters = [
-        'accountNumber' => 'getAccountNumber',
-        'currency' => 'getCurrency',
-        'statementId' => 'getStatementId',
-        'statementFormat' => 'getStatementFormat'
-    ];
-
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
+     * and the value is the original name.
      *
      * @return array
      */
@@ -220,7 +225,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Array of attributes to setter functions (for deserialization of responses)
+     * Array of attributes to setter functions (for deserialization of responses).
      *
      * @return array
      */
@@ -230,7 +235,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Array of attributes to getter functions (for serialization of requests)
+     * Array of attributes to getter functions (for serialization of requests).
      *
      * @return array
      */
@@ -249,12 +254,8 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
         return self::$openAPIModelName;
     }
 
-    public const STATEMENT_FORMAT_PDF = 'pdf';
-    public const STATEMENT_FORMAT_XML = 'xml';
-    public const STATEMENT_FORMAT_MT940 = 'MT940';
-
     /**
-     * Gets allowable values of the enum
+     * Gets allowable values of the enum.
      *
      * @return string[]
      */
@@ -265,45 +266,6 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
             self::STATEMENT_FORMAT_XML,
             self::STATEMENT_FORMAT_MT940,
         ];
-    }
-
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->setIfExists('accountNumber', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('statementId', $data ?? [], null);
-        $this->setIfExists('statementFormat', $data ?? [], null);
-    }
-
-    /**
-    * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
-    * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
-    * $this->openAPINullablesSetToNull array
-    *
-    * @param string $variableName
-    * @param array  $fields
-    * @param mixed  $defaultValue
-    */
-    private function setIfExists(string $variableName, array $fields, $defaultValue): void
-    {
-        if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
-            $this->openAPINullablesSetToNull[] = $variableName;
-        }
-
-        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
     }
 
     /**
@@ -318,18 +280,22 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
         if ($this->container['accountNumber'] === null) {
             $invalidProperties[] = "'accountNumber' can't be null";
         }
+
         if ($this->container['statementId'] === null) {
             $invalidProperties[] = "'statementId' can't be null";
         }
+
         if ($this->container['statementFormat'] === null) {
             $invalidProperties[] = "'statementFormat' can't be null";
         }
+
         $allowedValues = $this->getStatementFormatAllowableValues();
-        if (!is_null($this->container['statementFormat']) && !in_array($this->container['statementFormat'], $allowedValues, true)) {
+
+        if (null !== $this->container['statementFormat'] && !\in_array($this->container['statementFormat'], $allowedValues, true)) {
             $invalidProperties[] = sprintf(
                 "invalid value '%s' for 'statementFormat', must be one of '%s'",
                 $this->container['statementFormat'],
-                implode("', '", $allowedValues)
+                implode("', '", $allowedValues),
             );
         }
 
@@ -338,18 +304,17 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
 
     /**
      * Validate all the properties in the model
-     * return true if all passed
+     * return true if all passed.
      *
      * @return bool True if all properties are valid
      */
     public function valid()
     {
-        return count($this->listInvalidProperties()) === 0;
+        return \count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
-     * Gets accountNumber
+     * Gets accountNumber.
      *
      * @return string
      */
@@ -359,26 +324,27 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Sets accountNumber
+     * Sets accountNumber.
      *
-     * @param string $accountNumber Number of the account without prefix and bank code.
+     * @param string $accountNumber number of the account without prefix and bank code
      *
      * @return self
      */
     public function setAccountNumber($accountNumber)
     {
-        if (is_null($accountNumber)) {
+        if (null === $accountNumber) {
             throw new \InvalidArgumentException('non-nullable accountNumber cannot be null');
         }
+
         $this->container['accountNumber'] = $accountNumber;
 
         return $this;
     }
 
     /**
-     * Gets currency
+     * Gets currency.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getCurrency()
     {
@@ -386,24 +352,25 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Sets currency
+     * Sets currency.
      *
-     * @param string|null $currency Currency of the requested currency folder.
+     * @param null|string $currency currency of the requested currency folder
      *
      * @return self
      */
     public function setCurrency($currency)
     {
-        if (is_null($currency)) {
+        if (null === $currency) {
             throw new \InvalidArgumentException('non-nullable currency cannot be null');
         }
+
         $this->container['currency'] = $currency;
 
         return $this;
     }
 
     /**
-     * Gets statementId
+     * Gets statementId.
      *
      * @return string
      */
@@ -413,24 +380,25 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Sets statementId
+     * Sets statementId.
      *
-     * @param string $statementId Public id of the statement.
+     * @param string $statementId public id of the statement
      *
      * @return self
      */
     public function setStatementId($statementId)
     {
-        if (is_null($statementId)) {
+        if (null === $statementId) {
             throw new \InvalidArgumentException('non-nullable statementId cannot be null');
         }
+
         $this->container['statementId'] = $statementId;
 
         return $this;
     }
 
     /**
-     * Gets statementFormat
+     * Gets statementFormat.
      *
      * @return string
      */
@@ -440,27 +408,30 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Sets statementFormat
+     * Sets statementFormat.
      *
-     * @param string $statementFormat The format of the statement.
+     * @param string $statementFormat the format of the statement
      *
      * @return self
      */
     public function setStatementFormat($statementFormat)
     {
-        if (is_null($statementFormat)) {
+        if (null === $statementFormat) {
             throw new \InvalidArgumentException('non-nullable statementFormat cannot be null');
         }
+
         $allowedValues = $this->getStatementFormatAllowableValues();
-        if (!in_array($statementFormat, $allowedValues, true)) {
+
+        if (!\in_array($statementFormat, $allowedValues, true)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     "Invalid value '%s' for 'statementFormat', must be one of '%s'",
                     $statementFormat,
-                    implode("', '", $allowedValues)
-                )
+                    implode("', '", $allowedValues),
+                ),
             );
         }
+
         $this->container['statementFormat'] = $statementFormat;
 
         return $this;
@@ -468,9 +439,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
-     *
-     * @return boolean
+     * @param int $offset Offset
      */
     public function offsetExists($offset): bool
     {
@@ -480,9 +449,9 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -493,14 +462,12 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
-        if (is_null($offset)) {
+        if (null === $offset) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;
@@ -510,9 +477,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
-     *
-     * @return void
+     * @param int $offset Offset
      */
     public function offsetUnset($offset): void
     {
@@ -521,10 +486,11 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
 
     /**
      * Serializes the object to a value that can be serialized natively by json_encode().
-     * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
-     * @return mixed Returns data which can be serialized by json_encode(), which is a value
-     * of any type other than a resource.
+     * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
+     *
+     * @return mixed returns data which can be serialized by json_encode(), which is a value
+     *               of any type other than a resource
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
@@ -533,20 +499,7 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     }
 
     /**
-     * Gets the string presentation of the object
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
-    }
-
-    /**
-     * Gets a header-safe presentation of the object
+     * Gets a header-safe presentation of the object.
      *
      * @return string
      */
@@ -554,6 +507,48 @@ class DownloadStatementRequest implements ModelInterface, ArrayAccess, \JsonSeri
     {
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
+
+    /**
+     * Array of nullable properties.
+     */
+    protected static function openAPINullables(): array
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null.
+     *
+     * @return bool[]
+     */
+    private function getOpenAPINullablesSetToNull(): array
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    /**
+     * Setter - Array of nullable field names deliberately set to null.
+     *
+     * @param bool[] $openAPINullablesSetToNull
+     */
+    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
+    {
+        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
+    }
+
+    /**
+     * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
+     * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
+     * $this->openAPINullablesSetToNull array.
+     *
+     * @param mixed $defaultValue
+     */
+    private function setIfExists(string $variableName, array $fields, $defaultValue): void
+    {
+        if (self::isNullable($variableName) && \array_key_exists($variableName, $fields) && null === $fields[$variableName]) {
+            $this->openAPINullablesSetToNull[] = $variableName;
+        }
+
+        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
+    }
 }
-
-

@@ -1,8 +1,14 @@
-php-vitexsoftware-rbczpremiumapi (1.2.3) UNRELEASED; urgency=medium
+php-vitexsoftware-rbczpremiumapi (1.3.0) UNRELEASED; urgency=medium
+
+  * PHP8.1+ required
+
+ -- vitex <info@vitexsoftware.cz>  Mon, 10 Mar 2025 06:31:07 +0100
+
+php-vitexsoftware-rbczpremiumapi (1.2.3) unstable; urgency=medium
 
   * Custom Import scope added
 
- -- vitex <info@vitexsoftware.cz>  Thu, 07 Nov 2024 20:09:32 +0100
+ -- vitex <info@vitexsoftware.cz>  Mon, 10 Mar 2025 06:30:49 +0100
 
 php-vitexsoftware-rbczpremiumapi (1.2.2) unstable; urgency=medium
 

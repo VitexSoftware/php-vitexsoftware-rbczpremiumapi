@@ -1,8 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * This file is part of the MultiFlexi package
+ *
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace VitexSoftware\Raiffeisenbank;
 
-require_once('../vendor/autoload.php');
+require_once '../vendor/autoload.php';
 $apiInstance = new PremiumAPI\GetTransactionListApi(new ApiClient());
 $account_number = '1899297002'; // string | Account number for which to get list of transactions in national format without 0 padding.
 $currency_code = 'CZK'; // string | Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd)
@@ -13,13 +26,12 @@ $x_ibm_client_id = 'FbboLD2r1WHDRcuKS4wWUbSRHxlDloWL'; // string | ClientID obta
 $x_request_id = time(); // string | Unique request id provided by consumer application for reference and auditing.
 $accept_language = 'cs'; // string | The Accept-Language request HTTP header is used to determine document  language. Supported languages are `cs` and `en`.
 $psu_ip_address = ApiClient::getPublicIP(); // string | IP address of a client - the end IP address of the client application (no server) in IPv4 or IPv6 format.
-//If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser.
-//Always provide the closest IP address to the real end-user possible.
-
+// If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser.
+// Always provide the closest IP address to the real end-user possible.
 
 try {
     $result = $apiInstance->getTransactionList($x_request_id, $account_number, $currency_code, $from, $to, $page);
     print_r($result);
 } catch (\Ease\Exception $e) {
-    echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), \PHP_EOL;
 }

@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * ObjectSerializer
+ * This file is part of the MultiFlexi package
  *
- * PHP version 7.4+
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Production
+ * Production.
  *
  * Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.  Before making a call to Premium API, you need to register your app at our _Developer portal_. At _Developer Portal_ you obtain ClientID that your app must send in the request as `X-IBM-Client-Id`. These are your keys that grant your app access to the API. However, this is not enough, for a successful call your app needs to use mTLS. Thus, you not only need _https_ but also a client certificate issued by us. Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\\*p12** file for establishing mTLS connection to the bank.   Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.  **Note**: Be aware, that in certain error situations, API can return different error structure along with broader set of http status codes, than the one defined below
  *
@@ -34,40 +36,40 @@ use GuzzleHttp\Psr7\Utils;
 use VitexSoftware\Raiffeisenbank\Model\ModelInterface;
 
 /**
- * ObjectSerializer Class Doc Comment
+ * ObjectSerializer Class Doc Comment.
  *
  * @category Class
- * @package  VitexSoftware\Raiffeisenbank
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 class ObjectSerializer
 {
-    /** @var string */
-    private static $dateTimeFormat = 'Y-m-d\TH:i:s.v\Z';
+    private static string $dateTimeFormat = 'Y-m-d\TH:i:s.v\Z';
 
     /**
-     * Change the date format
+     * Change the date format.
      *
-     * @param string $format   the new date format to use
+     * @param string $format the new date format to use
      */
-    public static function setDateTimeFormat($format)
+    public static function setDateTimeFormat($format): void
     {
         self::$dateTimeFormat = $format;
     }
 
     /**
-     * Serialize data
+     * Serialize data.
      *
      * @param mixed  $data   the data to serialize
      * @param string $type   the OpenAPIToolsType of the data
      * @param string $format the format of the OpenAPITools type of the data
      *
-     * @return scalar|object|array|null serialized form of $data
+     * @return null|array|object|scalar serialized form of $data
      */
     public static function sanitizeForSerialization($data, $type = null, $format = null)
     {
-        if (is_scalar($data) || null === $data) {
+        if (\is_scalar($data) || null === $data) {
             return $data;
         }
 
@@ -75,31 +77,39 @@ class ObjectSerializer
             return ($format === 'date') ? $data->format('Y-m-d') : $data->format(self::$dateTimeFormat);
         }
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             foreach ($data as $property => $value) {
                 $data[$property] = self::sanitizeForSerialization($value);
             }
+
             return $data;
         }
 
-        if (is_object($data)) {
+        if (\is_object($data)) {
             $values = [];
+
             if ($data instanceof ModelInterface) {
                 $formats = $data::openAPIFormats();
+
                 foreach ($data::openAPITypes() as $property => $openAPIType) {
                     $getter = $data::getters()[$property];
-                    $value = $data->$getter();
-                    if ($value !== null && !in_array($openAPIType, ['\DateTime', '\SplFileObject', 'array', 'bool', 'boolean', 'byte', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'], true)) {
+                    $value = $data->{$getter}();
+
+                    if ($value !== null && !\in_array($openAPIType, ['\DateTime', '\SplFileObject', 'array', 'bool', 'boolean', 'byte', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'], true)) {
                         $callable = [$openAPIType, 'getAllowableEnumValues'];
-                        if (is_callable($callable)) {
+
+                        if (\is_callable($callable)) {
                             /** array $callable */
                             $allowedEnumTypes = $callable();
-                            if (!in_array($value, $allowedEnumTypes, true)) {
+
+                            if (!\in_array($value, $allowedEnumTypes, true)) {
                                 $imploded = implode("', '", $allowedEnumTypes);
-                                throw new \InvalidArgumentException("Invalid value for enum '$openAPIType', must be one of: '$imploded'");
+
+                                throw new \InvalidArgumentException("Invalid value for enum '{$openAPIType}', must be one of: '{$imploded}'");
                             }
                         }
                     }
+
                     if (($data::isNullable($property) && $data->isNullableSetToNull($property)) || $value !== null) {
                         $values[$data::attributeMap()[$property]] = self::sanitizeForSerialization($value, $openAPIType, $formats[$property]);
                     }
@@ -109,15 +119,16 @@ class ObjectSerializer
                     $values[$property] = self::sanitizeForSerialization($value);
                 }
             }
-            return (object)$values;
-        } else {
-            return (string)$data;
+
+            return (object) $values;
         }
+
+        return (string) $data;
     }
 
     /**
      * Sanitize filename by removing path.
-     * e.g. ../../sun.gif becomes sun.gif
+     * e.g. ../../sun.gif becomes sun.gif.
      *
      * @param string $filename filename to be sanitized
      *
@@ -125,11 +136,11 @@ class ObjectSerializer
      */
     public static function sanitizeFilename($filename)
     {
-        if (preg_match("/.*[\/\\\\](.*)$/", $filename, $match)) {
+        if (preg_match('/.*[\\/\\\\](.*)$/', $filename, $match)) {
             return $match[1];
-        } else {
-            return $filename;
         }
+
+        return $filename;
     }
 
     /**
@@ -141,7 +152,7 @@ class ObjectSerializer
      */
     public static function sanitizeTimestamp($timestamp)
     {
-        if (!is_string($timestamp)) {
+        if (!\is_string($timestamp)) {
             return $timestamp;
         }
 
@@ -162,53 +173,6 @@ class ObjectSerializer
     }
 
     /**
-     * Checks if a value is empty, based on its OpenAPI type.
-     *
-     * @param mixed  $value
-     * @param string $openApiType
-     *
-     * @return bool true if $value is empty
-     */
-    private static function isEmptyValue($value, string $openApiType): bool
-    {
-        # If empty() returns false, it is not empty regardless of its type.
-        if (!empty($value)) {
-            return false;
-        }
-
-        # Null is always empty, as we cannot send a real "null" value in a query parameter.
-        if ($value === null) {
-            return true;
-        }
-
-        switch ($openApiType) {
-            # For numeric values, false and '' are considered empty.
-            # This comparison is safe for floating point values, since the previous call to empty() will
-            # filter out values that don't match 0.
-            case 'int':
-            case 'integer':
-                return $value !== 0;
-
-            case 'number':
-            case 'float':
-                return $value !== 0 && $value !== 0.0;
-
-                # For boolean values, '' is considered empty
-            case 'bool':
-            case 'boolean':
-                return !in_array($value, [false, 0], true);
-
-                # For string values, '' is considered empty.
-            case 'string':
-                return $value === '';
-
-                # For all the other types, any value at this point can be considered empty.
-            default:
-                return true;
-        }
-    }
-
-    /**
      * Take query parameter properties and turn it into an array suitable for
      * native http_build_query or GuzzleHttp\Psr7\Query::build.
      *
@@ -218,8 +182,6 @@ class ObjectSerializer
      * @param string $style       Parameter serialization style
      * @param bool   $explode     Parameter explode option
      * @param bool   $required    Whether query param is required or not
-     *
-     * @return array
      */
     public static function toQueryValue(
         $value,
@@ -227,50 +189,50 @@ class ObjectSerializer
         string $openApiType = 'string',
         string $style = 'form',
         bool $explode = true,
-        bool $required = true
+        bool $required = true,
     ): array {
-
-        # Check if we should omit this parameter from the query. This should only happen when:
-        #  - Parameter is NOT required; AND
-        #  - its value is set to a value that is equivalent to "empty", depending on its OpenAPI type. For
-        #    example, 0 as "int" or "boolean" is NOT an empty value.
+        // Check if we should omit this parameter from the query. This should only happen when:
+        //  - Parameter is NOT required; AND
+        //  - its value is set to a value that is equivalent to "empty", depending on its OpenAPI type. For
+        //    example, 0 as "int" or "boolean" is NOT an empty value.
         if (self::isEmptyValue($value, $openApiType)) {
             if ($required) {
                 return ["{$paramName}" => ''];
-            } else {
-                return [];
             }
+
+            return [];
         }
 
-        # Handle DateTime objects in query
-        if ((($openApiType === "\\DateTime") || $openApiType === 'string')  && $value instanceof \DateTime) {
+        // Handle DateTime objects in query
+        if ((($openApiType === '\\DateTime') || $openApiType === 'string') && $value instanceof \DateTime) {
             return ["{$paramName}" => $value->format(self::$dateTimeFormat)];
         }
 
         $query = [];
-        $value = (in_array($openApiType, ['object', 'array'], true)) ? (array)$value : $value;
+        $value = (\in_array($openApiType, ['object', 'array'], true)) ? (array) $value : $value;
 
         // since \GuzzleHttp\Psr7\Query::build fails with nested arrays
         // need to flatten array first
-        $flattenArray = function ($arr, $name, &$result = []) use (&$flattenArray, $style, $explode) {
-            if (!is_array($arr)) {
+        $flattenArray = static function ($arr, $name, &$result = []) use (&$flattenArray, $style, $explode) {
+            if (!\is_array($arr)) {
                 return $arr;
             }
-
 
             foreach ($arr as $k => $v) {
                 $prop = ($style === 'deepObject') ? $prop = "{$name}[{$k}]" : $k;
 
-                if (is_array($v)) {
+                if (\is_array($v)) {
                     $flattenArray($v, $prop, $result);
                 } else {
                     if ($style !== 'deepObject' && !$explode) {
                         // push key itself
                         $result[] = $prop;
                     }
+
                     $result[$prop] = $v;
                 }
             }
+
             return $result;
         };
 
@@ -285,12 +247,12 @@ class ObjectSerializer
             return $value;
         }
 
-        if ('boolean' === $openApiType && is_bool($value)) {
+        if ('boolean' === $openApiType && \is_bool($value)) {
             $value = self::convertBoolToQueryStringFormat($value);
         }
 
         // handle style in serializeCollection
-        $query[$paramName] = ($explode) ? $value : self::serializeCollection((array)$value, $style);
+        $query[$paramName] = ($explode) ? $value : self::serializeCollection((array) $value, $style);
 
         return $query;
     }
@@ -314,7 +276,7 @@ class ObjectSerializer
     /**
      * Take value and turn it into a string suitable for inclusion in
      * the header. If it's a string, pass through unchanged
-     * If it's a datetime object, format it in ISO8601
+     * If it's a datetime object, format it in ISO8601.
      *
      * @param string $value a string which will be part of the header
      *
@@ -323,7 +285,8 @@ class ObjectSerializer
     public static function toHeaderValue($value)
     {
         $callable = [$value, 'toHeaderValue'];
-        if (is_callable($callable)) {
+
+        if (\is_callable($callable)) {
             return $callable();
         }
 
@@ -333,9 +296,9 @@ class ObjectSerializer
     /**
      * Take value and turn it into a string suitable for inclusion in
      * the http body (form parameter). If it's a string, pass through unchanged
-     * If it's a datetime object, format it in ISO8601
+     * If it's a datetime object, format it in ISO8601.
      *
-     * @param string|\SplFileObject $value the value of the form parameter
+     * @param \SplFileObject|string $value the value of the form parameter
      *
      * @return string the form string
      */
@@ -343,9 +306,9 @@ class ObjectSerializer
     {
         if ($value instanceof \SplFileObject) {
             return $value->getRealPath();
-        } else {
-            return self::toString($value);
         }
+
+        return self::toString($value);
     }
 
     /**
@@ -354,7 +317,7 @@ class ObjectSerializer
      * If it's a datetime object, format it in ISO8601
      * If it's a boolean, convert it to "true" or "false".
      *
-     * @param float|int|bool|\DateTime $value the value of the parameter
+     * @param bool|\DateTime|float|int $value the value of the parameter
      *
      * @return string the header string
      */
@@ -362,11 +325,13 @@ class ObjectSerializer
     {
         if ($value instanceof \DateTime) { // datetime in ISO8601 format
             return $value->format(self::$dateTimeFormat);
-        } elseif (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        } else {
-            return (string) $value;
         }
+
+        if (\is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        return (string) $value;
     }
 
     /**
@@ -374,7 +339,7 @@ class ObjectSerializer
      *
      * @param array  $collection                 collection to serialize to a string
      * @param string $style                      the format use for serialization (csv,
-     * ssv, tsv, pipes, multi)
+     *                                           ssv, tsv, pipes, multi)
      * @param bool   $allowCollectionFormatMulti allow collection format to be a multidimensional array
      *
      * @return string
@@ -386,18 +351,16 @@ class ObjectSerializer
             // need to fix the result of multidimensional arrays.
             return preg_replace('/%5B[0-9]+%5D=/', '=', http_build_query($collection, '', '&'));
         }
+
         switch ($style) {
             case 'pipeDelimited':
             case 'pipes':
                 return implode('|', $collection);
-
             case 'tsv':
                 return implode("\t", $collection);
-
             case 'spaceDelimited':
             case 'ssv':
                 return implode(' ', $collection);
-
             case 'simple':
             case 'csv':
                 // Deliberate fall through. CSV is default format.
@@ -407,13 +370,13 @@ class ObjectSerializer
     }
 
     /**
-     * Deserialize a JSON string into an object
+     * Deserialize a JSON string into an object.
      *
-     * @param mixed    $data          object or primitive to be deserialized
-     * @param string   $class         class name is passed as a string
-     * @param string[] $httpHeaders   HTTP headers
+     * @param mixed    $data        object or primitive to be deserialized
+     * @param string   $class       class name is passed as a string
+     * @param string[] $httpHeaders HTTP headers
      *
-     * @return object|array|null a single or an array of $class instances
+     * @return null|array|object a single or an array of $class instances
      */
     public static function deserialize($data, $class, $httpHeaders = null)
     {
@@ -422,40 +385,47 @@ class ObjectSerializer
         }
 
         if (strcasecmp(substr($class, -2), '[]') === 0) {
-            $data = is_string($data) ? json_decode($data) : $data;
+            $data = \is_string($data) ? json_decode($data) : $data;
 
-            if (!is_array($data)) {
-                throw new \InvalidArgumentException("Invalid array '$class'");
+            if (!\is_array($data)) {
+                throw new \InvalidArgumentException("Invalid array '{$class}'");
             }
 
             $subClass = substr($class, 0, -2);
             $values = [];
+
             foreach ($data as $key => $value) {
                 $values[] = self::deserialize($value, $subClass, null);
             }
+
             return $values;
         }
 
         if (preg_match('/^(array<|map\[)/', $class)) { // for associative array e.g. array<string,int>
-            $data = is_string($data) ? json_decode($data) : $data;
-            settype($data, 'array');
+            $data = \is_string($data) ? json_decode($data) : $data;
+            $data = (array) $data;
             $inner = substr($class, 4, -1);
             $deserialized = [];
-            if (strrpos($inner, ",") !== false) {
+
+            if (strrpos($inner, ',') !== false) {
                 $subClass_array = explode(',', $inner, 2);
                 $subClass = $subClass_array[1];
+
                 foreach ($data as $key => $value) {
                     $deserialized[$key] = self::deserialize($value, $subClass, null);
                 }
             }
+
             return $deserialized;
         }
 
         if ($class === 'object') {
-            settype($data, 'array');
-            return $data;
-        } elseif ($class === 'mixed') {
-            settype($data, gettype($data));
+            return (array) $data;
+        }
+
+        if ($class === 'mixed') {
+            settype($data, \gettype($data));
+
             return $data;
         }
 
@@ -487,138 +457,199 @@ class ObjectSerializer
 
             // determine file name
             if (
-                is_array($httpHeaders)
-                && array_key_exists('Content-Disposition', $httpHeaders)
+                \is_array($httpHeaders)
+                && \array_key_exists('Content-Disposition', $httpHeaders)
                 && preg_match('/inline; filename=[\'"]?([^\'"\s]+)[\'"]?$/i', $httpHeaders['Content-Disposition'], $match)
             ) {
-                $filename = Configuration::getDefaultConfiguration()->getTempFolderPath() . DIRECTORY_SEPARATOR . self::sanitizeFilename($match[1]);
+                $filename = Configuration::getDefaultConfiguration()->getTempFolderPath().\DIRECTORY_SEPARATOR.self::sanitizeFilename($match[1]);
             } else {
                 $filename = tempnam(Configuration::getDefaultConfiguration()->getTempFolderPath(), '');
             }
 
-            $file = fopen($filename, 'w');
+            $file = fopen($filename, 'wb');
+
             while ($chunk = $data->read(200)) {
                 fwrite($file, $chunk);
             }
+
             fclose($file);
 
             return new \SplFileObject($filename, 'r');
         }
 
         /** @psalm-suppress ParadoxicalCondition */
-        if (in_array($class, ['\DateTime', '\SplFileObject', 'array', 'bool', 'boolean', 'byte', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'], true)) {
+        if (\in_array($class, ['\DateTime', '\SplFileObject', 'array', 'bool', 'boolean', 'byte', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'], true)) {
             settype($data, $class);
+
             return $data;
         }
-
 
         if (method_exists($class, 'getAllowableEnumValues')) {
-            if (!in_array($data, $class::getAllowableEnumValues(), true)) {
+            if (!\in_array($data, $class::getAllowableEnumValues(), true)) {
                 $imploded = implode("', '", $class::getAllowableEnumValues());
-                throw new \InvalidArgumentException("Invalid value for enum '$class', must be one of: '$imploded'");
+
+                throw new \InvalidArgumentException("Invalid value for enum '{$class}', must be one of: '{$imploded}'");
             }
+
             return $data;
-        } else {
-            $data = is_string($data) ? json_decode($data) : $data;
-
-            if (is_array($data)) {
-                $data = (object)$data;
-            }
-
-            // If a discriminator is defined and points to a valid subclass, use it.
-            $discriminator = $class::DISCRIMINATOR;
-            if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
-                $subclass = '\VitexSoftware\Raiffeisenbank\Model\\' . $data->{$discriminator};
-                if (is_subclass_of($subclass, $class)) {
-                    $class = $subclass;
-                }
-            }
-
-            /** @var ModelInterface $instance */
-            $instance = new $class();
-            foreach ($instance::openAPITypes() as $property => $type) {
-                $propertySetter = $instance::setters()[$property];
-
-                if (!isset($propertySetter)) {
-                    continue;
-                }
-
-                if (!isset($data->{$instance::attributeMap()[$property]})) {
-                    if ($instance::isNullable($property)) {
-                        $instance->$propertySetter(null);
-                    }
-
-                    continue;
-                }
-
-                if (isset($data->{$instance::attributeMap()[$property]})) {
-                    $propertyValue = $data->{$instance::attributeMap()[$property]};
-                    $instance->$propertySetter(self::deserialize($propertyValue, $type, null));
-                }
-            }
-            return $instance;
         }
+
+        $data = \is_string($data) ? json_decode($data) : $data;
+
+        if (\is_array($data)) {
+            $data = (object) $data;
+        }
+
+        // If a discriminator is defined and points to a valid subclass, use it.
+        $discriminator = $class::DISCRIMINATOR;
+
+        if (!empty($discriminator) && isset($data->{$discriminator}) && \is_string($data->{$discriminator})) {
+            $subclass = '\VitexSoftware\Raiffeisenbank\Model\\'.$data->{$discriminator};
+
+            if (is_subclass_of($subclass, $class)) {
+                $class = $subclass;
+            }
+        }
+
+        /** @var ModelInterface $instance */
+        $instance = new $class();
+
+        foreach ($instance::openAPITypes() as $property => $type) {
+            $propertySetter = $instance::setters()[$property];
+
+            if (!isset($propertySetter)) {
+                continue;
+            }
+
+            if (!isset($data->{$instance::attributeMap()[$property]})) {
+                if ($instance::isNullable($property)) {
+                    $instance->{$propertySetter}(null);
+                }
+
+                continue;
+            }
+
+            if (isset($data->{$instance::attributeMap()[$property]})) {
+                $propertyValue = $data->{$instance::attributeMap()[$property]};
+                $instance->{$propertySetter}(self::deserialize($propertyValue, $type, null));
+            }
+        }
+
+        return $instance;
     }
 
     /**
-    * Build a query string from an array of key value pairs.
-    *
-    * This function can use the return value of `parse()` to build a query
-    * string. This function does not modify the provided keys when an array is
-    * encountered (like `http_build_query()` would).
-    *
-    * The function is copied from https://github.com/guzzle/psr7/blob/a243f80a1ca7fe8ceed4deee17f12c1930efe662/src/Query.php#L59-L112
-    * with a modification which is described in https://github.com/guzzle/psr7/pull/603
-    *
-    * @param array     $params              Query string parameters.
-    * @param int|false $encoding            Set to false to not encode, PHP_QUERY_RFC3986
-    *                                       to encode using RFC3986, or PHP_QUERY_RFC1738
-    *                                       to encode using RFC1738.
-    */
-    public static function buildQuery(array $params, $encoding = PHP_QUERY_RFC3986): string
+     * Build a query string from an array of key value pairs.
+     *
+     * This function can use the return value of `parse()` to build a query
+     * string. This function does not modify the provided keys when an array is
+     * encountered (like `http_build_query()` would).
+     *
+     * The function is copied from https://github.com/guzzle/psr7/blob/a243f80a1ca7fe8ceed4deee17f12c1930efe662/src/Query.php#L59-L112
+     * with a modification which is described in https://github.com/guzzle/psr7/pull/603
+     *
+     * @param array     $params   query string parameters
+     * @param false|int $encoding set to false to not encode, PHP_QUERY_RFC3986
+     *                            to encode using RFC3986, or PHP_QUERY_RFC1738
+     *                            to encode using RFC1738
+     */
+    public static function buildQuery(array $params, $encoding = \PHP_QUERY_RFC3986): string
     {
         if (!$params) {
             return '';
         }
 
         if ($encoding === false) {
-            $encoder = function (string $str): string {
+            $encoder = static function (string $str): string {
                 return $str;
             };
-        } elseif ($encoding === PHP_QUERY_RFC3986) {
+        } elseif ($encoding === \PHP_QUERY_RFC3986) {
             $encoder = 'rawurlencode';
-        } elseif ($encoding === PHP_QUERY_RFC1738) {
+        } elseif ($encoding === \PHP_QUERY_RFC1738) {
             $encoder = 'urlencode';
         } else {
             throw new \InvalidArgumentException('Invalid type');
         }
 
         $castBool = Configuration::BOOLEAN_FORMAT_INT === Configuration::getDefaultConfiguration()->getBooleanFormatForQueryString()
-            ? function ($v) { return (int) $v; }
-        : function ($v) { return $v ? 'true' : 'false'; };
+            ? static function ($v) {
+                return (int) $v;
+            }
+        : static function ($v) {
+            return $v ? 'true' : 'false';
+        };
 
         $qs = '';
+
         foreach ($params as $k => $v) {
             $k = $encoder((string) $k);
-            if (!is_array($v)) {
+
+            if (!\is_array($v)) {
                 $qs .= $k;
-                $v = is_bool($v) ? $castBool($v) : $v;
+                $v = \is_bool($v) ? $castBool($v) : $v;
+
                 if ($v !== null) {
                     $qs .= '='.$encoder((string) $v);
                 }
+
                 $qs .= '&';
             } else {
                 foreach ($v as $vv) {
                     $qs .= $k;
-                    $vv = is_bool($vv) ? $castBool($vv) : $vv;
+                    $vv = \is_bool($vv) ? $castBool($vv) : $vv;
+
                     if ($vv !== null) {
                         $qs .= '='.$encoder((string) $vv);
                     }
+
                     $qs .= '&';
                 }
             }
         }
 
         return $qs ? (string) substr($qs, 0, -1) : '';
+    }
+
+    /**
+     * Checks if a value is empty, based on its OpenAPI type.
+     *
+     * @param mixed $value
+     *
+     * @return bool true if $value is empty
+     */
+    private static function isEmptyValue($value, string $openApiType): bool
+    {
+        // If empty() returns false, it is not empty regardless of its type.
+        if (!empty($value)) {
+            return false;
+        }
+
+        // Null is always empty, as we cannot send a real "null" value in a query parameter.
+        if ($value === null) {
+            return true;
+        }
+
+        switch ($openApiType) {
+            // For numeric values, false and '' are considered empty.
+            // This comparison is safe for floating point values, since the previous call to empty() will
+            // filter out values that don't match 0.
+            case 'int':
+            case 'integer':
+                return $value !== 0;
+            case 'number':
+            case 'float':
+                return $value !== 0 && $value !== 0.0;
+                // For boolean values, '' is considered empty
+            case 'bool':
+            case 'boolean':
+                return !\in_array($value, [false, 0], true);
+                // For string values, '' is considered empty.
+            case 'string':
+                return $value === '';
+
+                // For all the other types, any value at this point can be considered empty.
+            default:
+                return true;
+        }
     }
 }
