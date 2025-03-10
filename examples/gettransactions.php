@@ -22,14 +22,13 @@ require_once '../vendor/autoload.php';
 $apiInstance = new PremiumAPI\GetTransactionListApi();
 $account_number = \Ease\Shared::cfg('ACCOUNT_NUMBER'); // string | Account number for which to get list of transactions in national format without 0 padding.
 $currency_code = 'CZK'; // string | Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd)
-$from = new \DateTime(); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
+$from = (new \DateTime())->modify('-15 day'); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
 $to = (new \DateTime())->modify('-1 day'); // \DateTime | Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
-$page = 56; // int | Page number to be requested. The first page is 1.
 
 $x_request_id = time(); // string | Unique request id provided by consumer application for reference and auditing.
 
 try {
-    $result = $apiInstance->getTransactionList($x_request_id, $account_number, $currency_code, $from, $to, $page);
+    $result = $apiInstance->getTransactionList($x_request_id, $account_number, $currency_code, $from, $to);
     print_r($result);
 } catch (\Ease\Exception $e) {
     echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), \PHP_EOL;
