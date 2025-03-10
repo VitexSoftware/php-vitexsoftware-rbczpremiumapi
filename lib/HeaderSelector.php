@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * HeaderSelector
- * PHP version 7.4+
+ * This file is part of the MultiFlexi package
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Production
+ * Production.
  *
  * Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.  Before making a call to Premium API, you need to register your app at our _Developer portal_. At _Developer Portal_ you obtain ClientID that your app must send in the request as `X-IBM-Client-Id`. These are your keys that grant your app access to the API. However, this is not enough, for a successful call your app needs to use mTLS. Thus, you not only need _https_ but also a client certificate issued by us. Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\\*p12** file for establishing mTLS connection to the bank.   Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.  **Note**: Be aware, that in certain error situations, API can return different error structure along with broader set of http status codes, than the one defined below
  *
@@ -30,19 +33,19 @@
 namespace VitexSoftware\Raiffeisenbank;
 
 /**
- * HeaderSelector Class Doc Comment
+ * HeaderSelector Class Doc Comment.
  *
  * @category Class
- * @package  VitexSoftware\Raiffeisenbank
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 class HeaderSelector
 {
     /**
      * @param string[] $accept
-     * @param string   $contentType
-     * @param bool     $isMultipart
+     *
      * @return string[]
      */
     public function selectHeaders(array $accept, string $contentType, bool $isMultipart): array
@@ -50,6 +53,7 @@ class HeaderSelector
         $headers = [];
 
         $accept = $this->selectAcceptHeader($accept);
+
         if ($accept !== null) {
             $headers['Accept'] = $accept;
         }
@@ -66,176 +70,11 @@ class HeaderSelector
     }
 
     /**
-     * Return the header 'Accept' based on an array of Accept provided.
-     *
-     * @param string[] $accept Array of header
-     *
-     * @return null|string Accept (e.g. application/json)
+     * Detects whether a string contains a valid JSON mime type.
      */
-    private function selectAcceptHeader(array $accept): ?string
-    {
-        # filter out empty entries
-        $accept = array_filter($accept);
-
-        if (count($accept) === 0) {
-            return null;
-        }
-
-        # If there's only one Accept header, just use it
-        if (count($accept) === 1) {
-            return reset($accept);
-        }
-
-        # If none of the available Accept headers is of type "json", then just use all them
-        $headersWithJson = $this->selectJsonMimeList($accept);
-        if (count($headersWithJson) === 0) {
-            return implode(',', $accept);
-        }
-
-        # If we got here, then we need add quality values (weight), as described in IETF RFC 9110, Items 12.4.2/12.5.1,
-        # to give the highest priority to json-like headers - recalculating the existing ones, if needed
-        return $this->getAcceptHeaderWithAdjustedWeight($accept, $headersWithJson);
-    }
-
-    /**
-    * Detects whether a string contains a valid JSON mime type
-    *
-    * @param string $searchString
-    * @return bool
-    */
     public function isJsonMime(string $searchString): bool
     {
         return preg_match('~^application/(json|[\w!#$&.+-^_]+\+json)\s*(;|$)~', $searchString) === 1;
-    }
-
-    /**
-    * Select all items from a list containing a JSON mime type
-    *
-    * @param array $mimeList
-    * @return array
-    */
-    private function selectJsonMimeList(array $mimeList): array
-    {
-        $jsonMimeList = [];
-        foreach ($mimeList as $mime) {
-            if ($this->isJsonMime($mime)) {
-                $jsonMimeList[] = $mime;
-            }
-        }
-        return $jsonMimeList;
-    }
-
-
-    /**
-    * Create an Accept header string from the given "Accept" headers array, recalculating all weights
-    *
-    * @param string[] $accept            Array of Accept Headers
-    * @param string[] $headersWithJson   Array of Accept Headers of type "json"
-    *
-    * @return string "Accept" Header (e.g. "application/json, text/html; q=0.9")
-    */
-    private function getAcceptHeaderWithAdjustedWeight(array $accept, array $headersWithJson): string
-    {
-        $processedHeaders = [
-            'withApplicationJson' => [],
-            'withJson' => [],
-            'withoutJson' => [],
-        ];
-
-        foreach ($accept as $header) {
-
-            $headerData = $this->getHeaderAndWeight($header);
-
-            if (stripos($headerData['header'], 'application/json') === 0) {
-                $processedHeaders['withApplicationJson'][] = $headerData;
-            } elseif (in_array($header, $headersWithJson, true)) {
-                $processedHeaders['withJson'][] = $headerData;
-            } else {
-                $processedHeaders['withoutJson'][] = $headerData;
-            }
-        }
-
-        $acceptHeaders = [];
-        $currentWeight = 1000;
-
-        $hasMoreThan28Headers = count($accept) > 28;
-
-        foreach ($processedHeaders as $headers) {
-            if (count($headers) > 0) {
-                $acceptHeaders[] = $this->adjustWeight($headers, $currentWeight, $hasMoreThan28Headers);
-            }
-        }
-
-        $acceptHeaders = array_merge(...$acceptHeaders);
-
-        return implode(',', $acceptHeaders);
-    }
-
-    /**
-     * Given an Accept header, returns an associative array splitting the header and its weight
-     *
-     * @param string $header "Accept" Header
-     *
-     * @return array with the header and its weight
-     */
-    private function getHeaderAndWeight(string $header): array
-    {
-        # matches headers with weight, splitting the header and the weight in $outputArray
-        if (preg_match('/(.*);\s*q=(1(?:\.0+)?|0\.\d+)$/', $header, $outputArray) === 1) {
-            $headerData = [
-                'header' => $outputArray[1],
-                'weight' => (int)($outputArray[2] * 1000),
-            ];
-        } else {
-            $headerData = [
-                'header' => trim($header),
-                'weight' => 1000,
-            ];
-        }
-
-        return $headerData;
-    }
-
-    /**
-     * @param array[] $headers
-     * @param float   $currentWeight
-     * @param bool    $hasMoreThan28Headers
-     * @return string[] array of adjusted "Accept" headers
-     */
-    private function adjustWeight(array $headers, float &$currentWeight, bool $hasMoreThan28Headers): array
-    {
-        usort($headers, function (array $a, array $b) {
-            return $b['weight'] - $a['weight'];
-        });
-
-        $acceptHeaders = [];
-        foreach ($headers as $index => $header) {
-            if ($index > 0 && $headers[$index - 1]['weight'] > $header['weight']) {
-                $currentWeight = $this->getNextWeight($currentWeight, $hasMoreThan28Headers);
-            }
-
-            $weight = $currentWeight;
-
-            $acceptHeaders[] = $this->buildAcceptHeader($header['header'], $weight);
-        }
-
-        $currentWeight = $this->getNextWeight($currentWeight, $hasMoreThan28Headers);
-
-        return $acceptHeaders;
-    }
-
-    /**
-     * @param string $header
-     * @param int    $weight
-     * @return string
-     */
-    private function buildAcceptHeader(string $header, int $weight): string
-    {
-        if ($weight === 1000) {
-            return $header;
-        }
-
-        return trim($header, '; ') . ';q=' . rtrim(sprintf('%0.3f', $weight / 1000), '0');
     }
 
     /**
@@ -256,9 +95,7 @@ class HeaderSelector
      * if there is a maximum of 28 "Accept" headers. If we have more than that (which is extremely unlikely), then we fall back to a 1-by-1
      * decrement rule, which will result in quality codes like "q=0.999", "q=0.998" etc.
      *
-     * @param int  $currentWeight varying from 1 to 1000 (will be divided by 1000 to build the quality value)
-     * @param bool $hasMoreThan28Headers
-     * @return int
+     * @param int $currentWeight varying from 1 to 1000 (will be divided by 1000 to build the quality value)
      */
     public function getNextWeight(int $currentWeight, bool $hasMoreThan28Headers): int
     {
@@ -271,5 +108,160 @@ class HeaderSelector
         }
 
         return $currentWeight - 10 ** floor(log10($currentWeight - 1));
+    }
+
+    /**
+     * Return the header 'Accept' based on an array of Accept provided.
+     *
+     * @param string[] $accept Array of header
+     *
+     * @return null|string Accept (e.g. application/json)
+     */
+    private function selectAcceptHeader(array $accept): ?string
+    {
+        // filter out empty entries
+        $accept = array_filter($accept);
+
+        if (\count($accept) === 0) {
+            return null;
+        }
+
+        // If there's only one Accept header, just use it
+        if (\count($accept) === 1) {
+            return reset($accept);
+        }
+
+        // If none of the available Accept headers is of type "json", then just use all them
+        $headersWithJson = $this->selectJsonMimeList($accept);
+
+        if (\count($headersWithJson) === 0) {
+            return implode(',', $accept);
+        }
+
+        // If we got here, then we need add quality values (weight), as described in IETF RFC 9110, Items 12.4.2/12.5.1,
+        // to give the highest priority to json-like headers - recalculating the existing ones, if needed
+        return $this->getAcceptHeaderWithAdjustedWeight($accept, $headersWithJson);
+    }
+
+    /**
+     * Select all items from a list containing a JSON mime type.
+     */
+    private function selectJsonMimeList(array $mimeList): array
+    {
+        $jsonMimeList = [];
+
+        foreach ($mimeList as $mime) {
+            if ($this->isJsonMime($mime)) {
+                $jsonMimeList[] = $mime;
+            }
+        }
+
+        return $jsonMimeList;
+    }
+
+    /**
+     * Create an Accept header string from the given "Accept" headers array, recalculating all weights.
+     *
+     * @param string[] $accept          Array of Accept Headers
+     * @param string[] $headersWithJson Array of Accept Headers of type "json"
+     *
+     * @return string "Accept" Header (e.g. "application/json, text/html; q=0.9")
+     */
+    private function getAcceptHeaderWithAdjustedWeight(array $accept, array $headersWithJson): string
+    {
+        $processedHeaders = [
+            'withApplicationJson' => [],
+            'withJson' => [],
+            'withoutJson' => [],
+        ];
+
+        foreach ($accept as $header) {
+            $headerData = $this->getHeaderAndWeight($header);
+
+            if (str_starts_with(strtolower($headerData['header']), strtolower('application/json'))) {
+                $processedHeaders['withApplicationJson'][] = $headerData;
+            } elseif (\in_array($header, $headersWithJson, true)) {
+                $processedHeaders['withJson'][] = $headerData;
+            } else {
+                $processedHeaders['withoutJson'][] = $headerData;
+            }
+        }
+
+        $acceptHeaders = [];
+        $currentWeight = 1000;
+
+        $hasMoreThan28Headers = \count($accept) > 28;
+
+        foreach ($processedHeaders as $headers) {
+            if (\count($headers) > 0) {
+                $acceptHeaders[] = $this->adjustWeight($headers, $currentWeight, $hasMoreThan28Headers);
+            }
+        }
+
+        $acceptHeaders = array_merge(...$acceptHeaders);
+
+        return implode(',', $acceptHeaders);
+    }
+
+    /**
+     * Given an Accept header, returns an associative array splitting the header and its weight.
+     *
+     * @param string $header "Accept" Header
+     *
+     * @return array with the header and its weight
+     */
+    private function getHeaderAndWeight(string $header): array
+    {
+        // matches headers with weight, splitting the header and the weight in $outputArray
+        if (preg_match('/(.*);\s*q=(1(?:\.0+)?|0\.\d+)$/', $header, $outputArray) === 1) {
+            $headerData = [
+                'header' => $outputArray[1],
+                'weight' => (int) ($outputArray[2] * 1000),
+            ];
+        } else {
+            $headerData = [
+                'header' => trim($header),
+                'weight' => 1000,
+            ];
+        }
+
+        return $headerData;
+    }
+
+    /**
+     * @param array[] $headers
+     *
+     * @return string[] array of adjusted "Accept" headers
+     */
+    private function adjustWeight(array $headers, float &$currentWeight, bool $hasMoreThan28Headers): array
+    {
+        usort($headers, static function (array $a, array $b) {
+            return $b['weight'] - $a['weight'];
+        });
+
+        $acceptHeaders = [];
+
+        foreach ($headers as $index => $header) {
+            if ($index > 0 && $headers[$index - 1]['weight'] > $header['weight']) {
+                $currentWeight = $this->getNextWeight($currentWeight, $hasMoreThan28Headers);
+            }
+
+            $weight = $currentWeight;
+
+            $acceptHeaders[] = $this->buildAcceptHeader($header['header'], $weight);
+        }
+
+        $currentWeight = $this->getNextWeight($currentWeight, $hasMoreThan28Headers);
+
+        return $acceptHeaders;
+    }
+
+    private function buildAcceptHeader(string $header, int $weight): string
+    {
+        if ($weight === 1000) {
+            return $header;
+        }
+
+        return trim($header, '; ').';q='.rtrim(sprintf('%0.3f', $weight / 1000), '0');
     }
 }

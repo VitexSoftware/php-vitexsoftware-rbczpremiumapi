@@ -2,7 +2,7 @@
 
 /**
  * {{classname}}
- * PHP version 7.4+
+ * PHP version 8.1+
  *
  * @category Class
  * @package  {{invokerPackage}}
@@ -45,40 +45,40 @@ use {{invokerPackage}}\ObjectSerializer;
     /**
      * @var ClientInterface
      */
-    protected $client;
+    protected ClientInterface $client;
 
     /**
      * @var Configuration
      */
-    protected $config;
+    protected Configuration $config;
 
     /**
      * @var HeaderSelector
      */
-    protected $headerSelector;
+    protected HeaderSelector $headerSelector;
 
     /**
      * @var int Host index
      */
-    protected $hostIndex;
+    protected int $hostIndex = 0;
     
     /**
      * ClientID obtained from Developer Portal - when you registered your app with us.
      * @var string
      */
-    protected $xIBMClientId = null;
+    protected string $xIBMClientId = '';
 
     /**
      * Use the /rbcz/premium/mock/* path for endpoints ?
      */
-    protected  $mockMode = false;
+    protected bool $mockMode = false;
     
     /**
      * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
      * 
      * @var string Description
      */
-    protected $SUIPAddress = null;
+    protected string $SUIPAddress = '';
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [{{#operation}}
@@ -96,22 +96,22 @@ use {{invokerPackage}}\ObjectSerializer;
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
-        ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
+        ?ClientInterface $client = null,
+        ?Configuration $config = null,
+        ?HeaderSelector $selector = null,
         $hostIndex = 0
     ) {
         $this->client = $client ?: new ApiClient();
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
-        if(method_exists($this->client, 'getXIBMClientId')){
+        if (method_exists($this->client, 'getXIBMClientId')){
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
-        if(method_exists($this->client, 'getpSUIPAddress')){
+        if (method_exists($this->client, 'getpSUIPAddress')){
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
-        if(method_exists($this->client, 'getMockMode')){
+        if (method_exists($this->client, 'getMockMode')){
             $this->setMockMode($this->client->getMockMode());
         }
     }
@@ -121,11 +121,12 @@ use {{invokerPackage}}\ObjectSerializer;
      * 
      * @param string $clientId Description
      * 
-     * @return string
+     * @return self
      */
-    public function setXIBMClientId($clientId)
+    public function setXIBMClientId($clientId): self
     {
-        return $this->xIBMClientId = $clientId;
+        $this->xIBMClientId = $clientId;
+        return $this;
     }
     
     /**
@@ -133,7 +134,7 @@ use {{invokerPackage}}\ObjectSerializer;
      * 
      * @return string
      */
-    public function getXIBMClientId()
+    public function getXIBMClientId(): string
     {
         return $this->xIBMClientId;
     }
@@ -141,15 +142,19 @@ use {{invokerPackage}}\ObjectSerializer;
     /**
      * @param  string $SUIPAddress IP address of a client 
      */
-    public function setSUIPAddress($SUIPAddress) {
+    public function setSUIPAddress($SUIPAddress): self
+    {
         $this->SUIPAddress;
+        return $this;
     }
     
     /**
      * @param boolean $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking) {
+    public function setMockMode($mocking): self
+    {
         $this->mockMode = $mocking;
+        return $this;
     }
     
     /**
@@ -157,9 +162,10 @@ use {{invokerPackage}}\ObjectSerializer;
      *
      * @param int $hostIndex Host index (required)
      */
-    public function setHostIndex($hostIndex): void
+    public function setHostIndex($hostIndex): self
     {
         $this->hostIndex = $hostIndex;
+        return $this;
     }
 
     /**
@@ -639,13 +645,13 @@ use {{invokerPackage}}\ObjectSerializer;
         $variables = array_key_exists('variables', $associative_array) ? $associative_array['variables'] : [];
 {{/servers.0}}
         $contentType = $associative_array['contentType'] ?? self::contentTypes['{{{operationId}}}'][0];
-        
+
         {{/vendorExtensions.x-group-parameters}}
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
         
-        {{#allParams}}            
-            
+        {{#allParams}}
+
         {{#required}}
         // verify the required parameter '{{paramName}}' is set
         if (${{paramName}} === null || (is_array(${{paramName}}) && count(${{paramName}}) === 0)) {
@@ -656,12 +662,12 @@ use {{invokerPackage}}\ObjectSerializer;
         {{/required}}
         {{#hasValidation}}
         {{#maxLength}}
-        if ({{^required}}${{paramName}} !== null && {{/required}}strlen(${{paramName}}) > {{maxLength}}) {
+        if ({{^required}}${{paramName}} !== null && {{/required}}strlen((string)${{paramName}}) > {{maxLength}}) {
             throw new \InvalidArgumentException('invalid length for "${{paramName}}" when calling {{classname}}.{{operationId}}, must be smaller than or equal to {{maxLength}}.');
         }
         {{/maxLength}}
         {{#minLength}}
-        if ({{^required}}${{paramName}} !== null && {{/required}}strlen(${{paramName}}) < {{minLength}}) {
+        if ({{^required}}${{paramName}} !== null && {{/required}}strlen((string)${{paramName}}) < {{minLength}}) {
             throw new \InvalidArgumentException('invalid length for "${{paramName}}" when calling {{classname}}.{{operationId}}, must be bigger than or equal to {{minLength}}.');
         }
         {{/minLength}}
@@ -676,7 +682,7 @@ use {{invokerPackage}}\ObjectSerializer;
         }
         {{/minimum}}
         {{#pattern}}
-        if ({{^required}}${{paramName}} !== null && {{/required}}!preg_match("{{{pattern}}}", ${{paramName}})) {
+        if ({{^required}}${{paramName}} !== null && {{/required}}!preg_match("{{{pattern}}}", (string) ${{paramName}})) {
             throw new \InvalidArgumentException("invalid value for \"{{paramName}}\" when calling {{classname}}.{{operationId}}, must conform to the pattern {{{pattern}}}.");
         }
         {{/pattern}}
@@ -691,9 +697,9 @@ use {{invokerPackage}}\ObjectSerializer;
         }
         {{/minItems}}
         {{/hasValidation}}{{/allParams}}
-
+        
         $resourcePath = '{{{path}}}';
-        if($this->mockMode === true){
+        if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
         $formParams = [];
@@ -913,18 +919,21 @@ use {{invokerPackage}}\ObjectSerializer;
     {{/servers.0}}
     {{/operation}}
     /**
-     * Create http client option
+     * Create http client option.
      *
      * @throws \RuntimeException on file opening failure
+     *
      * @return array of http client options
      */
     protected function createHttpClientOption()
     {
         $options = [];
+
         if ($this->config->getDebug()) {
-            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
+            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'ab');
+
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new \RuntimeException('Failed to open the debug file: '.$this->config->getDebugFile());
             }
         }
 

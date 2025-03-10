@@ -164,15 +164,13 @@ class Transactor extends ApiClient
             $this->setDataValue('paymentAccount', ['accountNo' => $accountNumber, 'bankCode' => $counterAccount->organisationIdentification->bankCode]);
 
             $amount = strval(abs($transactionData->amount->value));
-            if ($transactionData->amount->currency == 'CZK') {
+            if ($transactionData->amount->currency === 'CZK') {
                 $this->setDataValue('homeCurrency', ['priceNone' => $amount]);
             } else {
                 $this->setDataValue('foreginCurrency', ['priceNone' => $amount]); //TODO: Not tested
             }
         }
 
-//        $this->setDataValue('source', $this->sourceString());
-//        echo $this->getJsonizedData() . "\n";
     }
 
     /**

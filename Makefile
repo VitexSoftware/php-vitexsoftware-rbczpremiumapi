@@ -26,7 +26,3 @@ cs: ## Update Coding Standards
 .PHONY: phpunit
 phpunit: ## Run Tests
 	vendor/bin/phpunit tests
-
-
-
-

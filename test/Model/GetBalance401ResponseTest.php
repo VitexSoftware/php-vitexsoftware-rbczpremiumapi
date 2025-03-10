@@ -1,17 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 /**
- * GetBalance401ResponseTest
+ * This file is part of the MultiFlexi package
  *
- * PHP version 7.4
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Production
+ * Production.
  *
  * Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.  Before making a call to Premium API, you need to register your app at our _Developer portal_. At _Developer Portal_ you obtain ClientID that your app must send in the request as `X-IBM-Client-Id`. These are your keys that grant your app access to the API. However, this is not enough, for a successful call your app needs to use mTLS. Thus, you not only need _https_ but also a client certificate issued by us. Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\\*p12** file for establishing mTLS connection to the bank.   Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.  **Note**: Be aware, that in certain error situations, API can return different error structure along with broader set of http status codes, than the one defined below
  *
@@ -32,67 +35,68 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetBalance401ResponseTest Class Doc Comment
+ * GetBalance401ResponseTest Class Doc Comment.
  *
  * @category    Class
+ *
  * @description GetBalance401Response
- * @package     VitexSoftware\Raiffeisenbank
+ *
  * @author      OpenAPI Generator team
- * @link        https://openapi-generator.tech
+ *
+ * @see        https://openapi-generator.tech
  */
 class GetBalance401ResponseTest extends TestCase
 {
-
     /**
-     * Setup before running any test case
+     * Setup before running any test case.
      */
     public static function setUpBeforeClass(): void
     {
     }
 
     /**
-     * Setup before running each test case
-     */
-    public function setUp(): void
-    {
-    }
-
-    /**
-     * Clean up after running each test case
-     */
-    public function tearDown(): void
-    {
-    }
-
-    /**
-     * Clean up after running all test cases
+     * Clean up after running all test cases.
      */
     public static function tearDownAfterClass(): void
     {
     }
 
     /**
-     * Test "GetBalance401Response"
+     * Setup before running each test case.
      */
-    public function testGetBalance401Response()
+    protected function setUp(): void
+    {
+    }
+
+    /**
+     * Clean up after running each test case.
+     */
+    protected function tearDown(): void
+    {
+    }
+
+    /**
+     * Test "GetBalance401Response".
+     */
+    public function testGetBalance401Response(): void
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "error"
+     * Test attribute "error".
      */
-    public function testPropertyError()
+    public function testPropertyError(): void
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "errorDescription"
+     * Test attribute "errorDescription".
      */
-    public function testPropertyErrorDescription()
+    public function testPropertyErrorDescription(): void
     {
         // TODO: implement
         $this->markTestIncomplete('Not implemented');

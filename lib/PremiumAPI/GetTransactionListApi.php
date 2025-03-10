@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * GetTransactionListApi
- * PHP version 7.4+
+ * This file is part of the MultiFlexi package
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Production
+ * Production.
  *
  * Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.  Before making a call to Premium API, you need to register your app at our _Developer portal_. At _Developer Portal_ you obtain ClientID that your app must send in the request as `X-IBM-Client-Id`. These are your keys that grant your app access to the API. However, this is not enough, for a successful call your app needs to use mTLS. Thus, you not only need _https_ but also a client certificate issued by us. Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\\*p12** file for establishing mTLS connection to the bank.   Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.  **Note**: Be aware, that in certain error situations, API can return different error structure along with broader set of http status codes, than the one defined below
  *
@@ -43,137 +46,134 @@ use VitexSoftware\Raiffeisenbank\HeaderSelector;
 use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * GetTransactionListApi Class Doc Comment
+ * GetTransactionListApi Class Doc Comment.
  *
  * @category Class
- * @package  VitexSoftware\Raiffeisenbank
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 class GetTransactionListApi
 {
     /**
-     * @var ClientInterface
+     * @var string[] *
      */
-    protected $client;
-
-    /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * ClientID obtained from Developer Portal - when you registered your app with us.
-     * @var string
-     */
-    protected $xIBMClientId = null;
-
-    /**
-     * Use the /rbcz/premium/mock/* path for endpoints ?
-     */
-    protected $mockMode = false;
-
-    /**
-     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional)
-     *
-     * @var string Description
-     */
-    protected $SUIPAddress = null;
-
-    /** @var string[] $contentTypes **/
     public const contentTypes = [
         'getTransactionList' => [
             'application/json',
         ],
     ];
 
+    protected ClientInterface $client;
+
+    protected Configuration $config;
+
+    protected HeaderSelector $headerSelector;
+
     /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
-     * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
+     * @var int Host index
+     */
+    protected int $hostIndex = 0;
+
+    /**
+     * ClientID obtained from Developer Portal - when you registered your app with us.
+     */
+    protected string $xIBMClientId = '';
+
+    /**
+     * Use the /rbcz/premium/mock/* path for endpoints ?
+     */
+    protected bool $mockMode = false;
+
+    /**
+     * the end IP address of the client application (no server) in IPv4 or IPv6 format. If the bank client (your user) uses a browser by which he accesses your server app, we need to know the IP address of his browser. Always provide the closest IP address to the real end-user possible. (optional).
+     *
+     * @var string Description
+     */
+    protected string $SUIPAddress = '';
+
+    /**
+     * @param int $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
-        ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        ?ClientInterface $client = null,
+        ?Configuration $config = null,
+        ?HeaderSelector $selector = null,
+        $hostIndex = 0,
     ) {
         $this->client = $client ?: new ApiClient();
         $this->config = $config ?: new Configuration();
         $this->headerSelector = $selector ?: new HeaderSelector();
         $this->hostIndex = $hostIndex;
+
         if (method_exists($this->client, 'getXIBMClientId')) {
             $this->setXIBMClientId($this->client->getXIBMClientId());
         }
+
         if (method_exists($this->client, 'getpSUIPAddress')) {
             $this->setSUIPAddress($this->client->getpSUIPAddress());
         }
+
         if (method_exists($this->client, 'getMockMode')) {
             $this->setMockMode($this->client->getMockMode());
         }
     }
 
     /**
-     * Keep ClientID obtained from Developer Portal
+     * Keep ClientID obtained from Developer Portal.
      *
      * @param string $clientId Description
-     *
-     * @return string
      */
-    public function setXIBMClientId($clientId)
+    public function setXIBMClientId($clientId): self
     {
-        return $this->xIBMClientId = $clientId;
+        $this->xIBMClientId = $clientId;
+
+        return $this;
     }
 
     /**
-     * Give you ClientID obtained from Developer Portal
-     *
-     * @return string
+     * Give you ClientID obtained from Developer Portal.
      */
-    public function getXIBMClientId()
+    public function getXIBMClientId(): string
     {
         return $this->xIBMClientId;
     }
 
     /**
-     * @param  string $SUIPAddress IP address of a client
+     * @param string $SUIPAddress IP address of a client
      */
-    public function setSUIPAddress($SUIPAddress)
+    public function setSUIPAddress($SUIPAddress): self
     {
         $this->SUIPAddress;
+
+        return $this;
     }
 
     /**
-     * @param boolean $mocking Use mocking api for development purposes ?
+     * @param bool $mocking Use mocking api for development purposes ?
      */
-    public function setMockMode($mocking)
+    public function setMockMode($mocking): self
     {
         $this->mockMode = $mocking;
+
+        return $this;
     }
 
     /**
-     * Set the host index
+     * Set the host index.
      *
      * @param int $hostIndex Host index (required)
      */
-    public function setHostIndex($hostIndex): void
+    public function setHostIndex($hostIndex): self
     {
         $this->hostIndex = $hostIndex;
+
+        return $this;
     }
 
     /**
-     * Get the host index
+     * Get the host index.
      *
      * @return int Host index
      */
@@ -191,39 +191,42 @@ class GetTransactionListApi
     }
 
     /**
-     * Operation getTransactionList
+     * Operation getTransactionList.
      *
-     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param string    $xRequestId    Unique request id provided by consumer application for reference and auditing. (required)
+     * @param string    $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param string    $currencyCode  Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param \DateTime $from          Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param \DateTime $to            Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
+     * @param int       $page          Page number to be requested. The first page is 1. (optional)
+     * @param string    $contentType   The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
+     *
      * @return object|object|object|object|object|object
      */
     public function getTransactionList($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
-        list($response) = $this->getTransactionListWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
+        [$response] = $this->getTransactionListWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType);
+
         return $response;
     }
 
     /**
-     * Operation getTransactionListWithHttpInfo
+     * Operation getTransactionListWithHttpInfo.
      *
-     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param string    $xRequestId    Unique request id provided by consumer application for reference and auditing. (required)
+     * @param string    $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param string    $currencyCode  Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param \DateTime $from          Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param \DateTime $to            Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
+     * @param int       $page          Page number to be requested. The first page is 1. (optional)
+     * @param string    $contentType   The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
-     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
+     * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
+     *
      * @return array of object|object|object|object|object|object, HTTP status code, HTTP response headers (array of strings)
      */
     public function getTransactionListWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
@@ -232,6 +235,7 @@ class GetTransactionListApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -239,38 +243,38 @@ class GetTransactionListApi
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null,
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     null,
-                    null
+                    null,
                 );
             }
 
             $statusCode = $response->getStatusCode();
 
-
             switch ($statusCode) {
                 case 200:
                     if ('object' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ('object' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
-                                    $content
+                                    $content,
                                 );
                             }
                         }
@@ -279,25 +283,26 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 400:
                     if ('object' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ('object' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
-                                    $content
+                                    $content,
                                 );
                             }
                         }
@@ -306,25 +311,26 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ('object' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
-                                    $content
+                                    $content,
                                 );
                             }
                         }
@@ -333,25 +339,26 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 403:
                     if ('object' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ('object' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
-                                    $content
+                                    $content,
                                 );
                             }
                         }
@@ -360,25 +367,26 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ('object' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
-                                    $content
+                                    $content,
                                 );
                             }
                         }
@@ -387,25 +395,26 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 429:
                     if ('object' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ('object' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
-                                    $content
+                                    $content,
                                 );
                             }
                         }
@@ -414,7 +423,7 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -423,31 +432,33 @@ class GetTransactionListApi
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
-                        (string) $request->getUri()
+                        (string) $request->getUri(),
                     ),
                     $statusCode,
                     $response->getHeaders(),
-                    (string) $response->getBody()
+                    (string) $response->getBody(),
                 );
             }
 
             $returnType = 'object';
+
             if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
+
                 if ($returnType !== 'string') {
                     try {
-                        $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                        $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                     } catch (\JsonException $exception) {
                         throw new ApiException(
                             sprintf(
                                 'Error JSON decoding server response (%s)',
-                                $request->getUri()
+                                $request->getUri(),
                             ),
                             $statusCode,
                             $response->getHeaders(),
-                            $content
+                            $content,
                         );
                     }
                 }
@@ -456,7 +467,7 @@ class GetTransactionListApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
         } catch (ApiException $e) {
             switch ($e->getCode()) {
@@ -464,91 +475,100 @@ class GetTransactionListApi
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
 
     /**
-     * Operation getTransactionListAsync
+     * Operation getTransactionListAsync.
      *
-     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param string    $xRequestId    Unique request id provided by consumer application for reference and auditing. (required)
+     * @param string    $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param string    $currencyCode  Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param \DateTime $from          Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param \DateTime $to            Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
+     * @param int       $page          Page number to be requested. The first page is 1. (optional)
+     * @param string    $contentType   The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
+     *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getTransactionListAsync($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
     {
         return $this->getTransactionListAsyncWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page, $contentType)
             ->then(
-                function ($response) {
+                static function ($response) {
                     return $response[0];
-                }
+                },
             );
     }
 
     /**
-     * Operation getTransactionListAsyncWithHttpInfo
+     * Operation getTransactionListAsyncWithHttpInfo.
      *
-     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param string    $xRequestId    Unique request id provided by consumer application for reference and auditing. (required)
+     * @param string    $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param string    $currencyCode  Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param \DateTime $from          Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param \DateTime $to            Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
+     * @param int       $page          Page number to be requested. The first page is 1. (optional)
+     * @param string    $contentType   The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
+     *
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
     public function getTransactionListAsyncWithHttpInfo($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
@@ -559,11 +579,12 @@ class GetTransactionListApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                static function ($response) use ($returnType) {
                     if ($returnType === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
+
                         if ($returnType !== 'string') {
                             $content = json_decode($content);
                         }
@@ -572,38 +593,40 @@ class GetTransactionListApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                static function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
                             $statusCode,
-                            $exception->getRequest()->getUri()
+                            $exception->getRequest()->getUri(),
                         ),
                         $statusCode,
                         $response->getHeaders(),
-                        (string) $response->getBody()
+                        (string) $response->getBody(),
                     );
-                }
+                },
             );
     }
 
     /**
-     * Create request for operation 'getTransactionList'
+     * Create request for operation 'getTransactionList'.
      *
-     * @param  string $xRequestId Unique request id provided by consumer application for reference and auditing. (required)
-     * @param  string $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
-     * @param  string $currencyCode Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
-     * @param  \DateTime $from Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
-     * @param  \DateTime $to Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
-     * @param  int $page Page number to be requested. The first page is 1. (optional)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
+     * @param string    $xRequestId    Unique request id provided by consumer application for reference and auditing. (required)
+     * @param string    $accountNumber Account number for which to get list of transactions in national format without 0 padding. (required)
+     * @param string    $currencyCode  Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) (required)
+     * @param \DateTime $from          Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z (required)
+     * @param \DateTime $to            Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z (required)
+     * @param int       $page          Page number to be requested. The first page is 1. (optional)
+     * @param string    $contentType   The value for the Content-Type header. Check self::contentTypes['getTransactionList'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
+     *
      * @return \GuzzleHttp\Psr7\Request
      */
     public function getTransactionListRequest($xRequestId, $accountNumber, $currencyCode, $from, $to, $page = null, string $contentType = self::contentTypes['getTransactionList'][0])
@@ -611,83 +634,90 @@ class GetTransactionListApi
         $xIBMClientId = $this->getXIBMClientId();
         $pSUIPAddress = $this->SUIPAddress;
 
-
         // verify the required parameter 'xIBMClientId' is set
-        if ($xIBMClientId === null || (is_array($xIBMClientId) && count($xIBMClientId) === 0)) {
+        if ($xIBMClientId === null || (\is_array($xIBMClientId) && \count($xIBMClientId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $xIBMClientId when calling getTransactionList'
+                'Missing the required parameter $xIBMClientId when calling getTransactionList',
             );
         }
 
         // verify the required parameter 'xRequestId' is set
-        if ($xRequestId === null || (is_array($xRequestId) && count($xRequestId) === 0)) {
+        if ($xRequestId === null || (\is_array($xRequestId) && \count($xRequestId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $xRequestId when calling getTransactionList'
+                'Missing the required parameter $xRequestId when calling getTransactionList',
             );
         }
-        if (strlen($xRequestId) > 60) {
+
+        if (\strlen((string) $xRequestId) > 60) {
             throw new \InvalidArgumentException('invalid length for "$xRequestId" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 60.');
         }
-        if (!preg_match("/[a-zA-Z0-9\\-_:]{1,60}/", $xRequestId)) {
-            throw new \InvalidArgumentException("invalid value for \"xRequestId\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.");
+
+        if (!preg_match('/[a-zA-Z0-9\\-_:]{1,60}/', (string) $xRequestId)) {
+            throw new \InvalidArgumentException('invalid value for "xRequestId" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[a-zA-Z0-9\\-_:]{1,60}/.');
         }
 
         // verify the required parameter 'accountNumber' is set
-        if ($accountNumber === null || (is_array($accountNumber) && count($accountNumber) === 0)) {
+        if ($accountNumber === null || (\is_array($accountNumber) && \count($accountNumber) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $accountNumber when calling getTransactionList'
+                'Missing the required parameter $accountNumber when calling getTransactionList',
             );
         }
-        if (strlen($accountNumber) > 10) {
+
+        if (\strlen((string) $accountNumber) > 10) {
             throw new \InvalidArgumentException('invalid length for "$accountNumber" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 10.');
         }
-        if (!preg_match("/[0-9]{1,10}/", $accountNumber)) {
-            throw new \InvalidArgumentException("invalid value for \"accountNumber\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[0-9]{1,10}/.");
+
+        if (!preg_match('/[0-9]{1,10}/', (string) $accountNumber)) {
+            throw new \InvalidArgumentException('invalid value for "accountNumber" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[0-9]{1,10}/.');
         }
 
         // verify the required parameter 'currencyCode' is set
-        if ($currencyCode === null || (is_array($currencyCode) && count($currencyCode) === 0)) {
+        if ($currencyCode === null || (\is_array($currencyCode) && \count($currencyCode) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $currencyCode when calling getTransactionList'
+                'Missing the required parameter $currencyCode when calling getTransactionList',
             );
         }
-        if (strlen($currencyCode) > 3) {
+
+        if (\strlen((string) $currencyCode) > 3) {
             throw new \InvalidArgumentException('invalid length for "$currencyCode" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 3.');
         }
-        if (!preg_match("/[A-Z]{1,3}/", $currencyCode)) {
-            throw new \InvalidArgumentException("invalid value for \"currencyCode\" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[A-Z]{1,3}/.");
+
+        if (!preg_match('/[A-Z]{1,3}/', (string) $currencyCode)) {
+            throw new \InvalidArgumentException('invalid value for "currencyCode" when calling GetTransactionListApi.getTransactionList, must conform to the pattern /[A-Z]{1,3}/.');
         }
 
         // verify the required parameter 'from' is set
-        if ($from === null || (is_array($from) && count($from) === 0)) {
+        if ($from === null || (\is_array($from) && \count($from) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $from when calling getTransactionList'
+                'Missing the required parameter $from when calling getTransactionList',
             );
         }
 
         // verify the required parameter 'to' is set
-        if ($to === null || (is_array($to) && count($to) === 0)) {
+        if ($to === null || (\is_array($to) && \count($to) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $to when calling getTransactionList'
+                'Missing the required parameter $to when calling getTransactionList',
             );
         }
 
-        if ($pSUIPAddress !== null && strlen($pSUIPAddress) > 39) {
+        if ($pSUIPAddress !== null && \strlen((string) $pSUIPAddress) > 39) {
             throw new \InvalidArgumentException('invalid length for "$pSUIPAddress" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 39.');
         }
 
         if ($page !== null && $page > 99999) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be smaller than or equal to 99999.');
         }
+
         if ($page !== null && $page < 1) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling GetTransactionListApi.getTransactionList, must be bigger than or equal to 1.');
         }
 
-
         $resourcePath = '/rbcz/premium/api/accounts/{accountNumber}/{currencyCode}/transactions';
+
         if ($this->mockMode === true) {
             $resourcePath = str_replace('/rbcz/premium/api/', '/rbcz/premium/mock/', $resourcePath);
         }
+
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -701,7 +731,7 @@ class GetTransactionListApi
             'string', // openApiType
             '', // style
             false, // explode
-            true // required
+            true, // required
         ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
@@ -710,7 +740,7 @@ class GetTransactionListApi
             'string', // openApiType
             '', // style
             false, // explode
-            true // required
+            true, // required
         ) ?? []);
         // query params
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
@@ -719,17 +749,19 @@ class GetTransactionListApi
             'integer', // openApiType
             '', // style
             false, // explode
-            false // required
+            false, // required
         ) ?? []);
 
         // header params
         if ($xIBMClientId !== null) {
             $headerParams['X-IBM-Client-Id'] = ObjectSerializer::toHeaderValue($xIBMClientId);
         }
+
         // header params
         if ($xRequestId !== null) {
             $headerParams['X-Request-Id'] = ObjectSerializer::toHeaderValue($xRequestId);
         }
+
         // header params
         if ($pSUIPAddress !== null) {
             $headerParams['PSU-IP-Address'] = ObjectSerializer::toHeaderValue($pSUIPAddress);
@@ -738,44 +770,47 @@ class GetTransactionListApi
         // path params
         if ($accountNumber !== null) {
             $resourcePath = str_replace(
-                '{' . 'accountNumber' . '}',
+                '{accountNumber}',
                 ObjectSerializer::toPathValue($accountNumber),
-                $resourcePath
+                $resourcePath,
             );
         }
+
         // path params
         if ($currencyCode !== null) {
             $resourcePath = str_replace(
-                '{' . 'currencyCode' . '}',
+                '{currencyCode}',
                 ObjectSerializer::toPathValue($currencyCode),
-                $resourcePath
+                $resourcePath,
             );
         }
 
-
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json'],
             $contentType,
-            $multipart
+            $multipart,
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (\count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
+
                 foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    $formParamValueItems = \is_array($formParamValue) ? $formParamValue : [$formParamValue];
+
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
-                # if Content-Type contains "application/json", json_encode the form parameters
+            } elseif (str_contains(strtolower($headers['Content-Type']), strtolower('application/json'))) {
+                // if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
             } else {
                 // for HTTP post (form)
@@ -783,8 +818,8 @@ class GetTransactionListApi
             }
         }
 
-
         $defaultHeaders = [];
+
         if ($this->config->getUserAgent()) {
             $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
         }
@@ -792,32 +827,36 @@ class GetTransactionListApi
         $headers = array_merge(
             $defaultHeaders,
             $headerParams,
-            $headers
+            $headers,
         );
 
         $operationHost = $this->config->getHost();
         $query = ObjectSerializer::buildQuery($queryParams);
+
         return new Request(
             'GET',
-            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
-            $httpBody
+            $httpBody,
         );
     }
 
     /**
-     * Create http client option
+     * Create http client option.
      *
      * @throws \RuntimeException on file opening failure
+     *
      * @return array of http client options
      */
     protected function createHttpClientOption()
     {
         $options = [];
+
         if ($this->config->getDebug()) {
-            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
+            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'ab');
+
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new \RuntimeException('Failed to open the debug file: '.$this->config->getDebugFile());
             }
         }
 

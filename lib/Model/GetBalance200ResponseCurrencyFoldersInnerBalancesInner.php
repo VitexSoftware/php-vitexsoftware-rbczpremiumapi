@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * GetBalance200ResponseCurrencyFoldersInnerBalancesInner
+ * This file is part of the MultiFlexi package
  *
- * PHP version 7.4
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
- * Production
+ * Production.
  *
  * Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.  Before making a call to Premium API, you need to register your app at our _Developer portal_. At _Developer Portal_ you obtain ClientID that your app must send in the request as `X-IBM-Client-Id`. These are your keys that grant your app access to the API. However, this is not enough, for a successful call your app needs to use mTLS. Thus, you not only need _https_ but also a client certificate issued by us. Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\\*p12** file for establishing mTLS connection to the bank.   Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.  **Note**: Be aware, that in certain error situations, API can return different error structure along with broader set of http status codes, than the one defined below
  *
@@ -30,73 +32,141 @@
 
 namespace VitexSoftware\Raiffeisenbank\Model;
 
-use \ArrayAccess;
-use \VitexSoftware\Raiffeisenbank\ObjectSerializer;
+use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * GetBalance200ResponseCurrencyFoldersInnerBalancesInner Class Doc Comment
+ * GetBalance200ResponseCurrencyFoldersInnerBalancesInner Class Doc Comment.
  *
  * @category Class
- * @package  VitexSoftware\Raiffeisenbank
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
+ *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInterface, ArrayAccess, \JsonSerializable
+class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAccess, \JsonSerializable, ModelInterface
 {
     public const DISCRIMINATOR = null;
 
     /**
-      * The original name of the model.
-      *
-      * @var string
-      */
-    protected static $openAPIModelName = 'getBalance_200_response_currencyFolders_inner_balances_inner';
+     * The original name of the model.
+     */
+    protected static string $openAPIModelName = 'getBalance_200_response_currencyFolders_inner_balances_inner';
 
     /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
-    protected static $openAPITypes = [
+     * Array of property to type mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     */
+    protected static array $openAPITypes = [
         'balanceType' => 'string',
         'currency' => 'string',
-        'value' => 'float'
+        'value' => 'float',
     ];
 
     /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      * @phpstan-var array<string, string|null>
-      * @psalm-var array<string, string|null>
-      */
-    protected static $openAPIFormats = [
+     * Array of property to format mappings. Used for (de)serialization.
+     *
+     * @var string[]
+     *
+     * @phpstan-var array<string, string|null>
+     *
+     * @psalm-var array<string, string|null>
+     */
+    protected static array $openAPIFormats = [
         'balanceType' => null,
         'currency' => null,
-        'value' => 'double'
+        'value' => 'double',
     ];
 
     /**
-      * Array of nullable properties. Used for (de)serialization
-      *
-      * @var boolean[]
-      */
+     * Array of nullable properties. Used for (de)serialization.
+     *
+     * @var bool[]
+     */
     protected static array $openAPINullables = [
         'balanceType' => false,
         'currency' => false,
-        'value' => false
+        'value' => false,
     ];
 
     /**
-      * If a nullable field gets set to null, insert it here
-      *
-      * @var boolean[]
-      */
+     * If a nullable field gets set to null, insert it here.
+     *
+     * @var bool[]
+     */
     protected array $openAPINullablesSetToNull = [];
 
     /**
-     * Array of property to type mappings. Used for (de)serialization
+     * Array of attributes where the key is the local name,
+     * and the value is the original name.
+     *
+     * @var string[]
+     */
+    protected static array $attributeMap = [
+        'balanceType' => 'balanceType',
+        'currency' => 'currency',
+        'value' => 'value',
+    ];
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses).
+     *
+     * @var string[]
+     */
+    protected static array $setters = [
+        'balanceType' => 'setBalanceType',
+        'currency' => 'setCurrency',
+        'value' => 'setValue',
+    ];
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests).
+     *
+     * @var string[]
+     */
+    protected static array $getters = [
+        'balanceType' => 'getBalanceType',
+        'currency' => 'getCurrency',
+        'value' => 'getValue',
+    ];
+
+    /**
+     * Associative array for storing property values.
+     *
+     * @var mixed[]
+     */
+    protected array $container = [];
+
+    /**
+     * Constructor.
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(?array $data = null)
+    {
+        $this->setIfExists('balanceType', $data ?? [], null);
+        $this->setIfExists('currency', $data ?? [], null);
+        $this->setIfExists('value', $data ?? [], null);
+    }
+
+    /**
+     * Gets the string presentation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            \JSON_PRETTY_PRINT,
+        );
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization.
      *
      * @return array
      */
@@ -106,7 +176,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Array of property to format mappings. Used for (de)serialization
+     * Array of property to format mappings. Used for (de)serialization.
      *
      * @return array
      */
@@ -116,40 +186,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Array of nullable properties
-     *
-     * @return array
-     */
-    protected static function openAPINullables(): array
-    {
-        return self::$openAPINullables;
-    }
-
-    /**
-     * Array of nullable field names deliberately set to null
-     *
-     * @return boolean[]
-     */
-    private function getOpenAPINullablesSetToNull(): array
-    {
-        return $this->openAPINullablesSetToNull;
-    }
-
-    /**
-     * Setter - Array of nullable field names deliberately set to null
-     *
-     * @param boolean[] $openAPINullablesSetToNull
-     */
-    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
-    {
-        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
-    }
-
-    /**
-     * Checks if a property is nullable
-     *
-     * @param string $property
-     * @return bool
+     * Checks if a property is nullable.
      */
     public static function isNullable(string $property): bool
     {
@@ -158,52 +195,15 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
 
     /**
      * Checks if a nullable property is set to null.
-     *
-     * @param string $property
-     * @return bool
      */
     public function isNullableSetToNull(string $property): bool
     {
-        return in_array($property, $this->getOpenAPINullablesSetToNull(), true);
+        return \in_array($property, $this->getOpenAPINullablesSetToNull(), true);
     }
 
     /**
      * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @var string[]
-     */
-    protected static $attributeMap = [
-        'balanceType' => 'balanceType',
-        'currency' => 'currency',
-        'value' => 'value'
-    ];
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @var string[]
-     */
-    protected static $setters = [
-        'balanceType' => 'setBalanceType',
-        'currency' => 'setCurrency',
-        'value' => 'setValue'
-    ];
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @var string[]
-     */
-    protected static $getters = [
-        'balanceType' => 'getBalanceType',
-        'currency' => 'getCurrency',
-        'value' => 'getValue'
-    ];
-
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
+     * and the value is the original name.
      *
      * @return array
      */
@@ -213,7 +213,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Array of attributes to setter functions (for deserialization of responses)
+     * Array of attributes to setter functions (for deserialization of responses).
      *
      * @return array
      */
@@ -223,7 +223,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Array of attributes to getter functions (for serialization of requests)
+     * Array of attributes to getter functions (for serialization of requests).
      *
      * @return array
      */
@@ -242,45 +242,6 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
         return self::$openAPIModelName;
     }
 
-
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-
-    /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        $this->setIfExists('balanceType', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('value', $data ?? [], null);
-    }
-
-    /**
-    * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
-    * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
-    * $this->openAPINullablesSetToNull array
-    *
-    * @param string $variableName
-    * @param array  $fields
-    * @param mixed  $defaultValue
-    */
-    private function setIfExists(string $variableName, array $fields, $defaultValue): void
-    {
-        if (self::isNullable($variableName) && array_key_exists($variableName, $fields) && is_null($fields[$variableName])) {
-            $this->openAPINullablesSetToNull[] = $variableName;
-        }
-
-        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
-    }
-
     /**
      * Show all the invalid properties with reasons.
      *
@@ -293,29 +254,31 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
         if ($this->container['balanceType'] === null) {
             $invalidProperties[] = "'balanceType' can't be null";
         }
+
         if ($this->container['currency'] === null) {
             $invalidProperties[] = "'currency' can't be null";
         }
+
         if ($this->container['value'] === null) {
             $invalidProperties[] = "'value' can't be null";
         }
+
         return $invalidProperties;
     }
 
     /**
      * Validate all the properties in the model
-     * return true if all passed
+     * return true if all passed.
      *
      * @return bool True if all properties are valid
      */
     public function valid()
     {
-        return count($this->listInvalidProperties()) === 0;
+        return \count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
-     * Gets balanceType
+     * Gets balanceType.
      *
      * @return string
      */
@@ -325,7 +288,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Sets balanceType
+     * Sets balanceType.
      *
      * @param string $balanceType the balance type (CODEBOOK: AccountBalanceTypes)
      *
@@ -333,16 +296,17 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      */
     public function setBalanceType($balanceType)
     {
-        if (is_null($balanceType)) {
+        if (null === $balanceType) {
             throw new \InvalidArgumentException('non-nullable balanceType cannot be null');
         }
+
         $this->container['balanceType'] = $balanceType;
 
         return $this;
     }
 
     /**
-     * Gets currency
+     * Gets currency.
      *
      * @return string
      */
@@ -352,7 +316,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Sets currency
+     * Sets currency.
      *
      * @param string $currency The currency of the balance
      *
@@ -360,16 +324,17 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      */
     public function setCurrency($currency)
     {
-        if (is_null($currency)) {
+        if (null === $currency) {
             throw new \InvalidArgumentException('non-nullable currency cannot be null');
         }
+
         $this->container['currency'] = $currency;
 
         return $this;
     }
 
     /**
-     * Gets value
+     * Gets value.
      *
      * @return float
      */
@@ -379,7 +344,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Sets value
+     * Sets value.
      *
      * @param float $value The balance amount
      *
@@ -387,9 +352,10 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
      */
     public function setValue($value)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             throw new \InvalidArgumentException('non-nullable value cannot be null');
         }
+
         $this->container['value'] = $value;
 
         return $this;
@@ -397,9 +363,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
-     *
-     * @return boolean
+     * @param int $offset Offset
      */
     public function offsetExists($offset): bool
     {
@@ -409,9 +373,9 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -422,14 +386,12 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     /**
      * Sets value based on offset.
      *
-     * @param int|null $offset Offset
+     * @param null|int $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
-        if (is_null($offset)) {
+        if (null === $offset) {
             $this->container[] = $value;
         } else {
             $this->container[$offset] = $value;
@@ -439,9 +401,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
-     *
-     * @return void
+     * @param int $offset Offset
      */
     public function offsetUnset($offset): void
     {
@@ -450,10 +410,11 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
 
     /**
      * Serializes the object to a value that can be serialized natively by json_encode().
-     * @link https://www.php.net/manual/en/jsonserializable.jsonserialize.php
      *
-     * @return mixed Returns data which can be serialized by json_encode(), which is a value
-     * of any type other than a resource.
+     * @see https://www.php.net/manual/en/jsonserializable.jsonserialize.php
+     *
+     * @return mixed returns data which can be serialized by json_encode(), which is a value
+     *               of any type other than a resource
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
@@ -462,20 +423,7 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     }
 
     /**
-     * Gets the string presentation of the object
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
-            JSON_PRETTY_PRINT
-        );
-    }
-
-    /**
-     * Gets a header-safe presentation of the object
+     * Gets a header-safe presentation of the object.
      *
      * @return string
      */
@@ -483,6 +431,48 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements ModelInt
     {
         return json_encode(ObjectSerializer::sanitizeForSerialization($this));
     }
+
+    /**
+     * Array of nullable properties.
+     */
+    protected static function openAPINullables(): array
+    {
+        return self::$openAPINullables;
+    }
+
+    /**
+     * Array of nullable field names deliberately set to null.
+     *
+     * @return bool[]
+     */
+    private function getOpenAPINullablesSetToNull(): array
+    {
+        return $this->openAPINullablesSetToNull;
+    }
+
+    /**
+     * Setter - Array of nullable field names deliberately set to null.
+     *
+     * @param bool[] $openAPINullablesSetToNull
+     */
+    private function setOpenAPINullablesSetToNull(array $openAPINullablesSetToNull): void
+    {
+        $this->openAPINullablesSetToNull = $openAPINullablesSetToNull;
+    }
+
+    /**
+     * Sets $this->container[$variableName] to the given data or to the given default Value; if $variableName
+     * is nullable and its value is set to null in the $fields array, then mark it as "set to null" in the
+     * $this->openAPINullablesSetToNull array.
+     *
+     * @param mixed $defaultValue
+     */
+    private function setIfExists(string $variableName, array $fields, $defaultValue): void
+    {
+        if (self::isNullable($variableName) && \array_key_exists($variableName, $fields) && null === $fields[$variableName]) {
+            $this->openAPINullablesSetToNull[] = $variableName;
+        }
+
+        $this->container[$variableName] = $fields[$variableName] ?? $defaultValue;
+    }
 }
-
-

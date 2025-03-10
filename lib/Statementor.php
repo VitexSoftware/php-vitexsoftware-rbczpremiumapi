@@ -1,40 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * RaiffeisenBank - Statements handler class
+ * This file is part of the MultiFlexi package
  *
- * @category Class
- * @package  VitexSoftware\Raiffeisenbank
- * @author     Vítězslav Dvořák <info@vitexsoftware.com>
- * @copyright  (C) 2023-2024 VitexSoftware.com
+ * https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace VitexSoftware\Raiffeisenbank;
 
 /**
- * Description of Statementor
+ * Description of Statementor.
  *
  * @author vitex
  */
 class Statementor extends \Ease\Sand
 {
     use \Ease\Logger\Logging;
-
     public \DateTime $since;
-
     public \DateTime $until;
 
     /**
-     * DateTime Formating eg. 2021-08-01T10:00:00.0Z
-     * @var string
+     * DateTime Formating eg. 2021-08-01T10:00:00.0Z.
      */
-    public static $dateTimeFormat = 'Y-m-d\\TH:i:s.0\\Z';
+    public static string $dateTimeFormat = 'Y-m-d\\TH:i:s.0\\Z';
 
     /**
-     * DateTime Formating eg. 2021-08-01T10:00:00.0Z
-     * @var string
+     * DateTime Formating eg. 2021-08-01T10:00:00.0Z.
      */
-    public static $dateFormat = 'Y-m-d';
+    public static string $dateFormat = 'Y-m-d';
     private string $accountNumber = '';
 
     public function __construct(string $accountNumber = '', string $scope = '')
@@ -46,11 +46,10 @@ class Statementor extends \Ease\Sand
         if ($scope) {
             $this->setScope($scope);
         }
-
     }
 
     /**
-     * Set AccountNumber for further operations
+     * Set AccountNumber for further operations.
      *
      * @param string $accountNumber
      *
@@ -59,17 +58,16 @@ class Statementor extends \Ease\Sand
     public function setAccountNumber($accountNumber)
     {
         $this->accountNumber = $accountNumber;
-        $this->setObjectName($accountNumber . '@' . get_class($this));
+        $this->setObjectName($accountNumber.'@'.\get_class($this));
+
         return $this;
     }
 
     /**
-     * Obtain Statements from RB
+     * Obtain Statements from RB.
      *
-     * @param string $currencyCode CZK,USD etc
+     * @param string $currencyCode  CZK,USD etc
      * @param string $statementLine
-     *
-     * @return array
      */
     public function getStatements($currencyCode = 'CZK', $statementLine = 'MAIN'): array
     {
@@ -90,24 +88,30 @@ class Statementor extends \Ease\Sand
                     'dateTo' => $this->until->format(self::$dateFormat)]);
 
                 $result = $apiInstance->getStatements(ApiClient::getxRequestId(), $requestBody, $page);
+
                 if (empty($result)) {
                     $this->addStatusMessage(sprintf(_('No transactions from %s to %s'), $this->since->format(self::$dateFormat), $this->until->format(self::$dateFormat)));
                     $result['lastPage'] = true;
                     $result['last'] = true;
                 }
-                if (array_key_exists('statements', $result)) {
+
+                if (\array_key_exists('statements', $result)) {
                     $statements = array_merge($statements, $result['statements']);
                 }
+
                 sleep(1);
             } while ($result['last'] === false);
         } catch (\Ease\Exception $e) {
-            echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), PHP_EOL;
+            echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), \PHP_EOL;
         }
+
         return $statements;
     }
 
     /**
      * Prepare processing interval.
+     *
+     * @param mixed $scope
      *
      * @throws \Exception
      */
@@ -193,7 +197,6 @@ class Statementor extends \Ease\Sand
                     if (preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', $scope)) {
                         $this->since = new \DateTime($scope);
                         $this->until = (new \DateTime($scope))->setTime(23, 59, 59, 999);
-
                     }
 
                     throw new \InvalidArgumentException('Unknown scope '.$scope);
@@ -209,25 +212,22 @@ class Statementor extends \Ease\Sand
     }
 
     /**
-     * Save Statement PDF files
+     * Save Statement PDF files.
      *
-     * @param string $saveTo
-     * @param array<mixed>  $statements - produced by getStatements() function
-     * @param string $format pdf|xml
-     * @param string $currencyCode
-     *
-     * @return array
+     * @param array<mixed> $statements - produced by getStatements() function
+     * @param string       $format     pdf|xml
      */
     public function download(string $saveTo, array $statements, string $format = 'pdf', string $currencyCode = 'CZK'): array
     {
         $saved = [];
         $apiInstance = new PremiumAPI\DownloadStatementApi();
         $success = 0;
+
         foreach ($statements as $statement) {
-            $statementFilename = str_replace('/', '_', $statement->statementNumber) . '_' .
-                    $statement->accountNumber . '_' .
-                    $statement->accountId . '_' .
-                    $statement->currency . '_' . $statement->dateFrom . '.' . $format;
+            $statementFilename = str_replace('/', '_', $statement->statementNumber).'_'.
+                    $statement->accountNumber.'_'.
+                    $statement->accountId.'_'.
+                    $statement->currency.'_'.$statement->dateFrom.'.'.$format;
             $requestBody = new \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest([
                 'accountNumber' => $this->accountNumber,
                 'currency' => $currencyCode,
@@ -235,21 +235,22 @@ class Statementor extends \Ease\Sand
                 'statementFormat' => $format]);
             $pdfStatementRaw = $apiInstance->downloadStatement(ApiClient::getxRequestId(), 'cs', $requestBody);
             sleep(1);
-            if (file_put_contents($saveTo . '/' . $statementFilename, $pdfStatementRaw->fread($pdfStatementRaw->getSize()))) {
-                $saved[$statementFilename] = $saveTo . '/' . $statementFilename;
-                $this->addStatusMessage($statementFilename . ' saved', 'success');
+
+            if (file_put_contents($saveTo.'/'.$statementFilename, $pdfStatementRaw->fread($pdfStatementRaw->getSize()))) {
+                $saved[$statementFilename] = $saveTo.'/'.$statementFilename;
+                $this->addStatusMessage($statementFilename.' saved', 'success');
                 unset($pdfStatementRaw);
-                $success++;
+                ++$success;
             }
         }
-        $this->addStatusMessage('Download done. ' . $success . ' of ' . count($statements) . ' saved');
+
+        $this->addStatusMessage('Download done. '.$success.' of '.\count($statements).' saved');
+
         return $saved;
     }
 
     /**
-     * Since time getter
-     *
-     * @return \DateTime
+     * Since time getter.
      */
     public function getSince(): \DateTime
     {
@@ -257,9 +258,7 @@ class Statementor extends \Ease\Sand
     }
 
     /**
-     * Until time getter
-     *
-     * @return \DateTime
+     * Until time getter.
      */
     public function getUntil(): \DateTime
     {
