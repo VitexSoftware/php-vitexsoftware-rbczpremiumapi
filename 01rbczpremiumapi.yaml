@@ -2,41 +2,35 @@ x-headmatter:
   readable_by: []
 swagger: '2.0'
 info:
-  version: 1.1.20230222
+  version: 1.1.20240910
   title: Production
-  description: >
-    Transaction overview (also for saving accounts). Payments import. Accounts list. Account balance.
+  description: |
+    ##### API Overview
+    - Accounts list and balance
+    - Transaction overview (also for saving accounts)
+    - Payments import
+    - Statement list and download
+    - FX rates
 
+    ##### Authentication
+    Before making a call to Premium API, you need to register your app at our _Developer portal_. This is where you get the **ClientID** that your application must send in the request as `X-IBM-Client-Id`. This is the key that grants your app access to the API.
+    
+    However, this may not be enough. Your application needs to use mTLS to call most operations here. Thus, you not only need _https_ but also a client certificate issued by us. The exception is two operations for FX rates that are accessible also without a client certificate.
+    
+    Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\*p12** file for establishing mTLS connection to the bank.
 
-    Before making a call to Premium API, you need to register your app at our
-    _Developer portal_. At _Developer
-    Portal_ you obtain ClientID that your app must send in the
-    request as `X-IBM-Client-Id`. These
-    are your keys that grant your app access to the API. However, this is not
-    enough, for a successful call your app needs to use mTLS. Thus, you not only
-    need _https_ but also a client certificate issued by us. Each bank
-    client/user can issue several certificates. Each certificate can permit
-    different sets of operations (http methods) on different bank accounts. All
-    this must be configured in Internet Banking first by each bank client/user
-    (bank clients need to look under _Settings_ and do not forget to download
-    the certificate at the last step). The certificate is downloaded in
-    **PKCS#12** format as **\*.p12** file and protected by a password chosen by
-    the bank client/user. Yes, your app needs the password as well to get use of
-    the **\*p12** file for establishing mTLS connection to the bank. 
+    Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.
 
+    ##### Rate Limiting
+    The number of requests in each API operation is limited to 10 per client per sliding second and 5000 per client per sliding day. The exception is the 'Download Statement' operation with the limits lowered to 5 per client per sliding second and 1500 per client per sliding day. This is because it transports potentially sizeable binary files. The consumer must be able to handle HTTP status 429 in case of exceeding these limits.
+    
+    Response headers `X-RateLimit-Limit-Second` and `X-RateLimit-Limit-Day` show the actual limits configured for the specific operation. Response headers `X-RateLimit-Remaining-Second` and `X-RateLimit-Remaining-Day` are returned to help prevent the limits from being exceeded.
 
-    Client certificates issued in Internet Banking for bank clients/users have
-    limited validity (e.g. **5 years**). However, **each year** certificates are
-    automatically blocked and bank client/user must unblock them in Internet
-    Banking. It is possible to do it in advance and prolong the time before the
-    certificate is blocked. Your app should be prepared for these scenarios and
-    it should communicate such cases to your user in advance to provide seamless
-    service and high user-experience of your app.
+    ##### Notes
+    Be aware, that in certain error situations, API can return specific error structures along with 5xx status code, which is not explicitely defined below.
 
-
-    **Note**: Be aware, that in certain error situations, API can return
-    different error structure along with broader set of http status codes, than
-    the one defined below
+    ##### Quick Start Client
+    Feel free to download a <a href="assets/PremiumApiClient.java" download>simple Java client</a> that gives you quick access to our API.
   x-ibm-name: rbczpremiumapi
 host: 'api.rb.cz'
 basePath: /
@@ -47,11 +41,6 @@ paths:
     get:
       description: >
         Get balance for given accounts.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
       operationId: getBalance
       produces:
         - application/json
@@ -206,11 +195,6 @@ paths:
         `page`. The request parameter/flag `lastPage` indicates whether the
         returned page is the last one or if there are more pages that you can
         iterate.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
       operationId: getTransactionList
       produces:
         - application/json
@@ -266,7 +250,8 @@ paths:
           required: true
           description: >-
             Defines date (and optionally time) from which transactions will be
-            requested. If no time is specified then 00:00:00.0 will be used.
+            requested. If no time is specified then 00:00:00.0 (Central European 
+            Time) will be used.
             Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
           type: string
           format: date-time
@@ -275,7 +260,8 @@ paths:
           required: true
           description: >-
             Defines date (and optionally time) until which transactions will be
-            requested. If no time is specified then 23:59:59.999 will be used.
+            requested. If no time is specified then 23:59:59.999 (Central European 
+            Time) will be used.
             Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
           type: string
           format: date-time
@@ -295,203 +281,144 @@ paths:
                 description: Indication wheter the page is last - default false
                 example: true
               transactions:
-                description: ' An array of transactions.'
-                type: object
-                properties:
-                  transaction:
-                    type: array
-                    items:
+                description: 'An array of transactions.'
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entryReference:
+                      type: string
+                      description: Unique identification of the realized transaction.
+                      example: 3887196517
+                    amount:
                       type: object
                       properties:
-                        entryReference:
+                        value:
+                          type: number
+                          format: double
+                          description: Amount of money
+                          example: -1668.59
+                        currency:
                           type: string
-                          description: Unique identification of the realized transaction.
-                          example: 3887196517
-                        amount:
-                          type: object
-                          properties:
-                            value:
-                              type: number
-                              format: double
-                              description: Amount of money
-                              example: -1668.59
-                            currency:
-                              type: string
-                              description: Currency code of the amount
-                              example: CZK
-                          required:
-                            - value
-                            - currency
-                        creditDebitIndication:
+                          description: Currency code of the amount
+                          example: CZK
+                      required:
+                        - value
+                        - currency
+                    creditDebitIndication:
+                      type: string
+                      enum:
+                        - DBIT
+                        - CRDT
+                      example: DBIT
+                    bookingDate:
+                      type: string
+                      format: date-time
+                      description: Date of payment processing/posting by the bank.
+                    valueDate:
+                      type: string
+                      format: date-time
+                      description: >-
+                        Transaction date; value date; date which is used to
+                        count interest; e.g. date when money were withdrawn
+                        from ATM.
+                    bankTransactionCode:
+                      type: object
+                      properties:
+                        code:
                           type: string
-                          enum:
-                            - DBIT
-                            - CRDT
-                          example: DBIT
-                        bookingDate:
-                          type: string
-                          format: date-time
-                          description: Date of payment processing/posting by the bank.
-                        valueDate:
-                          type: string
-                          format: date-time
                           description: >-
-                            Transaction date; value date; date which is used to
-                            count interest; e.g. date when money were withdrawn
-                            from ATM.
-                        bankTransactionCode:
+                            Transaction code in ISO20022 camt.53 format
+                            (e.g. 10000101000 - Odchozi tuzemska platba).
+                          example: '10000401000'
+                      required:
+                        - code
+                    entryDetails:
+                      type: object
+                      properties:
+                        transactionDetails:
                           type: object
                           properties:
-                            code:
-                              type: string
-                              description: >-
-                                Transaction code in ISO20022 camt.53 format
-                                (e.g. 10000101000 - Odchozi tuzemska platba).
-                              example: '10000401000'
-                          required:
-                            - code
-                        entryDetails:
-                          type: object
-                          properties:
-                            transactionDetails:
+                            references:
                               type: object
                               properties:
-                                references:
-                                  type: object
-                                  properties:
-                                    endToEndIdentification:
-                                      type: string
-                                      description: >-
-                                        Originator reference ID - End to End ID;
-                                        The Originator's reference of the
-                                        transaction
-                                      example: EBGTF015477198
-                                instructedAmount:
-                                  description: >-
-                                    Original amount in original currency -
-                                    before currency conversion.
-                                  type: object
-                                  properties:
-                                    value:
-                                      type: number
-                                      format: double
-                                      description: Amount of money
-                                      example: 61
-                                    currency:
-                                      type: string
-                                      description: Currency code of the amount
-                                      example: EUR
-                                    exchangeRate:
-                                      type: number
-                                      format: double
-                                      example: 0.03656
-                                  required:
-                                    - value
-                                    - currency
-                                chargeBearer:
-                                  type: string
-                                  enum:
-                                    - DEBT
-                                    - CRED
-                                    - SHAR
-                                  example: SHAR
-                                paymentCardNumber:
+                                endToEndIdentification:
                                   type: string
                                   description: >-
-                                    Masked payment card number, if the
-                                    transaction is related to debit card.
-                                  example: 547872XXXXXX9475
-                                relatedParties:
+                                    Originator reference ID - End to End ID;
+                                    The Originator's reference of the
+                                    transaction
+                                  example: EBGTF015477198
+                            instructedAmount:
+                              description: >-
+                                Original amount in original currency -
+                                before currency conversion.
+                              type: object
+                              properties:
+                                value:
+                                  type: number
+                                  format: double
+                                  description: Amount of money
+                                  example: 61
+                                currency:
+                                  type: string
+                                  description: Currency code of the amount
+                                  example: EUR
+                                exchangeRate:
+                                  type: number
+                                  format: double
+                                  example: 0.03656
+                              required:
+                                - value
+                                - currency
+                            chargeBearer:
+                              type: string
+                              enum:
+                                - DEBT
+                                - CRED
+                                - SHAR
+                              example: SHAR
+                            paymentCardNumber:
+                              type: string
+                              description: >-
+                                Masked payment card number, if the
+                                transaction is related to debit card.
+                              example: 547872XXXXXX9475
+                            relatedParties:
+                              type: object
+                              properties:
+                                counterParty:
+                                  description: >-
+                                    Information about counter party (debtor
+                                    or creditor) - always the other side of
+                                    the transaction.
                                   type: object
                                   properties:
-                                    counterParty:
-                                      description: >-
-                                        Information about counter party (debtor
-                                        or creditor) - always the other side of
-                                        the transaction.
+                                    name:
+                                      type: string
+                                      description: Bank account name
+                                      example: Firma Ltd.
+                                    postalAddress:
+                                      type: object
+                                      properties:
+                                        street:
+                                          type: string
+                                          description: Street or 2nd line of the address
+                                          example: Na dlouh?m l?nu 35
+                                        city:
+                                          type: string
+                                          description: City or 3nd line of the address
+                                          example: Praha 6
+                                        country:
+                                          type: string
+                                          description: Country code - 4th line of the address.
+                                          example: CZ
+                                    organisationIdentification:
                                       type: object
                                       properties:
                                         name:
                                           type: string
-                                          description: Bank account name
                                           example: Firma Ltd.
-                                        postalAddress:
-                                          type: object
-                                          properties:
-                                            street:
-                                              type: string
-                                              description: Street or 2nd line of the address
-                                              example: Na dlouh?m l?nu 35
-                                            city:
-                                              type: string
-                                              description: City or 3nd line of the address
-                                              example: Praha 6
-                                            country:
-                                              type: string
-                                              description: Country code - 4th line of the address.
-                                              example: CZ
-                                        organisationIdentification:
-                                          type: object
-                                          properties:
-                                            name:
-                                              type: string
-                                              example: Firma Ltd.
-                                            bicOrBei:
-                                              type: string
-                                              description: SWIFT/BIC code of the bank.
-                                              example: KOMBCZPP
-                                            bankCode:
-                                              type: string
-                                              description: >-
-                                                Proprietary bank code in local format
-                                                (e.g. 5500) or in foreign format.
-                                              example: '0100'
-                                            postalAddress:
-                                              type: object
-                                              properties:
-                                                street:
-                                                  type: string
-                                                  description: Street or 2nd line of the address
-                                                  example: Na dlouh?m l?nu 35
-                                                city:
-                                                  type: string
-                                                  description: City or 3nd line of the address
-                                                  example: Praha 6
-                                                shortAddress:
-                                                  type: string
-                                                  description: Short address
-                                                  example: 'Na dlouh?m l?nu 35, Praha, CZ'
-                                                country:
-                                                  type: string
-                                                  description: Country code - 4th line of the address.
-                                                  example: CZ
-                                        account:
-                                          type: object
-                                          properties:
-                                            iban:
-                                              type: string
-                                              description: >-
-                                                IBAN code of the bank account if
-                                                available
-                                              example: CZ0801000000192000145399
-                                            accountNumberPrefix:
-                                              type: string
-                                              description: >-
-                                                Prefix part of the bank account number
-                                                (only for czech accounts)
-                                              example: 000019
-                                            accountNumber:
-                                              type: string
-                                              description: >-
-                                                Base part of the bank account number in
-                                                czech fromat or in foreign format
-                                              example: '2000145399'
-                                    intermediaryInstitution:
-                                      type: object
-                                      properties:
-                                        name:
-                                          type: string
-                                          example: 'Komer?n? banka, a.s.'
                                         bicOrBei:
                                           type: string
                                           description: SWIFT/BIC code of the bank.
@@ -508,85 +435,141 @@ paths:
                                             street:
                                               type: string
                                               description: Street or 2nd line of the address
-                                              example: Na p??kop? 969/33
-                                            city:
-                                              type: string
-                                              description: City or 3nd line of the address
-                                              example: Praha 1
-                                            shortAddress:
-                                              type: string
-                                              description: Short address
-                                              example: 'Na p??kop? 969/33, Praha, CZ'
-                                            country:
-                                              type: string
-                                              description: Country code - 4th line of the address.
-                                              example: CZ
-                                    ultimateCounterParty:
-                                      description: >-
-                                        Ultimate debtor or Ultimate creditor -
-                                        always the other end.
-                                      type: object
-                                      properties:
-                                        name:
-                                          type: string
-                                          description: Bank account name
-                                          example: CZ0801000000192000145399
-                                        postalAddress:
-                                          type: object
-                                          properties:
-                                            street:
-                                              type: string
-                                              description: Street or 2nd line of the address
                                               example: Na dlouh?m l?nu 35
                                             city:
                                               type: string
                                               description: City or 3nd line of the address
                                               example: Praha 6
+                                            shortAddress:
+                                              type: string
+                                              description: Short address
+                                              example: 'Na dlouh?m l?nu 35, Praha, CZ'
                                             country:
                                               type: string
                                               description: Country code - 4th line of the address.
                                               example: CZ
-                                remittanceInformation:
-                                  description: >-
-                                    Information that allow match and pairing
-                                    transactions or further identifies it.
-                                  type: object
-                                  properties:
-                                    unstructured:
-                                      type: string
-                                      description: >-
-                                        Information from or for counter party.
-                                        Information for creditor.
-                                      example: >-
-                                        61 EUR;FIRMA LTD;12345678 RADEK DVA
-                                        RADEK TRI RADEK CTYRI
-                                    creditorReferenceInformation:
+                                    account:
                                       type: object
                                       properties:
-                                        variable:
+                                        iban:
                                           type: string
-                                          description: Variable symbol
-                                          example: '1234567890'
-                                        constant:
+                                          description: >-
+                                            IBAN code of the bank account if
+                                            available
+                                          example: CZ0801000000192000145399
+                                        accountNumberPrefix:
                                           type: string
-                                          description: Constant symbol
-                                          example: '558'
-                                        specific:
+                                          description: >-
+                                            Prefix part of the bank account number
+                                            (only for czech accounts)
+                                          example: 000019
+                                        accountNumber:
                                           type: string
-                                          description: Specific symbol
-                                          example: '1234567890'
-                                    originatorMessage:
+                                          description: >-
+                                            Base part of the bank account number in
+                                            czech fromat or in foreign format
+                                          example: '2000145399'
+                                intermediaryInstitution:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      example: 'Komer?n? banka, a.s.'
+                                    bicOrBei:
+                                      type: string
+                                      description: SWIFT/BIC code of the bank.
+                                      example: KOMBCZPP
+                                    bankCode:
                                       type: string
                                       description: >-
-                                        Private description of the transaction.
-                                        Only available to account holder.
-                                      example: na?e platba
-                      required:
-                        - entryReference
-                        - amount
-                        - creditDebitIndication
-                        - bankTransactionCode
-                    minItems: 0
+                                        Proprietary bank code in local format
+                                        (e.g. 5500) or in foreign format.
+                                      example: '0100'
+                                    postalAddress:
+                                      type: object
+                                      properties:
+                                        street:
+                                          type: string
+                                          description: Street or 2nd line of the address
+                                          example: Na p??kop? 969/33
+                                        city:
+                                          type: string
+                                          description: City or 3nd line of the address
+                                          example: Praha 1
+                                        shortAddress:
+                                          type: string
+                                          description: Short address
+                                          example: 'Na p??kop? 969/33, Praha, CZ'
+                                        country:
+                                          type: string
+                                          description: Country code - 4th line of the address.
+                                          example: CZ
+                                ultimateCounterParty:
+                                  description: >-
+                                    Ultimate debtor or Ultimate creditor -
+                                    always the other end.
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      description: Bank account name
+                                      example: CZ0801000000192000145399
+                                    postalAddress:
+                                      type: object
+                                      properties:
+                                        street:
+                                          type: string
+                                          description: Street or 2nd line of the address
+                                          example: Na dlouh?m l?nu 35
+                                        city:
+                                          type: string
+                                          description: City or 3nd line of the address
+                                          example: Praha 6
+                                        country:
+                                          type: string
+                                          description: Country code - 4th line of the address.
+                                          example: CZ
+                            remittanceInformation:
+                              description: >-
+                                Information that allow match and pairing
+                                transactions or further identifies it.
+                              type: object
+                              properties:
+                                unstructured:
+                                  type: string
+                                  description: >-
+                                    Information from or for counter party.
+                                    Information for creditor.
+                                  example: >-
+                                    61 EUR;FIRMA LTD;12345678 RADEK DVA
+                                    RADEK TRI RADEK CTYRI
+                                creditorReferenceInformation:
+                                  type: object
+                                  properties:
+                                    variable:
+                                      type: string
+                                      description: Variable symbol
+                                      example: '1234567890'
+                                    constant:
+                                      type: string
+                                      description: Constant symbol
+                                      example: '558'
+                                    specific:
+                                      type: string
+                                      description: Specific symbol
+                                      example: '1234567890'
+                                originatorMessage:
+                                  type: string
+                                  description: >-
+                                    Private description of the transaction.
+                                    Only available to account holder.
+                                  example: na?e platba
+                  required:
+                    - entryReference
+                    - amount
+                    - creditDebitIndication
+                    - bankTransactionCode
+                minItems: 0
         '204':
           description: |
             Nonexisting page or empty content.
@@ -649,7 +632,7 @@ paths:
         - see request parameter `Batch-Import-Format`.
 
 
-        This is API alternative to manual import of batch payments through
+        This is an API alternative to the manual import of batch payments through
         [Internet
         Banking](https://www.rb.cz/podnikatele/ucty-a-platebni-styk/prime-bankovnictvi/internetove-bankovnictvi/caste-dotazy/import-hromadnych-plateb).
 
@@ -660,30 +643,23 @@ paths:
         signatures.
 
 
-        Number of transactions in one request is limited to 5.000 (this can
-        change without prior notice). Number of transactions is not checked
-        during the call, it is performed later and possible error is provided in
-        Internet Banking.
-        
-        
-        The number of requests is limited to 5 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
-
-
         Once authorized/certified, uploaded payments will be processed in the
         Instant payments mode if the following conditions are met&#58;
 
+        1. the batch has no more than 100 payments
 
-        1) the batch has no more than 50 payments
+        2. no more than 10 batches per day were uploaded
 
-
-        2) no more than 5 batches per day were uploaded
-
-
-        3) individual payments meet the conditions for Instant payments - see
+        3. individual payments meet the conditions for Instant payments - see
         [Instant
         Payments](https://www.rb.cz/informacni-servis/platebni-styk/tuzemske-platby/okamzite-platby)
+        
+        4. on the weekend, only payments within our bank are processed as Instant payments
+
+
+        The number of transactions in one request is limited to 15.000 (this can
+        change without prior notice). The limit is not checked during the call, 
+        it is performed later and a possible error is provided in Internet Banking.
       operationId: importPayments
       produces:
         - application/json
@@ -741,6 +717,23 @@ paths:
             it will be truncated 
           type: string
           maxLength: 50
+        - name: Batch-Combined-Payments
+          in: header
+          required: false
+          description: >
+            Optional header for combined payments. Payments inside the import file are considered
+            as combined in case the header is present and its value is set to 'true'.
+          type: boolean
+          default: false
+        - name: Batch-Autocorrect
+          in: header
+          required: false
+          description: >
+            Flag if valueDate should be autocorrected in the imported file or not. Autocorrection moved valueDate on first available valid 
+            (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as
+            actual date (during sending of payment to bank) can be sent as instant.
+          type: boolean
+          default: true
         - name: request body
           required: true
           in: body
@@ -851,11 +844,9 @@ paths:
       description: >-
         Getting details about state of processing of imported batch file and
         created batch transactions.
-
-
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
+        
+        
+        All possible batch `status` values are: DRAFT, ERROR, FOR_SIGN, VERIFIED, PASSING_TO_BANK, PASSED, PASSED_TO_BANK_WITH_ERROR, UNDISCLOSED
       operationId: getBatchDetail
       produces:
         - application/json
@@ -1055,11 +1046,6 @@ paths:
     get:
       description: >
         Get list of accounts for given certificate. First page is 1.
-        
-        
-        The number of requests is limited to 10 per client per second and 5000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
       tags:
         - Get Accounts
       operationId: getAccounts
@@ -1217,10 +1203,6 @@ paths:
     post:
       description: >
         Lists statements for all available accounts for which the client has appropriate access rights.
-        
-        The number of requests is limited to 5 per client per second and 1000 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
       tags:
         - Get Statement List
       operationId: getStatements
@@ -1273,6 +1255,8 @@ paths:
           schema:
             type: object
             description: Request values for list of a statements.
+            required:
+              - accountNumber
             properties:
               accountNumber:  
                 example: '6761402079'
@@ -1319,7 +1303,7 @@ paths:
                       type: integer
                       example: 301
                     statementNumber: 
-                      description: numeber of the statement
+                      description: number of the statement
                       type: string
                       example: 08/2015
                     dateFrom:
@@ -1332,6 +1316,10 @@ paths:
                       type: string
                       format: date
                       example: '2022-11-01'
+                    currency:
+                      description: currency of the statement
+                      type: string
+                      example: 'CZK'
                     statementFormats:
                       description: set of document available formats (always in upper case notation).
                       type: array
@@ -1445,11 +1433,6 @@ paths:
         Returns one of the following `Content-type` header values depending on 
         the downloaded document type: <code>application/pdf</code>, <code>application/xml</code>,
         <code>text/mt940</code>, <code>application/json</code> (in case of an error).
-
-        
-        The number of requests is limited to 5 per client per second and 1500 
-        per client per day. The consumer must be able to handle HTTP status 
-        429 (too many requests) in case of exceeding these limits.
       tags:
         - Download Statement
       operationId: downloadStatement
@@ -1583,3 +1566,242 @@ paths:
                   - TOO_MANY_REQUESTS
               error_description:
                 type: string
+  '/rbcz/premium/api/fxrates':
+    get:
+      description: >
+        Returns foreign exchange rates for all available currencies.
+        
+        
+        This operation does not require a client certificate.
+      tags:
+        - Get Fx Rates List
+      operationId: getFxRatesList
+      produces:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: date
+          description: >-
+            The effective date for which the FX rates list is requested.
+            Will default to **now** when not specified.
+          in: query
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Foreign exchange rates for all available currencies.
+          schema:
+            $ref: '#/definitions/CurrencyListSimple'
+        '429':
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  '/rbcz/premium/api/fxrates/{currencyCode}':
+    get:
+      description: >
+        Returns foreign exchange rates for the given currency code.
+        
+        
+        This operation does not require a client certificate.
+      tags:
+        - Get Fx Rates
+      operationId: getFxRates
+      produces:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: currencyCode
+          in: path
+          description: The foreign currency code in ISO-4217 format.
+          required: true
+          type: string
+          minLength: 3
+          maxLength: 3
+        - name: date
+          description: >-
+            The effective date for which the FX rates are requested.
+            Will default to **now** when not specified.
+          in: query
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Foreign exchange rates for the given currency.
+          schema:
+            $ref: '#/definitions/CurrencyListSimple'
+        '429':
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+definitions:
+  CurrencyListSimple:
+    type: object
+    required:
+      - exchangeRateLists
+    properties:
+      exchangeRateLists:
+        type: array
+        items:
+          $ref: '#/definitions/ExchangeRateList'
+  ExchangeRateList:
+    type: object
+    required:
+      - effectiveDateFrom
+      - tradingDate
+      - ordinalNumber
+      - lastRates
+      - exchangeRates
+    properties:
+      effectiveDateFrom:
+        type: string
+        format: date-time
+      effectiveDateTo:
+        type: string
+        format: date-time
+      tradingDate:
+        type: string
+        format: date-time
+      ordinalNumber:
+        type: integer
+        format: int32
+      lastRates:
+        type: boolean
+      exchangeRates:
+        type: array
+        items:
+          $ref: '#/definitions/ExchangeRate'
+  ExchangeRate:
+    type: object
+    required:
+      - currencyFrom
+      - currencyTo
+      - exchangeRateBuy
+      - exchangeRateBuyCash
+      - exchangeRateCenter
+      - exchangeRateCenterChange
+      - exchangeRateSell
+      - exchangeRateSellCash
+      - exchangeRateSellCenter
+      - exchangeRateSellCenterPrevious
+      - quotationType
+      - unitsFrom
+    properties:
+      countryFlagPath:
+        type: string
+      currencyFrom:
+        type: string
+        minLength: 3
+        maxLength: 3
+      currencyTo:
+        type: string
+        minLength: 3
+        maxLength: 3
+      exchangeRateBuy:
+        type: number
+        format: double
+      exchangeRateBuyCash:
+        type: number
+        format: double
+      exchangeRateCenter:
+        type: number
+        format: double
+      exchangeRateCenterChange:
+        type: number
+        format: double
+      exchangeRateSell:
+        type: number
+        format: double
+      exchangeRateSellCash:
+        type: number
+        format: double
+      exchangeRateSellCenter:
+        type: number
+        format: double
+      exchangeRateSellCenterPrevious:
+        type: number
+        format: double
+      exchangeRateEcbRate:
+        type: number
+        format: double
+      exchangeRateEcbVariation:
+        type: number
+        format: double
+      fixedCountryCode:
+        type: string
+      fixedCountryName:
+        type: string
+      quotationType:
+        type: string
+      unitsFrom:
+        type: integer
+        format: int32
+      variableCountryCode:
+        type: string
+      variableCountryName:
+        type: string

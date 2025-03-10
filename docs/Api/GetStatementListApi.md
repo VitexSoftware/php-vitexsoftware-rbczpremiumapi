@@ -15,7 +15,7 @@ getStatements( $xRequestId, $requestBody,  $page, $size): object
 
 
 
-Lists statements for all available accounts for which the client has appropriate access rights. The number of requests is limited to 5 per client per second and 1000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
+Lists statements for all available accounts for which the client has appropriate access rights.
 
 ### Example
 

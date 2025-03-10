@@ -14,7 +14,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 
 
 
-Get balance for given accounts.  The number of requests is limited to 10 per client per second and 5000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
+Get balance for given accounts.
 
 ### Example
 

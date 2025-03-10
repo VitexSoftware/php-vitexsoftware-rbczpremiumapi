@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**accountNumber** | **string** |  | [optional]
+**accountNumber** | **string** |  |
 **currency** | **string** | Currency of the requested currency folder. | [optional]
 **statementLine** | **string** | Statement line identification. | [optional]
 **dateFrom** | **\DateTime** | Date limit from. | [optional]

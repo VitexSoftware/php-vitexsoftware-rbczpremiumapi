@@ -1,5 +1,5 @@
-test/lib/PremiumAPI/*       		usr/share/php/Raiffeisenbank/Test/PremiumAPI
-test/lib/Model/*    		usr/share/php/Raiffeisenbank/Test/Model
+test/Api/*       		usr/share/php/Raiffeisenbank/Test/PremiumAPI
+test/Model/*    		usr/share/php/Raiffeisenbank/Test/Model
 examples/example.env            var/lib/composer/php-vitexsoftware-rbczpremiumapi-dev/
 
 debian/test/phpunit.xml         usr/share/php/Raiffeisenbank/Test

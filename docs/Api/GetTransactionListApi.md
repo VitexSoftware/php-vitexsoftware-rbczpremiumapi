@@ -15,7 +15,7 @@ getTransactionList( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $pa
 
 
 
-Get a list of posted transactions (including intraday). In addition, transactions must not be older than **90 days** - see request parameter `from`.  The list is returned as a sequence of pages - see request parameter `page`. The request parameter/flag `lastPage` indicates whether the returned page is the last one or if there are more pages that you can iterate.  The number of requests is limited to 10 per client per second and 5000  per client per day. The consumer must be able to handle HTTP status  429 (too many requests) in case of exceeding these limits.
+Get a list of posted transactions (including intraday). In addition, transactions must not be older than **90 days** - see request parameter `from`.  The list is returned as a sequence of pages - see request parameter `page`. The request parameter/flag `lastPage` indicates whether the returned page is the last one or if there are more pages that you can iterate.
 
 ### Example
 
@@ -31,8 +31,8 @@ $apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\GetTransactionListAp
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $accountNumber = 'accountNumber_example'; // string | Account number for which to get list of transactions in national format without 0 padding.
 $currencyCode = 'currencyCode_example'; // string | Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd)
-$from = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
-$to = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
+$from = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 (Central European  Time) will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
+$to = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 (Central European  Time) will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
 $page = 56; // int | Page number to be requested. The first page is 1.
 
 try {
@@ -50,8 +50,8 @@ try {
 | **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. | |
 | **accountNumber** | **string**| Account number for which to get list of transactions in national format without 0 padding. | |
 | **currencyCode** | **string**| Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd) | |
-| **from** | **\DateTime**| Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z | |
-| **to** | **\DateTime**| Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z | |
+| **from** | **\DateTime**| Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 (Central European  Time) will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z | |
+| **to** | **\DateTime**| Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 (Central European  Time) will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z | |
 | **page** | **int**| Page number to be requested. The first page is 1. | [optional] |
 
 ### Return type
