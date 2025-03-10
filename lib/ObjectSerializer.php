@@ -46,7 +46,7 @@ use VitexSoftware\Raiffeisenbank\Model\ModelInterface;
  */
 class ObjectSerializer
 {
-    private static string $dateTimeFormat = \DateTime::ATOM;
+    private static string $dateTimeFormat = 'Y-m-d\TH:i:s.v\Z';
 
     /**
      * Change the date format.
