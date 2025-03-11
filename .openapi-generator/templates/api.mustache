@@ -188,7 +188,7 @@ use {{invokerPackage}}\ObjectSerializer;
 
 {{#operation}}
     /**
-     * Operation {{{operationId}}}
+     * Operation {{{operationId}}}.
 {{#summary}}
      *
      * {{.}}
@@ -339,12 +339,12 @@ use {{invokerPackage}}\ObjectSerializer;
                         $content = (string) $response->getBody();
                         if ('{{{dataType}}}' !== 'string') {
                             try {
-                                $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                                $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
                                 throw new ApiException(
                                     sprintf(
                                         'Error JSON decoding server response (%s)',
-                                        $request->getUri()
+                                        $request->getUri(),
                                     ),
                                     $statusCode,
                                     $response->getHeaders(),
@@ -357,7 +357,7 @@ use {{invokerPackage}}\ObjectSerializer;
                     return [
                         ObjectSerializer::deserialize($content, '{{{dataType}}}', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];{{/isRange}}
             {{/dataType}}
             {{#-last}}
@@ -370,31 +370,31 @@ use {{invokerPackage}}\ObjectSerializer;
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
-                        (string) $request->getUri()
+                        (string) $request->getUri(),
                     ),
                     $statusCode,
                     $response->getHeaders(),
-                    (string) $response->getBody()
+                    (string) $response->getBody(),
                 );
             }
 
             $returnType = '{{{returnType}}}';
             if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
                 if ($returnType !== 'string') {
                     try {
-                        $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+                        $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                     } catch (\JsonException $exception) {
                         throw new ApiException(
                             sprintf(
                                 'Error JSON decoding server response (%s)',
-                                $request->getUri()
+                                $request->getUri(),
                             ),
                             $statusCode,
                             $response->getHeaders(),
-                            $content
+                            $content,
                         );
                     }
                 }
@@ -419,9 +419,10 @@ use {{invokerPackage}}\ObjectSerializer;
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '{{{dataType}}}',
-                        $e->getResponseHeaders()
+                        $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);
+
                     break;{{/isRange}}
             {{/dataType}}
         {{/responses}}
@@ -662,12 +663,12 @@ use {{invokerPackage}}\ObjectSerializer;
         {{/required}}
         {{#hasValidation}}
         {{#maxLength}}
-        if ({{^required}}${{paramName}} !== null && {{/required}}strlen((string)${{paramName}}) > {{maxLength}}) {
+        if ({{^required}}${{paramName}} !== null && {{/required}}\strlen((string) ${{paramName}}) > {{maxLength}}) {
             throw new \InvalidArgumentException('invalid length for "${{paramName}}" when calling {{classname}}.{{operationId}}, must be smaller than or equal to {{maxLength}}.');
         }
         {{/maxLength}}
         {{#minLength}}
-        if ({{^required}}${{paramName}} !== null && {{/required}}strlen((string)${{paramName}}) < {{minLength}}) {
+        if ({{^required}}${{paramName}} !== null && {{/required}}\strlen((string) ${{paramName}}) < {{minLength}}) {
             throw new \InvalidArgumentException('invalid length for "${{paramName}}" when calling {{classname}}.{{operationId}}, must be bigger than or equal to {{minLength}}.');
         }
         {{/minLength}}
@@ -716,7 +717,7 @@ use {{invokerPackage}}\ObjectSerializer;
             '{{#schema}}{{openApiType}}{{/schema}}', // openApiType
             '{{style}}', // style
             {{#isExplode}}true{{/isExplode}}{{^isExplode}}false{{/isExplode}}, // explode
-            {{required}} // required
+            {{required}}, // required
         ) ?? []);
         {{/queryParams}}
 
@@ -741,7 +742,7 @@ use {{invokerPackage}}\ObjectSerializer;
         {{/collectionFormat}}
         if (${{paramName}} !== null) {
             $resourcePath = str_replace(
-                '{' . '{{baseName}}' . '}',
+                '{'.'{{baseName}}'.'}',
                 ObjectSerializer::toPathValue(${{paramName}}),
                 $resourcePath
             );
@@ -781,7 +782,7 @@ use {{invokerPackage}}\ObjectSerializer;
         {{#bodyParams}}
         if (isset(${{paramName}})) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
-                # if Content-Type contains "application/json", json_encode the body
+                // if Content-Type contains "application/json", json_encode the body
                 $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization(${{paramName}}));
             } else {
                 $httpBody = ${{paramName}};
@@ -789,7 +790,7 @@ use {{invokerPackage}}\ObjectSerializer;
         } elseif (count($formParams) > 0) {
         {{/bodyParams}}
         {{^bodyParams}}
-        if (count($formParams) > 0) {
+        if (\count($formParams) > 0) {
         {{/bodyParams}}
             if ($multipart) {
                 $multipartContents = [];
@@ -806,7 +807,7 @@ use {{invokerPackage}}\ObjectSerializer;
                 $httpBody = new MultipartStream($multipartContents);
 
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
-                # if Content-Type contains "application/json", json_encode the form parameters
+                // if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
             } else {
                 // for HTTP post (form)
@@ -826,20 +827,20 @@ use {{invokerPackage}}\ObjectSerializer;
         {{#isBasicBasic}}
         // this endpoint requires HTTP basic authentication
         if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
-            $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+            $headers['Authorization'] = 'Basic '.base64_encode($this->config->getUsername().":".$this->config->getPassword());
         }
         {{/isBasicBasic}}
         {{#isBasicBearer}}
         // this endpoint requires Bearer{{#bearerFormat}} ({{{.}}}){{/bearerFormat}} authentication (access token)
         if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
         }
         {{/isBasicBearer}}
         {{/isBasic}}
         {{#isOAuth}}
         // this endpoint requires OAuth (access token)
         if (!empty($this->config->getAccessToken())) {
-            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+            $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
         }
         {{/isOAuth}}
         {{/authMethods}}
@@ -852,7 +853,7 @@ use {{invokerPackage}}\ObjectSerializer;
         $headers = array_merge(
             $defaultHeaders,
             $headerParams,
-            $headers
+            $headers,
         );
 
         {{#servers.0}}
@@ -874,9 +875,9 @@ use {{invokerPackage}}\ObjectSerializer;
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             '{{httpMethod}}',
-            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $operationHost.$resourcePath.($query ? "?{$query}" : ''),
             $headers,
-            $httpBody
+            $httpBody,
         );
     }
 

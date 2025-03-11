@@ -209,6 +209,8 @@ class Statementor extends \Ease\Sand
             $this->since = $this->since->setTime(0, 0);
             $this->until = $this->until->setTime(23, 59, 59, 999);
         }
+
+        return new \DatePeriod($this->since, new \DateInterval('P1D'), $this->until);
     }
 
     /**

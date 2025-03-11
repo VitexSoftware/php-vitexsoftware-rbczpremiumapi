@@ -6,7 +6,7 @@
  * @category Class
  * @package  {{invokerPackage}}
  * @author     Vítězslav Dvořák <info@vitexsoftware.com>
- * @copyright  (C) 2023-2024 VitexSoftware.com
+ * @copyright  (C) 2023-2025 VitexSoftware.com
  */
 
 namespace VitexSoftware\Raiffeisenbank;
@@ -206,6 +206,7 @@ class Statementor extends \Ease\Sand
             $this->since = $this->since->setTime(0, 0);
             $this->until = $this->until->setTime(23, 59, 59, 999);
         }
+        return new \DatePeriod($this->since, new \DateInterval('P1D'), $this->until);
     }
 
     /**
