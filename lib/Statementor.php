@@ -36,6 +36,7 @@ class Statementor extends \Ease\Sand
      */
     public static string $dateFormat = 'Y-m-d';
     private string $accountNumber = '';
+    private string $statementLine = 'MAIN';
 
     public function __construct(string $accountNumber = '', string $scope = '')
     {
@@ -52,10 +53,8 @@ class Statementor extends \Ease\Sand
      * Set AccountNumber for further operations.
      *
      * @param string $accountNumber
-     *
-     * @return Statementor
      */
-    public function setAccountNumber($accountNumber)
+    public function setAccountNumber($accountNumber): self
     {
         $this->accountNumber = $accountNumber;
         $this->setObjectName($accountNumber.'@'.\get_class($this));
@@ -64,13 +63,37 @@ class Statementor extends \Ease\Sand
     }
 
     /**
+     * Set "Statement Line".
+     *
+     * @param string $line MAIN or ADDITINAL
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setStatementLine(string $line): self
+    {
+        switch ($line) {
+            case 'MAIN':
+            case 'ADDITIONAL':
+                $this->statementLine = $line;
+
+                break;
+
+            default:
+                throw new \InvalidArgumentException('Wrong statement line: '.$line);
+        }
+
+        return $this;
+    }
+
+    /**
      * Obtain Statements from RB.
      *
      * @param string $currencyCode  CZK,USD etc
-     * @param string $statementLine
+     * @param string $statementLine default statement line override
      */
-    public function getStatements($currencyCode = 'CZK', $statementLine = 'MAIN'): array
+    public function getStatements($currencyCode = 'CZK', string $statementLine = ''): array
     {
+        $statementLineFinal = empty($statementLine) ? $this->statementLine : $statementLine;
         $apiInstance = new PremiumAPI\GetStatementListApi();
         $page = 0;
         $statements = [];
@@ -83,7 +106,7 @@ class Statementor extends \Ease\Sand
                     'page' => ++$page,
                     'size' => 60,
                     'currency' => $currencyCode,
-                    'statementLine' => $statementLine,
+                    'statementLine' => $statementLineFinal,
                     'dateFrom' => $this->since->format(self::$dateFormat),
                     'dateTo' => $this->until->format(self::$dateFormat)]);
 
