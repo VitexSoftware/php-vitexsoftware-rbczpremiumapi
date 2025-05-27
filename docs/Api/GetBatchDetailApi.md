@@ -46,7 +46,7 @@ try {
 
 ### Return type
 
-**object**
+[**\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail200Response**](../Model/GetBatchDetail200Response.md)
 
 ### Authorization
 

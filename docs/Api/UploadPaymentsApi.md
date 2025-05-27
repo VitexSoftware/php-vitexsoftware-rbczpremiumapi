@@ -10,7 +10,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 ## `importPayments()`
 
 ```php
-importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName, $batchCombinedPayments, $batchAutocorrect): object
+importPayments( $xRequestId, $batchImportFormat, $requestBody,  $batchName, $batchCombinedPayments, $batchAutocorrect): \VitexSoftware\Raiffeisenbank\Model\ImportPayments200Response
 ```
 
 
@@ -56,7 +56,7 @@ try {
 
 ### Return type
 
-**object**
+[**\VitexSoftware\Raiffeisenbank\Model\ImportPayments200Response**](../Model/ImportPayments200Response.md)
 
 ### Authorization
 

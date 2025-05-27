@@ -10,7 +10,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 ## `getTransactionList()`
 
 ```php
-getTransactionList( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page): object
+getTransactionList( $xRequestId, $accountNumber, $currencyCode, $from, $to,  $page): \VitexSoftware\Raiffeisenbank\Model\GetTransactionList200Response
 ```
 
 
@@ -31,8 +31,8 @@ $apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\GetTransactionListAp
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $accountNumber = 'accountNumber_example'; // string | Account number for which to get list of transactions in national format without 0 padding.
 $currencyCode = 'currencyCode_example'; // string | Currency code of the account in ISO-4217 standard (e.g. czk, eur, usd)
-$from = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 (Central European  Time) will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
-$to = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 (Central European  Time) will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
+$from = new \DateTime('2013-10-20T19:20:30+01:00'); // \DateTime | Defines date (and optionally time) from which transactions will be requested. If no time is specified then 00:00:00.0 (Central European  Time) will be used. Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
+$to = new \DateTime('2013-10-20T19:20:30+01:00'); // \DateTime | Defines date (and optionally time) until which transactions will be requested. If no time is specified then 23:59:59.999 (Central European  Time) will be used. Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
 $page = 56; // int | Page number to be requested. The first page is 1.
 
 try {
@@ -56,7 +56,7 @@ try {
 
 ### Return type
 
-**object**
+[**\VitexSoftware\Raiffeisenbank\Model\GetTransactionList200Response**](../Model/GetTransactionList200Response.md)
 
 ### Authorization
 

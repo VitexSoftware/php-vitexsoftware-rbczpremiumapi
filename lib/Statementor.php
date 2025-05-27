@@ -138,7 +138,7 @@ class Statementor extends \Ease\Sand
      *
      * @throws \Exception
      */
-    public function setScope($scope): \DatePeriod
+    public function setScope(string $scope): \DatePeriod
     {
         switch ($scope) {
             case 'yesterday':

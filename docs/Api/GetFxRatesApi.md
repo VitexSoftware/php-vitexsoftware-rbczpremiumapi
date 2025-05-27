@@ -30,7 +30,7 @@ $apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\GetFxRatesApi(
 );
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $currencyCode = 'currencyCode_example'; // string | The foreign currency code in ISO-4217 format.
-$date = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | The effective date for which the FX rates are requested. Will default to **now** when not specified.
+$date = new \DateTime('2013-10-20T19:20:30+01:00'); // \DateTime | The effective date for which the FX rates are requested. Will default to **now** when not specified.
 
 try {
     $result = $apiInstance->getFxRates( $xRequestId, $currencyCode,  $date);

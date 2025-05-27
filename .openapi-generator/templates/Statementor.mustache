@@ -51,8 +51,6 @@ class Statementor extends \Ease\Sand
      * Set AccountNumber for further operations.
      *
      * @param string $accountNumber
-     *
-     * @return Statementor
      */
     public function setAccountNumber($accountNumber): self
     {
@@ -61,14 +59,12 @@ class Statementor extends \Ease\Sand
 
         return $this;
     }
-    
+
     /**
-     * Set "Statement Line"
-     * 
+     * Set "Statement Line".
+     *
      * @param string $line MAIN or ADDITINAL
-     * 
-     * @return self
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function setStatementLine(string $line): self
@@ -83,6 +79,7 @@ class Statementor extends \Ease\Sand
             default:
                 throw new \InvalidArgumentException('Wrong statement line: '.$line);
         }
+
         return $this;
     }
 
@@ -139,7 +136,7 @@ class Statementor extends \Ease\Sand
      *
      * @throws \Exception
      */
-    public function setScope($scope): \DatePeriod
+    public function setScope(string $scope): \DatePeriod
     {
         switch ($scope) {
             case 'yesterday':

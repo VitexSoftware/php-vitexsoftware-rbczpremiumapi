@@ -10,7 +10,7 @@ All URIs are relative to https://api.rb.cz, except if the operation defines anot
 ## `getAccounts()`
 
 ```php
-getAccounts( $xRequestId,  $page, $size): object
+getAccounts( $xRequestId,  $page, $size): \VitexSoftware\Raiffeisenbank\Model\GetAccounts200Response
 ```
 
 
@@ -50,7 +50,7 @@ try {
 
 ### Return type
 
-**object**
+[**\VitexSoftware\Raiffeisenbank\Model\GetAccounts200Response**](../Model/GetAccounts200Response.md)
 
 ### Authorization
 
