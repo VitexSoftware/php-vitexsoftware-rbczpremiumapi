@@ -1,10 +1,10 @@
 # VitexSoftware\Raiffeisenbank\GetFxRatesListApi
 
-All URIs are relative to https://api.rb.cz, except if the operation defines another base path.
+All URIs are relative to https://api.rb.cz.
 
-| Method | HTTP request | Description |
-| ------------- | ------------- | ------------- |
-| [**getFxRatesList()**](GetFxRatesListApi.md#getFxRatesList) | **GET** /rbcz/premium/api/fxrates |  |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getFxRatesList()**](GetFxRatesListApi.md#getFxRatesList) | **GET** /rbcz/premium/api/fxrates | 
 
 
 ## `getFxRatesList()`
@@ -25,8 +25,10 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\GetFxRatesListApi(
-    new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
+$apiInstance = new VitexSoftware\Raiffeisenbank\Api\GetFxRatesListApi(
+    // If you want use custom http client, pass your client which implements `Psr\Http\Client\ClientInterface`.
+    // This is optional, `Psr18ClientDiscovery` will be used to find http client. For instance `GuzzleHttp\Client` implements that interface
+    new GuzzleHttp\Client()
 );
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $date = new \DateTime('2013-10-20T19:20:30+01:00'); // \DateTime | The effective date for which the FX rates list is requested. Will default to **now** when not specified.
@@ -41,10 +43,10 @@ try {
 
 ### Parameters
 
-| Name | Type | Description  | Notes |
-| ------------- | ------------- | ------------- | ------------- |
-| **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. | |
-| **date** | **\DateTime**| The effective date for which the FX rates list is requested. Will default to **now** when not specified. | [optional] |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. |
+ **date** | **\DateTime**| The effective date for which the FX rates list is requested. Will default to **now** when not specified. | [optional]
 
 ### Return type
 

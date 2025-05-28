@@ -1,10 +1,10 @@
 # VitexSoftware\Raiffeisenbank\GetFxRatesApi
 
-All URIs are relative to https://api.rb.cz, except if the operation defines another base path.
+All URIs are relative to https://api.rb.cz.
 
-| Method | HTTP request | Description |
-| ------------- | ------------- | ------------- |
-| [**getFxRates()**](GetFxRatesApi.md#getFxRates) | **GET** /rbcz/premium/api/fxrates/{currencyCode} |  |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getFxRates()**](GetFxRatesApi.md#getFxRates) | **GET** /rbcz/premium/api/fxrates/{currencyCode} | 
 
 
 ## `getFxRates()`
@@ -25,8 +25,10 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\GetFxRatesApi(
-    new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
+$apiInstance = new VitexSoftware\Raiffeisenbank\Api\GetFxRatesApi(
+    // If you want use custom http client, pass your client which implements `Psr\Http\Client\ClientInterface`.
+    // This is optional, `Psr18ClientDiscovery` will be used to find http client. For instance `GuzzleHttp\Client` implements that interface
+    new GuzzleHttp\Client()
 );
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $currencyCode = 'currencyCode_example'; // string | The foreign currency code in ISO-4217 format.
@@ -42,11 +44,11 @@ try {
 
 ### Parameters
 
-| Name | Type | Description  | Notes |
-| ------------- | ------------- | ------------- | ------------- |
-| **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. | |
-| **currencyCode** | **string**| The foreign currency code in ISO-4217 format. | |
-| **date** | **\DateTime**| The effective date for which the FX rates are requested. Will default to **now** when not specified. | [optional] |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. |
+ **currencyCode** | **string**| The foreign currency code in ISO-4217 format. |
+ **date** | **\DateTime**| The effective date for which the FX rates are requested. Will default to **now** when not specified. | [optional]
 
 ### Return type
 

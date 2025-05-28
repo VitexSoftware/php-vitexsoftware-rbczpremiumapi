@@ -386,18 +386,22 @@ class GetAccountsApi
                 $content = (string) $response->getBody();
 
                 if ($returnType !== 'string') {
-                    try {
-                        $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
-                    } catch (\JsonException $exception) {
-                        throw new ApiException(
-                            sprintf(
-                                'Error JSON decoding server response (%s)',
-                                $request->getUri(),
-                            ),
-                            $statusCode,
-                            $response->getHeaders(),
-                            $content,
-                        );
+                    if ($statusCode === 204) {
+                        $content = [];
+                    } else {
+                        try {
+                            $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
+                        } catch (\JsonException $exception) {
+                            throw new ApiException(
+                                sprintf(
+                                    'Error JSON decoding server response (%s)',
+                                    $request->getUri(),
+                                ),
+                                $statusCode,
+                                $response->getHeaders(),
+                                $content,
+                            );
+                        }
                     }
                 }
             }

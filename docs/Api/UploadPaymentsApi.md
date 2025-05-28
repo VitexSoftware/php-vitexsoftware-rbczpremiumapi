@@ -1,10 +1,10 @@
 # VitexSoftware\Raiffeisenbank\UploadPaymentsApi
 
-All URIs are relative to https://api.rb.cz, except if the operation defines another base path.
+All URIs are relative to https://api.rb.cz.
 
-| Method | HTTP request | Description |
-| ------------- | ------------- | ------------- |
-| [**importPayments()**](UploadPaymentsApi.md#importPayments) | **POST** /rbcz/premium/api/payments/batches |  |
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**importPayments()**](UploadPaymentsApi.md#importPayments) | **POST** /rbcz/premium/api/payments/batches | 
 
 
 ## `importPayments()`
@@ -25,8 +25,10 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new \VitexSoftware\Raiffeisenbank\PremiumAPI\UploadPaymentsApi(
-    new \VitexSoftware\Raiffeisenbank\ApiClient(['clientpubip'=> \VitexSoftware\Raiffeisenbank\ApiClient::getPublicIP() ,'debug'=>true])
+$apiInstance = new VitexSoftware\Raiffeisenbank\Api\UploadPaymentsApi(
+    // If you want use custom http client, pass your client which implements `Psr\Http\Client\ClientInterface`.
+    // This is optional, `Psr18ClientDiscovery` will be used to find http client. For instance `GuzzleHttp\Client` implements that interface
+    new GuzzleHttp\Client()
 );
 $xRequestId = 'xRequestId_example'; // string | Unique request id provided by consumer application for reference and auditing.
 $batchImportFormat = 'batchImportFormat_example'; // string | Format of imported batch. For CCT format please use option SEPA-XML.
@@ -45,14 +47,14 @@ try {
 
 ### Parameters
 
-| Name | Type | Description  | Notes |
-| ------------- | ------------- | ------------- | ------------- |
-| **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. | |
-| **batchImportFormat** | **string**| Format of imported batch. For CCT format please use option SEPA-XML. | |
-| **requestBody** | **string**|  | |
-| **batchName** | **string**| Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated | [optional] |
-| **batchCombinedPayments** | **bool**| Optional header for combined payments. Payments inside the import file are considered as combined in case the header is present and its value is set to &#39;true&#39;. | [optional] [default to false] |
-| **batchAutocorrect** | **bool**| Flag if valueDate should be autocorrected in the imported file or not. Autocorrection moved valueDate on first available valid  (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as actual date (during sending of payment to bank) can be sent as instant. | [optional] [default to true] |
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xRequestId** | **string**| Unique request id provided by consumer application for reference and auditing. |
+ **batchImportFormat** | **string**| Format of imported batch. For CCT format please use option SEPA-XML. |
+ **requestBody** | **string**|  |
+ **batchName** | **string**| Batch name, if not present then will be generated in format &#x60;ImportApi_&lt;DDMMYYYY&gt;&#x60;.  If the name is longer than 50 characters, it will be truncated | [optional]
+ **batchCombinedPayments** | **bool**| Optional header for combined payments. Payments inside the import file are considered as combined in case the header is present and its value is set to &#39;true&#39;. | [optional] [default to false]
+ **batchAutocorrect** | **bool**| Flag if valueDate should be autocorrected in the imported file or not. Autocorrection moved valueDate on first available valid  (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as actual date (during sending of payment to bank) can be sent as instant. | [optional] [default to true]
 
 ### Return type
 
