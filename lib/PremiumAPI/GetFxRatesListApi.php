@@ -64,8 +64,11 @@ class GetFxRatesListApi
             'application/json',
         ],
     ];
+
     protected ClientInterface $client;
+
     protected Configuration $config;
+
     protected HeaderSelector $headerSelector;
 
     /**
