@@ -58,7 +58,7 @@ class ApiException extends \Exception
     /**
      * The deserialized response object.
      */
-    protected null|array|\stdClass|string $responseObject;
+    protected \GuzzleHttp\Psr7\Response|\VitexSoftware\Raiffeisenbank\Model\ModelInterface $responseObject;
 
     /**
      * Constructor.
