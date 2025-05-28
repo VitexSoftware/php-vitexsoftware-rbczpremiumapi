@@ -24,6 +24,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^7.9",
         "guzzlehttp/psr7": "^1.8 || ^2.7",
         "vitexsoftware/ease-core": "^1.48"
     },
