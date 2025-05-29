@@ -102,7 +102,7 @@ class Statementor extends \Ease\Sand
 
             do {
                 $requestBody = new \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest([
-                    'accountNumber' => $this->bank->getDataValue('buc'),
+                    'accountNumber' => $this->accountNumber,
                     'page' => ++$page,
                     'size' => 60,
                     'currency' => $currencyCode,
@@ -110,7 +110,7 @@ class Statementor extends \Ease\Sand
                     'dateFrom' => $this->since->format(self::$dateFormat),
                     'dateTo' => $this->until->format(self::$dateFormat)]);
 
-                $result = $apiInstance->getStatements($this->getxRequestId(), $requestBody, $page);
+                $result = $apiInstance->getStatements(\VitexSoftware\Raiffeisenbank\ApiClient::getxRequestId(), $requestBody, $page);
 
                 $pageStatements = $result->getStatements();
 
@@ -280,14 +280,14 @@ class Statementor extends \Ease\Sand
         $success = 0;
 
         foreach ($statements as $statement) {
-            $statementFilename = str_replace('/', '_', $statement->statementNumber).'_'.
-                    $statement->accountNumber.'_'.
-                    $statement->accountId.'_'.
-                    $statement->currency.'_'.$statement->dateFrom.'.'.$format;
+            $statementFilename = str_replace('/', '_', $statement['statementNumber']).'_'.
+                    $this->accountNumber.'_'.
+                    $statement['accountId'].'_'.
+                    $statement['currency'].'_'.$statement['dateFrom'].'.'.$format;
             $requestBody = new \VitexSoftware\Raiffeisenbank\Model\DownloadStatementRequest([
                 'accountNumber' => $this->accountNumber,
                 'currency' => $currencyCode,
-                'statementId' => $statement->statementId,
+                'statementId' => $statement['statementId'],
                 'statementFormat' => $format]);
             $pdfStatementRaw = $apiInstance->downloadStatement(ApiClient::getxRequestId(), 'cs', $requestBody);
             sleep(1);
