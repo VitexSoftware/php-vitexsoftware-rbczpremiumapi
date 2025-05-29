@@ -98,9 +98,11 @@ class Statementor extends \Ease\Sand
         $this->addStatusMessage(sprintf(_('Request statements from %s to %s'), $this->since->format(self::$dateFormat), $this->until->format(self::$dateFormat)), 'debug');
 
         try {
+            $stop = true;
+
             do {
-                $requestBody = new Model\GetStatementsRequest([
-                    'accountNumber' => $this->accountNumber,
+                $requestBody = new \VitexSoftware\Raiffeisenbank\Model\GetStatementsRequest([
+                    'accountNumber' => $this->bank->getDataValue('buc'),
                     'page' => ++$page,
                     'size' => 60,
                     'currency' => $currencyCode,
@@ -108,26 +110,57 @@ class Statementor extends \Ease\Sand
                     'dateFrom' => $this->since->format(self::$dateFormat),
                     'dateTo' => $this->until->format(self::$dateFormat)]);
 
-                $result = $apiInstance->getStatements(ApiClient::getxRequestId(), $requestBody, $page);
+                $result = $apiInstance->getStatements($this->getxRequestId(), $requestBody, $page);
 
-                if (empty($result)) {
-                    $this->addStatusMessage(sprintf(_('No transactions from %s to %s'), $this->since->format(self::$dateFormat), $this->until->format(self::$dateFormat)));
-                    $result['lastPage'] = true;
-                    $result['last'] = true;
+                $pageStatements = $result->getStatements();
+
+                if (empty($pageStatements)) {
+                    $this->addStatusMessage(sprintf(_('No Statements from %s to %s'), $this->since->format(self::$dateFormat), $this->until->format(self::$dateFormat)));
+                    $stop = true;
+                } else {
+                    foreach ($pageStatements as $statement) {
+                        if ($statement instanceof \VitexSoftware\Raiffeisenbank\Model\GetStatements200ResponseStatementsInner) {
+                            $statements[] = [
+                                'statementId' => $statement->getStatementId(),
+                                'accountId' => $statement->getAccountId(),
+                                'statementNumber' => $statement->getStatementNumber(),
+                                'dateFrom' => $statement->getDateFrom()->format(self::$dateFormat),
+                                'dateTo' => $statement->getDateTo()->format(self::$dateFormat),
+                                'currency' => $statement->getCurrency(),
+                                'statementFormats' => $statement->getStatementFormats(),
+                            ];
+                        } else {
+                            $this->addStatusMessage('Invalid statement object type', 'error');
+                        }
+                    }
+
+                    $stop = $result->getLast() ?? true; // Assuming `getLast()` exists to indicate the last page
                 }
 
-                if (\array_key_exists('statements', $result)) {
-                    $statements = array_merge($statements, $result['statements']);
+                if ($stop === false) {
+                    sleep(1);
                 }
+            } while ($stop === false);
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+            preg_match('/cURL error ([0-9]+)/', $errorMessage, $matches);
 
-                sleep(1);
-            } while ($result['last'] === false);
-        } catch (\Ease\Exception $e) {
-            echo 'Exception when calling GetTransactionListApi->getTransactionList: ', $e->getMessage(), \PHP_EOL;
+            if (\array_key_exists(1, $matches)) {
+                $errorCode = $matches[1];
+            } elseif (preg_match('/\[([0-9]+)\]/', $errorMessage, $matches)) {
+                $errorCode = $matches[1];
+            } else {
+                $errorCode = 2;
+            }
+
+            $this->addStatusMessage('Exception when calling GetStatementsRequest: '.$errorMessage, 'error', $apiInstance);
+
+            $this->exitCode = (int) $errorCode;
         }
 
         return $statements;
     }
+
 
     /**
      * Prepare processing interval.
