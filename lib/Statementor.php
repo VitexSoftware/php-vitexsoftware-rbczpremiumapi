@@ -252,9 +252,10 @@ class Statementor extends \Ease\Sand
                     if (preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', $scope)) {
                         $this->since = new \DateTime($scope);
                         $this->until = (new \DateTime($scope))->setTime(23, 59, 59, 999);
+                    } else {
+                        throw new \InvalidArgumentException('Unknown scope '.$scope);
                     }
 
-                    throw new \InvalidArgumentException('Unknown scope '.$scope);
                 }
 
                 break;
