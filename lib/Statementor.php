@@ -19,6 +19,8 @@ namespace VitexSoftware\Raiffeisenbank;
  * Description of Statementor.
  *
  * @author vitex
+ *
+ * @no-named-arguments
  */
 class Statementor extends \Ease\Sand
 {
@@ -93,6 +95,15 @@ class Statementor extends \Ease\Sand
      */
     public function getStatements($currencyCode = 'CZK', string $statementLine = ''): array
     {
+        // Enforce 90-day maximum interval for statement downloads
+        $interval = $this->since->diff($this->until);
+
+        if ($interval->days > 90) {
+            $this->addStatusMessage('API limit: Maximum allowed interval for statements is 90 days.', 'error');
+
+            return [];
+        }
+
         $statementLineFinal = empty($statementLine) ? $this->statementLine : $statementLine;
         $apiInstance = new PremiumAPI\GetStatementListApi();
         $page = 0;
@@ -173,6 +184,11 @@ class Statementor extends \Ease\Sand
     public function setScope(string $scope): \DatePeriod
     {
         switch ($scope) {
+            case 'all':
+                $this->since = (new \DateTime('-90 days'))->setTime(0, 0);
+                $this->until = new \DateTime();
+
+                break;
             case 'yesterday':
                 $this->since = (new \DateTime('yesterday'))->setTime(0, 0);
                 $this->until = (new \DateTime('yesterday'))->setTime(23, 59, 59, 999);
@@ -206,11 +222,6 @@ class Statementor extends \Ease\Sand
             case 'two_months_ago':
                 $this->since = (new \DateTime('first day of -3 months'))->setTime(0, 0);
                 $this->until = (new \DateTime('last day of -3 months'))->setTime(23, 59, 59, 999);
-
-                break;
-            case 'this_year':
-                $this->since = (new \DateTime('first day of January '.date('Y')))->setTime(0, 0);
-                $this->until = (new \DateTime('last day of December '.date('Y')))->setTime(23, 59, 59, 999);
 
                 break;
             case 'January':  // 1
@@ -255,7 +266,6 @@ class Statementor extends \Ease\Sand
                     } else {
                         throw new \InvalidArgumentException('Unknown scope '.$scope);
                     }
-
                 }
 
                 break;
@@ -264,6 +274,14 @@ class Statementor extends \Ease\Sand
         if ($scope !== 'auto' && $scope !== 'today' && $scope !== 'yesterday') {
             $this->since = $this->since->setTime(0, 0);
             $this->until = $this->until->setTime(23, 59, 59, 999);
+        }
+
+        // Enforce 90-day maximum interval for PremiumAPI
+        $interval = $this->since->diff($this->until);
+
+        if ($interval->days > 90) {
+            $this->addStatusMessage('API limit: Maximum allowed interval for statements is 90 days. Adjusting end date.', 'warning');
+            $this->until = (clone $this->since)->add(new \DateInterval('P90D'))->setTime(23, 59, 59, 999);
         }
 
         return new \DatePeriod($this->since, new \DateInterval('P1D'), $this->until);
