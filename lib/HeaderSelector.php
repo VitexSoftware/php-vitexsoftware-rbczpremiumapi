@@ -40,6 +40,8 @@ namespace VitexSoftware\Raiffeisenbank;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class HeaderSelector
 {
@@ -176,7 +178,7 @@ class HeaderSelector
         ];
 
         foreach ($accept as $header) {
-            $headerData = $this->getHeaderAndWeight($header);
+            $headerData = self::getHeaderAndWeight($header);
 
             if (str_starts_with(strtolower($headerData['header']), strtolower('application/json'))) {
                 $processedHeaders['withApplicationJson'][] = $headerData;
@@ -210,7 +212,7 @@ class HeaderSelector
      *
      * @return array with the header and its weight
      */
-    private function getHeaderAndWeight(string $header): array
+    private static function getHeaderAndWeight(string $header): array
     {
         // matches headers with weight, splitting the header and the weight in $outputArray
         if (preg_match('/(.*);\s*q=(1(?:\.0+)?|0\.\d+)$/', $header, $outputArray) === 1) {
@@ -248,7 +250,7 @@ class HeaderSelector
 
             $weight = $currentWeight;
 
-            $acceptHeaders[] = $this->buildAcceptHeader($header['header'], $weight);
+            $acceptHeaders[] = self::buildAcceptHeader($header['header'], $weight);
         }
 
         $currentWeight = $this->getNextWeight($currentWeight, $hasMoreThan28Headers);
@@ -256,7 +258,7 @@ class HeaderSelector
         return $acceptHeaders;
     }
 
-    private function buildAcceptHeader(string $header, int $weight): string
+    private static function buildAcceptHeader(string $header, int $weight): string
     {
         if ($weight === 1000) {
             return $header;

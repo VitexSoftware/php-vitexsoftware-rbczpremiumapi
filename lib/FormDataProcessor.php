@@ -46,6 +46,8 @@ use VitexSoftware\Raiffeisenbank\Model\ModelInterface;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class FormDataProcessor
 {
@@ -235,14 +237,14 @@ class FormDataProcessor
             }
 
             if ($file instanceof \SplFileObject) {
-                $result[$i] = $this->tryFopen($file);
+                $result[$i] = self::tryFopen($file);
             }
         }
 
         return $result;
     }
 
-    private function tryFopen(\SplFileObject $file)
+    private static function tryFopen(\SplFileObject $file)
     {
         return Utils::tryFopen($file->getRealPath(), 'rb');
     }

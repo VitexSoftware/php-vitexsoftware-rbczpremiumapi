@@ -53,6 +53,8 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class UploadPaymentsApi
 {
@@ -64,11 +66,8 @@ class UploadPaymentsApi
             'text/plain',
         ],
     ];
-
     protected ClientInterface $client;
-
     protected Configuration $config;
-
     protected HeaderSelector $headerSelector;
 
     /**

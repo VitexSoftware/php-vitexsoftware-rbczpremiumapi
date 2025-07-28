@@ -43,6 +43,8 @@ use VitexSoftware\Raiffeisenbank\Model\ModelInterface;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class ObjectSerializer
 {

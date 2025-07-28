@@ -46,6 +46,8 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @see     https://openapi-generator.tech
  *
  * @implements \ArrayAccess<string, mixed>
+ *
+ * @no-named-arguments
  */
 class GetBalance200Response implements \ArrayAccess, \JsonSerializable, ModelInterface
 {

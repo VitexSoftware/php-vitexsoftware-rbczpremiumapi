@@ -44,6 +44,8 @@ use PHPUnit\Framework\TestCase;
  * @author      OpenAPI Generator team
  *
  * @see        https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class GetBalance429ResponseTest extends TestCase
 {

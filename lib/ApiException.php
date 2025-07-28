@@ -40,6 +40,8 @@ namespace VitexSoftware\Raiffeisenbank;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class ApiException extends \Exception
 {

@@ -36,6 +36,8 @@ namespace VitexSoftware\Raiffeisenbank\Model;
  * Interface abstracting model access.
  *
  * @author  OpenAPI Generator team
+ *
+ * @no-named-arguments
  */
 interface ModelInterface
 {

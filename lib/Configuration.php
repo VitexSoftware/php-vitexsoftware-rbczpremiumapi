@@ -41,6 +41,8 @@ namespace VitexSoftware\Raiffeisenbank;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
+ *
+ * @no-named-arguments
  */
 class Configuration
 {
@@ -105,7 +107,6 @@ class Configuration
      * Debug file location (log to STDOUT by default).
      */
     protected string $tempFolderPath;
-
     private static Configuration $defaultConfiguration;
 
     /**
