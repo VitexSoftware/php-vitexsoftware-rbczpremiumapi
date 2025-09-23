@@ -1,0 +1,1819 @@
+x-headmatter:
+  readable_by: []
+swagger: "2.0"
+info:
+  version: 1.1.20240910
+  title: Sandbox
+  description: |
+    Sandbox environment.
+
+    ##### API Overview
+    - Accounts list and balance
+    - Transaction overview (also for saving accounts)
+    - Payments import
+    - Statement list and download
+    - FX rates
+
+    ##### Authentication
+    Before making a call to Premium API, you need to register your app at our _Developer portal_. This is where you get the **ClientID** that your application must send in the request as `X-IBM-Client-Id`. This is the key that grants your app access to the API.
+
+    However, this may not be enough. Your application needs to use mTLS to call most operations here. Thus, you not only need _https_ but also a client certificate issued by us. The exception is two operations for FX rates that are accessible also without a client certificate.
+
+    Each bank client/user can issue several certificates. Each certificate can permit different sets of operations (http methods) on different bank accounts. All this must be configured in Internet Banking first by each bank client/user (bank clients need to look under _Settings_ and do not forget to download the certificate at the last step). The certificate is downloaded in **PKCS#12** format as **\*.p12** file and protected by a password chosen by the bank client/user. Yes, your app needs the password as well to get use of the **\*p12** file for establishing mTLS connection to the bank.
+
+    Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.
+
+    For testing purposes please download and use our <a href="assets/test_cert.p12" download> test client certificate</a>. The certificate password is <i>Test12345678</i>.
+
+    ##### Rate Limiting
+    In production environment the request rate is limited according to your subscription plan. Therefore the consumer must be able to handle HTTP responses status 429 in case of exceeding these limits.
+
+    Response headers `X-RateLimit-Limit-Second` and `X-RateLimit-Limit-Day` show the actual limits configured for the specific operation. Response headers `X-RateLimit-Remaining-Second` and `X-RateLimit-Remaining-Day` are returned to help prevent the limits from being exceeded.
+
+    ##### Notes
+    Be aware, that in certain error situations, API can return specific error structures along with 5xx status code, which is not explicitely defined below.
+
+    ##### Quick Start Client
+    Feel free to download a <a href="assets/PremiumApiClient.java" download>simple Java client</a> that gives you quick access to our API.
+  x-ibm-name: rbczpremiumapi
+host: "api.rb.cz"
+basePath: /
+schemes:
+  - https
+paths:
+  "/rbcz/premium/mock/accounts/{accountNumber}/balance":
+    get:
+      description: |
+        Get balance for given accounts.
+
+        Balance can be of one of the following types in this table:
+        
+        | Abbreviation  | Balance type      | Description                                                                                        | 
+        | ------------- | ----------------- | -------------------------------------------------------------------------------------------------- |
+        | CLAV          | Available balance | Available balance on the account in the time of the response to the request with credit limit      |
+        | CLBD          | Booking balance   | Actual accounting balance on the account                                                           |
+        | CLAB          | Actual balance    | Available balance on the account in the time of the response to the request without credit limit   |
+        | BLCK          | Blocked balance   | Sum of blocked amounts on the account                                                              |
+
+      operationId: getBalance
+      produces:
+        - application/json
+      tags:
+        - Get Account Balance
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: accountNumber
+          in: path
+          required: true
+          type: string
+          description: The number of account without prefix and bankCode
+      responses:
+        "200":
+          description: Account with currencyFolders and balances.
+          schema:
+            description: Account with balances
+            type: object
+            properties:
+              numberPart1:
+                description: The prefix of the account number
+                example: "19"
+                type: string
+              numberPart2:
+                description: The account number without prefix
+                example: "6760653036"
+                type: string
+              bankCode:
+                description: The bank clearing code
+                example: "5500"
+                type: string
+              currencyFolders:
+                description: The available currency folders information.
+                type: array
+                items:
+                  type: object
+                  properties:
+                    currency:
+                      description: The currency of the currency folder
+                      example: CZK
+                      type: string
+                    status:
+                      description: "The status of the currency folder (CATALOG: CURRENCYFOLDERSTATUS)"
+                      example: ACTIVE
+                      type: string
+                    balances:
+                      description: the balances of the currencyFolder
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          balanceType:
+                            description: "the balance type (CODEBOOK: AccountBalanceTypes)"
+                            example: CLAB
+                            type: string
+                          currency:
+                            description: The currency of the balance
+                            type: string
+                          value:
+                            description: The balance amount
+                            example: 1000.5
+                            type: number
+                            format: double
+                        required:
+                          - balanceType
+                          - currency
+                          - value
+                  required:
+                    - currency
+                    - status
+            required:
+              - numberPart2
+              - bankCode
+        "401":
+          description: Certificate's serial number is missing or certificate is in an invalid state.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: Certficate is valid but user has no sufficient rights to access resource.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "404":
+          description: Indicates that requested resource does not exist.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - ID_NOT_FOUND
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  "/rbcz/premium/mock/accounts/{accountNumber}/{currencyCode}/transactions":
+    get:
+      description: >-
+        Get a list of posted transactions (including intraday). In addition,
+        transactions must not be older than **90 days** - see request parameter
+        `from`.
+
+
+        The list is returned as a sequence of pages - see request parameter
+        `page`. The request parameter/flag `lastPage` indicates whether the
+        returned page is the last one or if there are more pages that you can
+        iterate.
+
+
+        When iterating pages of transactions, your app may need to implement 
+        some delay in order not to break the request rate limit.
+      operationId: getTransactionList
+      produces:
+        - application/json
+      tags:
+        - Get Transaction List
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: accountNumber
+          in: path
+          required: true
+          description: >-
+            Account number for which to get list of transactions in national
+            format without 0 padding.
+          type: string
+          pattern: "[0-9]{1,10}"
+          maxLength: 10
+        - name: currencyCode
+          in: path
+          required: true
+          description: >-
+            Currency code of the account in ISO-4217 standard (e.g. czk, eur,
+            usd)
+          type: string
+          pattern: "[A-Z]{1,3}"
+          maxLength: 3
+        - name: from
+          in: query
+          required: true
+          description: >-
+            Defines date (and optionally time) from which transactions will be
+            requested. If no time is specified then 00:00:00.0 (Central European 
+            Time) will be used.
+            Example values - 2021-08-01 or 2021-08-01T10:00:00.0Z
+          type: string
+          format: date-time
+        - name: to
+          in: query
+          required: true
+          description: >-
+            Defines date (and optionally time) until which transactions will be
+            requested. If no time is specified then 23:59:59.999 (Central European 
+            Time) will be used.
+            Example values - 2021-08-02 or 2021-08-02T14:00:00.0Z
+          type: string
+          format: date-time
+        - name: page
+          in: query
+          description: Page number to be requested. The first page is 1.
+          type: integer
+          minimum: 1
+          maximum: 99999
+      responses:
+        "200":
+          description: ""
+          schema:
+            properties:
+              lastPage:
+                type: boolean
+                description: Indication wheter the page is last - default false
+                example: true
+              transactions:
+                description: "An array of transactions."
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entryReference:
+                      type: string
+                      description: Unique identification of the realized transaction.
+                      example: 3887196517
+                    amount:
+                      type: object
+                      properties:
+                        value:
+                          type: number
+                          format: double
+                          description: Amount of money
+                          example: -1668.59
+                        currency:
+                          type: string
+                          description: Currency code of the amount
+                          example: CZK
+                      required:
+                        - value
+                        - currency
+                    creditDebitIndication:
+                      type: string
+                      enum:
+                        - DBIT
+                        - CRDT
+                      example: DBIT
+                    bookingDate:
+                      type: string
+                      format: date-time
+                      description: Date of payment processing/posting by the bank.
+                    valueDate:
+                      type: string
+                      format: date-time
+                      description: >-
+                        Transaction date; value date; date which is used to
+                        count interest; e.g. date when money were withdrawn
+                        from ATM.
+                    bankTransactionCode:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          description: >-
+                            Transaction code in ISO20022 camt.53 format
+                            (e.g. 10000101000 - Odchozi tuzemska platba).
+                          example: "10000401000"
+                      required:
+                        - code
+                    entryDetails:
+                      type: object
+                      properties:
+                        transactionDetails:
+                          type: object
+                          properties:
+                            references:
+                              type: object
+                              properties:
+                                endToEndIdentification:
+                                  type: string
+                                  description: >-
+                                    Originator reference ID - End to End ID;
+                                    The Originator's reference of the
+                                    transaction
+                                  example: EBGTF015477198
+                            instructedAmount:
+                              description: >-
+                                Original amount in original currency -
+                                before currency conversion.
+                              type: object
+                              properties:
+                                value:
+                                  type: number
+                                  format: double
+                                  description: Amount of money
+                                  example: 61
+                                currency:
+                                  type: string
+                                  description: Currency code of the amount
+                                  example: EUR
+                                exchangeRate:
+                                  type: number
+                                  format: double
+                                  example: 0.03656
+                              required:
+                                - value
+                                - currency
+                            chargeBearer:
+                              type: string
+                              enum:
+                                - DEBT
+                                - CRED
+                                - SHAR
+                              example: SHAR
+                            paymentCardNumber:
+                              type: string
+                              description: >-
+                                Masked payment card number, if the
+                                transaction is related to debit card.
+                              example: 547872XXXXXX9475
+                            relatedParties:
+                              type: object
+                              properties:
+                                counterParty:
+                                  description: >-
+                                    Information about counter party (debtor
+                                    or creditor) - always the other side of
+                                    the transaction.
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      description: Bank account name
+                                      example: Firma Ltd.
+                                    postalAddress:
+                                      type: object
+                                      properties:
+                                        street:
+                                          type: string
+                                          description: Street or 2nd line of the address
+                                          example: Na dlouh?m l?nu 35
+                                        city:
+                                          type: string
+                                          description: City or 3nd line of the address
+                                          example: Praha 6
+                                        country:
+                                          type: string
+                                          description: Country code - 4th line of the address.
+                                          example: CZ
+                                    organisationIdentification:
+                                      type: object
+                                      properties:
+                                        name:
+                                          type: string
+                                          example: Firma Ltd.
+                                        bicOrBei:
+                                          type: string
+                                          description: SWIFT/BIC code of the bank.
+                                          example: KOMBCZPP
+                                        bankCode:
+                                          type: string
+                                          description: >-
+                                            Proprietary bank code in local format
+                                            (e.g. 5500) or in foreign format.
+                                          example: "0100"
+                                        postalAddress:
+                                          type: object
+                                          properties:
+                                            street:
+                                              type: string
+                                              description: Street or 2nd line of the address
+                                              example: Na dlouh?m l?nu 35
+                                            city:
+                                              type: string
+                                              description: City or 3nd line of the address
+                                              example: Praha 6
+                                            shortAddress:
+                                              type: string
+                                              description: Short address
+                                              example: "Na dlouh?m l?nu 35, Praha, CZ"
+                                            country:
+                                              type: string
+                                              description: Country code - 4th line of the address.
+                                              example: CZ
+                                    account:
+                                      type: object
+                                      properties:
+                                        iban:
+                                          type: string
+                                          description: >-
+                                            IBAN code of the bank account if
+                                            available
+                                          example: CZ0801000000192000145399
+                                        accountNumberPrefix:
+                                          type: string
+                                          description: >-
+                                            Prefix part of the bank account number
+                                            (only for czech accounts)
+                                          example: 000019
+                                        accountNumber:
+                                          type: string
+                                          description: >-
+                                            Base part of the bank account number in
+                                            czech fromat or in foreign format
+                                          example: "2000145399"
+                                intermediaryInstitution:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      example: "Komer?n? banka, a.s."
+                                    bicOrBei:
+                                      type: string
+                                      description: SWIFT/BIC code of the bank.
+                                      example: KOMBCZPP
+                                    bankCode:
+                                      type: string
+                                      description: >-
+                                        Proprietary bank code in local format
+                                        (e.g. 5500) or in foreign format.
+                                      example: "0100"
+                                    postalAddress:
+                                      type: object
+                                      properties:
+                                        street:
+                                          type: string
+                                          description: Street or 2nd line of the address
+                                          example: Na p??kop? 969/33
+                                        city:
+                                          type: string
+                                          description: City or 3nd line of the address
+                                          example: Praha 1
+                                        shortAddress:
+                                          type: string
+                                          description: Short address
+                                          example: "Na p??kop? 969/33, Praha, CZ"
+                                        country:
+                                          type: string
+                                          description: Country code - 4th line of the address.
+                                          example: CZ
+                                ultimateCounterParty:
+                                  description: >-
+                                    Ultimate debtor or Ultimate creditor -
+                                    always the other end.
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                      description: Bank account name
+                                      example: CZ0801000000192000145399
+                                    postalAddress:
+                                      type: object
+                                      properties:
+                                        street:
+                                          type: string
+                                          description: Street or 2nd line of the address
+                                          example: Na dlouh?m l?nu 35
+                                        city:
+                                          type: string
+                                          description: City or 3nd line of the address
+                                          example: Praha 6
+                                        country:
+                                          type: string
+                                          description: Country code - 4th line of the address.
+                                          example: CZ
+                            remittanceInformation:
+                              description: >-
+                                Information that allow match and pairing
+                                transactions or further identifies it.
+                              type: object
+                              properties:
+                                unstructured:
+                                  type: string
+                                  description: >-
+                                    Information from or for counter party.
+                                    Information for creditor.
+                                  example: >-
+                                    61 EUR;FIRMA LTD;12345678 RADEK DVA
+                                    RADEK TRI RADEK CTYRI
+                                creditorReferenceInformation:
+                                  type: object
+                                  properties:
+                                    variable:
+                                      type: string
+                                      description: Variable symbol
+                                      example: "1234567890"
+                                    constant:
+                                      type: string
+                                      description: Constant symbol
+                                      example: "558"
+                                    specific:
+                                      type: string
+                                      description: Specific symbol
+                                      example: "1234567890"
+                                originatorMessage:
+                                  type: string
+                                  description: >-
+                                    Private description of the transaction.
+                                    Only available to account holder.
+                                  example: na?e platba
+                  required:
+                    - entryReference
+                    - amount
+                    - creditDebitIndication
+                    - bankTransactionCode
+                minItems: 0
+        "204":
+          description: |
+            Nonexisting page or empty content.
+        "400":
+          description: "Bad request, validation error."
+          schema:
+            properties:
+              error:
+                type: string
+                description: Invalid date. Parameter `from` must not be older than 90 days.
+                enum:
+                  - DT01
+              error_description:
+                type: string
+        "401":
+          description: Certificate is invalid.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: No access rights to perform the operation.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "404":
+          description: ""
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - ID_NOT_FOUND
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  /rbcz/premium/mock/payments/batches:
+    post:
+      description: >-
+        Importing batch payments in one of [supported
+        formates](https://www.rb.cz/attachments/direct-banking/ekomunikator-datova-struktura.pdf)
+        - see request parameter `Batch-Import-Format`.
+
+
+        This is an API alternative to the manual import of batch payments through
+        [Internet
+        Banking](https://www.rb.cz/podnikatele/ucty-a-platebni-styk/prime-bankovnictvi/internetove-bankovnictvi/caste-dotazy/import-hromadnych-plateb).
+
+
+        Imported payments are not immediately processed, they are just loaded into
+        Internet Banking and they still must be authorized/certified in Internet
+        Banking according to client settings of disposable rights and
+        signatures.
+
+
+        Once authorized/certified, uploaded payments will be processed in the
+        Instant payments mode if the following conditions are met&#58;
+
+        1. the batch has no more than 100 payments
+
+        2. no more than 10 batches per day were uploaded
+
+        3. individual payments meet the conditions for Instant payments - see
+        [Instant
+        Payments](https://www.rb.cz/informacni-servis/platebni-styk/tuzemske-platby/okamzite-platby)
+
+        4. on the weekend, only payments within our bank are processed as Instant payments
+
+
+        The number of transactions in one request is limited to 15.000 (this can
+        change without prior notice). The limit is not checked during the call, 
+        it is performed later and a possible error is provided in Internet Banking.
+      operationId: importPayments
+      produces:
+        - application/json
+      consumes:
+        - text/plain
+      tags:
+        - Upload Payments
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: Batch-Import-Format
+          in: header
+          required: true
+          description: Format of imported batch. For CCT format please use option SEPA-XML.
+          type: string
+          enum:
+            - GEMINI-P11
+            - GEMINI-P32
+            - GEMINI-F84
+            - ABO-KPC
+            - SEPA-XML
+            - CFD
+            - CFU
+            - CFA
+        - name: Batch-Name
+          in: header
+          required: false
+          description: >
+            Batch name, if not present then will be generated in format
+            `ImportApi_<DDMMYYYY>`.  If the name is longer than 50 characters,
+            it will be truncated
+          type: string
+          maxLength: 50
+        - name: Batch-Combined-Payments
+          in: header
+          required: false
+          description: >
+            Optional header for combined payments. Payments inside the import file are considered
+            as combined in case the header is present and its value is set to 'true'.
+          type: boolean
+          default: false
+        - name: Batch-Autocorrect
+          in: header
+          required: false
+          description: >
+            Flag if valueDate should be autocorrected in the imported file or not. Autocorrection moved valueDate on first available valid 
+            (working) day. Beware that this may affect if the payment will be sent as instant or not since only payments with valueDate same as
+            actual date (during sending of payment to bank) can be sent as instant.
+          type: boolean
+          default: true
+        - name: request body
+          required: true
+          in: body
+          schema:
+            type: string
+            description: >-
+              Batch payment content in on of the supported formats - see
+              parameter `Batch-Import-Format`
+            example: INT00000120180914Test Banka...
+      responses:
+        "200":
+          description: New batch with payments created
+          schema:
+            properties:
+              batchFileId:
+                description: ID of created batch file
+                type: integer
+                format: int64
+                example: 1234
+        "400":
+          description: "Bad request, validation error."
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - INVALID_BATCH_IMPORT_FORMAT
+                  - BATCH_CONTENT_INVALID
+                  - BATCH_ALREADY_IMPORTED
+                description: >
+                  * INVALID_BATCH_IMPORT_FORMAT - Batch-Import-Format
+                  unsupported
+
+                  * BATCH_CONTENT_INVALID - Batch content doesn't match to
+                  declared Batch-Import-Format
+
+                  * BATCH_ALREADY_IMPORTED - Batch has already been imported
+                  (based on checksum)
+              error_description:
+                type: string
+        "401":
+          description: Certificate is invalid.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: No access rights to perform the operation.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "413":
+          description: Indicates that the request payload is too large
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - >-
+                    BATCH_CONTENT_SIZE_EXCEEDED - Content exceeds maximum of 200
+                    MB
+              error_description:
+                type: string
+        "415":
+          description: Unsupported media type
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+        "500":
+          description: Unexpected error.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              error_description:
+                type: string
+  "/rbcz/premium/mock/payments/batches/{batchFileId}":
+    get:
+      description: >-
+        Getting details about state of processing of imported batch file and
+        created batch transactions.
+
+
+        All possible batch `status` values are: DRAFT, ERROR, FOR_SIGN, VERIFIED, PASSING_TO_BANK, PASSED, PASSED_TO_BANK_WITH_ERROR, UNDISCLOSED
+      operationId: getBatchDetail
+      produces:
+        - application/json
+      tags:
+        - Get Batch Detail
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: batchFileId
+          in: path
+          required: true
+          description: |
+            Batch file id
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Batch payment detail.
+          schema:
+            properties:
+              batchName:
+                description: Batch name
+                type: string
+                example: Import_25102021
+              batchFileStatus:
+                description: Status of batch file import
+                type: string
+                enum:
+                  - DELETED
+                  - OK
+                  - UPLOADED
+                  - PROCESSING
+                  - ERROR
+                example: OK
+              createDate:
+                description: The date when the batch was created
+                type: string
+                format: date
+                example: "2022-01-20"
+              batchItems:
+                type: array
+                items:
+                  properties:
+                    accountInfo:
+                      description: Account info detail
+                      type: object
+                      required:
+                        - accountId
+                        - accountNumber
+                        - mainCurrencyId
+                      properties:
+                        accountId:
+                          description: Account Id.
+                          type: integer
+                          format: int64
+                          example: 4
+                        accountNumberPrefix:
+                          description: Charged account number prefix
+                          type: string
+                          example: 000609
+                        accountNumber:
+                          description: Charged account number
+                          type: string
+                          example: 19
+                        mainCurrencyId:
+                          description: >-
+                            The currency folder identification (CATALOG:
+                            CURRENCIES)
+                          example: CZK
+                          type: string
+                          minLength: 3
+                          maxLength: 3
+                    numberOfPayments:
+                      description: Number of payments within the batch
+                      type: integer
+                      example: 1
+                    sumAmount:
+                      description: Sum amount
+                      type: number
+                      format: decimal
+                      example: 500
+                    sumAmountCurrencyId:
+                      description: "The currency folder identification (CATALOG: CURRENCIES)"
+                      example: CZK
+                      type: string
+                      minLength: 3
+                      maxLength: 3
+                    batchType:
+                      description: Batch transaction package payment type
+                      type: string
+                      enum:
+                        - DPO
+                        - DD
+                        - FPO
+                        - SEPA
+                      example: FPO
+                    status:
+                      description: Bacth transaction package status
+                      type: string
+                      enum:
+                        - DRAFT
+                        - ERROR
+                        - FOR_SIGN
+                        - VERIFIED
+                        - PASSING_TO_BANK
+                        - PASSED
+                        - PASSED_TO_BANK_WITH_ERROR
+                        - UNDISCLOSED
+                      example: PASSED
+                    assignedUserName:
+                      description: Name of user assigned to batch transaction package
+                      type: string
+                      example: Jon Doe
+                    lastChangeDateTime:
+                      description: >-
+                        Date and time of last change of batch transaction
+                        package
+                      type: string
+                      format: date-time
+                      example: "2022-01-27T09:14:16+02:00"
+        "400":
+          description: "Bad request, validation error."
+          schema:
+            properties:
+              error:
+                type: string
+                description: Invalid input.
+                enum:
+                  - DT01
+              error_description:
+                type: string
+        "401":
+          description: Certificate is invalid.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: No access rights to perform the operation.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "404":
+          description: ""
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - ID_NOT_FOUND
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  "/rbcz/premium/mock/accounts":
+    get:
+      description: >-
+        Get list of accounts for given certificate. First page is 1.
+      tags:
+        - Get Accounts
+      operationId: getAccounts
+      produces:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: page
+          description: Number of the requested page. Default is 1.
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: size
+          description: Number of items on the page. Default is 15.
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: ""
+          schema:
+            properties:
+              accounts:
+                description: "An array of accounts."
+                type: array
+                items:
+                  type: object
+                  properties:
+                    accountId:
+                      type: integer
+                      description: The unique internal account id
+                      example: 3887
+                    accountName:
+                      description: The account name
+                      type: string
+                    friendlyName:
+                      description: The account nick name
+                      type: string
+                    accountNumber:
+                      description: The account number without prefix
+                      type: string
+                      example: 6760653036
+                    accountNumberPrefix:
+                      description: The account number prefix
+                      type: string
+                    iban:
+                      description: The account number in IBAN format
+                      type: string
+                      example: CZ1155000000006760653036
+                    bankCode:
+                      description: The bank clearing code
+                      type: string
+                      example: 5500
+                    bankBicCode:
+                      description: The bank BIC (SWIFT) code
+                      type: string
+                      example: RZBCCZPP
+                    mainCurrency:
+                      description: The main currency of the account
+                      type: string
+                      example: CZK
+                    accountTypeId:
+                      description: The account type
+                      type: string
+                      example: "SAVINGS"
+                  required:
+                    - accountId
+                    - accountNumber
+                    - bankCode
+              page:
+                description: actual returned page
+                type: integer
+                example: 1
+              size:
+                description: Number of items on the page
+                type: integer
+                example: 15
+              first:
+                description: true for first page
+                type: boolean
+                example: true
+              last:
+                description: true for last page
+                type: boolean
+                example: false
+              totalPages:
+                description: total number of pages
+                type: integer
+                example: 5
+              totalSize:
+                description: total number of items
+                type: integer
+                example: 30
+        "204":
+          description: |
+            Nonexisting page or empty content.
+        "401":
+          description: Certificate is invalid.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: No access rights to perform the operation.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  "/rbcz/premium/mock/accounts/statements":
+    post:
+      description: >-
+        Lists statements for all available accounts for which the client has appropriate access rights.
+      tags:
+        - Get Statement List
+      operationId: getStatements
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: page
+          description: Number of the requested page. Default is 1.
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: size
+          description: Number of items on the page. Default is 15.
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: request body
+          required: true
+          in: body
+          schema:
+            type: object
+            description: Request values for list of a statements.
+            required:
+              - accountNumber
+            properties:
+              accountNumber:
+                example: "6761402079"
+                type: string
+              currency:
+                description: Currency of the requested currency folder.
+                example: "CZK"
+                type: string
+              statementLine:
+                description: Statement line identification.
+                example: "MT940"
+                type: string
+                enum:
+                  - MAIN
+                  - ADDITIONAL
+                  - MT940
+              dateFrom:
+                description: Date limit from.
+                example: "2022-06-01"
+                type: string
+                format: date
+              dateTo:
+                description: Date limit to.
+                example: "2022-11-10"
+                type: string
+                format: date
+      responses:
+        "200":
+          description: ""
+          schema:
+            properties:
+              statements:
+                description: "An array of statements."
+                type: array
+                items:
+                  type: object
+                  properties:
+                    statementId:
+                      description: public id of the statement
+                      example: "cdd84bca-a88d-4997-9673-7ea01406b0d4"
+                      type: string
+                    accountId:
+                      description: account id
+                      type: integer
+                      example: 301
+                    statementNumber:
+                      description: number of the statement
+                      type: string
+                      example: 08/2015
+                    dateFrom:
+                      description: valid date from for statement
+                      type: string
+                      format: date
+                      example: "2022-10-01"
+                    dateTo:
+                      description: valid date to for statement
+                      type: string
+                      format: date
+                      example: "2022-11-01"
+                    currency:
+                      description: currency of the statement
+                      type: string
+                      example: "CZK"
+                    statementFormats:
+                      description: set of document available formats (always in upper case notation).
+                      type: array
+                      items:
+                        type: string
+                        example: "PDF"
+                  required:
+                    - statementId
+                    - accountId
+                    - statementNumber
+                    - dateFrom
+                    - dateTo
+                    - statementFormats
+              page:
+                description: Page number.
+                type: integer
+                format: int32
+                example: 0
+              size:
+                description: Page size.
+                type: integer
+                format: int32
+                example: 20
+              first:
+                description: Is this the first page?
+                type: boolean
+                example: true
+              last:
+                description: Is this the last page?
+                type: boolean
+                example: true
+              totalPages:
+                description: Total number of pages.
+                type: integer
+                format: int32
+                example: 1
+              totalSize:
+                description: Total number of items.
+                type: integer
+                format: int32
+                example: 2
+            required:
+              - statements
+              - page
+              - size
+              - first
+              - last
+              - totalPages
+              - totalSize
+        "204":
+          description: |
+            Nonexisting page or empty content.
+        "400":
+          description: Bad request, validation error.
+          schema:
+            properties:
+              error:
+                type: string
+                description: Invalid date.
+                enum:
+                  - DT01
+              error_description:
+                type: string
+        "401":
+          description: Certificate is invalid.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: No access rights to perform the operation.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "404":
+          description: Indicates that requested resource does not exist.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - ID_NOT_FOUND
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  "/rbcz/premium/mock/accounts/statements/download":
+    post:
+      description: >-
+        Download the selected statement.
+
+
+        Returns one of the following `Content-type` header values depending on 
+        the downloaded document type: <code>application/pdf</code>, <code>application/xml</code>,
+        <code>text/mt940</code>, <code>application/json</code> (in case of an error).
+      tags:
+        - Download Statement
+      operationId: downloadStatement
+      produces:
+        - "*/*"
+      consumes:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: Accept-Language
+          in: header
+          required: true
+          description: >-
+            The Accept-Language request HTTP header is used to determine document 
+            language. Supported languages are `cs` and `en`.
+          type: string
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: request body
+          required: true
+          in: body
+          schema:
+            type: object
+            description: Request values for the statement download.
+            properties:
+              accountNumber:
+                description: Number of the account without prefix and bank code.
+                example: "6761402079"
+                type: string
+              currency:
+                description: Currency of the requested currency folder.
+                example: "CZK"
+                type: string
+              statementId:
+                description: Public id of the statement.
+                example: "cdd84bca-a88d-4997-9673-7ea01406b0d4"
+                type: string
+              statementFormat:
+                description: The format of the statement.
+                example: "pdf"
+                type: string
+                enum:
+                  - pdf
+                  - xml
+                  - MT940
+            required:
+              - accountNumber
+              - statementId
+              - statementFormat
+      responses:
+        "200":
+          description: Document present and ready for download.
+          schema:
+            description: Statement file.
+            type: string
+            format: binary
+        "204":
+          description: Nonexisting page or empty content.
+        "400":
+          description: Bad request, validation error.
+          schema:
+            properties:
+              error:
+                type: string
+                description: Invalid date.
+                enum:
+                  - DT01
+              error_description:
+                type: string
+        "401":
+          description: Certificate is invalid.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - UNAUTHORISED
+              error_description:
+                type: string
+        "403":
+          description: No access rights to perform the operation.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - INSUFFICIENT_RIGHTS
+              error_description:
+                type: string
+        "404":
+          description: Indicates that requested resource does not exist.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - ID_NOT_FOUND
+              error_description:
+                type: string
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  "/rbcz/premium/mock/fxrates":
+    get:
+      description: >-
+        Returns foreign exchange rates for all available currencies.
+      tags:
+        - Get Fx Rates List
+      operationId: getFxRatesList
+      produces:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: date
+          description: >-
+            The effective date for which the FX rates list is requested.
+            Will default to **now** when not specified.
+          in: query
+          required: false
+          type: string
+          format: date
+      responses:
+        "200":
+          description: Foreign exchange rates for all available currencies.
+          schema:
+            $ref: "#/definitions/CurrencyListSimple"
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+  "/rbcz/premium/mock/fxrates/{currencyCode}":
+    get:
+      description: >-
+        Returns foreign exchange rates for the given currency code.
+      tags:
+        - Get Fx Rates
+      operationId: getFxRates
+      produces:
+        - application/json
+      parameters:
+        - name: X-IBM-Client-Id
+          in: header
+          required: true
+          description: >-
+            ClientID obtained from Developer Portal - when you registered your
+            app with us.
+          type: string
+        - name: X-Request-Id
+          in: header
+          required: true
+          description: >-
+            Unique request id provided by consumer application for reference and
+            auditing.
+          type: string
+          pattern: '[a-zA-Z0-9\-_:]{1,60}'
+          maxLength: 60
+        - name: PSU-IP-Address
+          in: header
+          description: >-
+            IP address of a client - the end IP address of the client
+            application (no server) in IPv4 or IPv6 format. If the bank client
+            (your user) uses a browser by which he accesses your server app, we
+            need to know the IP address of his browser. Always provide the
+            closest IP address to the real end-user possible.
+          type: string
+          maxLength: 39
+        - name: currencyCode
+          in: path
+          description: The foreign currency code in ISO-4217 format.
+          required: true
+          type: string
+          minLength: 3
+          maxLength: 3
+        - name: date
+          description: >-
+            The effective date for which the FX rates are requested.
+            Will default to **now** when not specified.
+          in: query
+          required: false
+          type: string
+          format: date
+      responses:
+        "200":
+          description: Foreign exchange rates for the given currency.
+          schema:
+            $ref: "#/definitions/CurrencyListSimple"
+        "429":
+          description: User has sent too many requests in a given amount of time.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - TOO_MANY_REQUESTS
+              error_description:
+                type: string
+definitions:
+  CurrencyListSimple:
+    type: object
+    required:
+      - exchangeRateLists
+    properties:
+      exchangeRateLists:
+        type: array
+        items:
+          $ref: "#/definitions/ExchangeRateList"
+  ExchangeRateList:
+    type: object
+    required:
+      - effectiveDateFrom
+      - tradingDate
+      - ordinalNumber
+      - lastRates
+      - exchangeRates
+    properties:
+      effectiveDateFrom:
+        type: string
+        format: date-time
+      effectiveDateTo:
+        type: string
+        format: date-time
+      tradingDate:
+        type: string
+        format: date-time
+      ordinalNumber:
+        type: integer
+        format: int32
+      lastRates:
+        type: boolean
+      exchangeRates:
+        type: array
+        items:
+          $ref: "#/definitions/ExchangeRate"
+  ExchangeRate:
+    type: object
+    required:
+      - currencyFrom
+      - currencyTo
+      - exchangeRateBuy
+      - exchangeRateBuyCash
+      - exchangeRateCenter
+      - exchangeRateCenterChange
+      - exchangeRateSell
+      - exchangeRateSellCash
+      - exchangeRateSellCenter
+      - exchangeRateSellCenterPrevious
+      - quotationType
+      - unitsFrom
+    properties:
+      countryFlagPath:
+        type: string
+      currencyFrom:
+        type: string
+        minLength: 3
+        maxLength: 3
+      currencyTo:
+        type: string
+        minLength: 3
+        maxLength: 3
+      exchangeRateBuy:
+        type: number
+        format: double
+      exchangeRateBuyCash:
+        type: number
+        format: double
+      exchangeRateCenter:
+        type: number
+        format: double
+      exchangeRateCenterChange:
+        type: number
+        format: double
+      exchangeRateSell:
+        type: number
+        format: double
+      exchangeRateSellCash:
+        type: number
+        format: double
+      exchangeRateSellCenter:
+        type: number
+        format: double
+      exchangeRateSellCenterPrevious:
+        type: number
+        format: double
+      exchangeRateEcbRate:
+        type: number
+        format: double
+      exchangeRateEcbVariation:
+        type: number
+        format: double
+      fixedCountryCode:
+        type: string
+      fixedCountryName:
+        type: string
+      quotationType:
+        type: string
+      unitsFrom:
+        type: integer
+        format: int32
+      variableCountryCode:
+        type: string
+      variableCountryName:
+        type: string
