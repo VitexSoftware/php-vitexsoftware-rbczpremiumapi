@@ -53,8 +53,6 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
- *
- * @no-named-arguments
  */
 class GetStatementListApi
 {
@@ -201,7 +199,7 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      *
-     * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\GetStatements200Response|\VitexSoftware\Raiffeisenbank\Model\GetStatements400Response
+     * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\GetStatements200Response|\VitexSoftware\Raiffeisenbank\Model\GetStatements400Response|\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response
      */
     public function getStatements($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
@@ -222,7 +220,7 @@ class GetStatementListApi
      * @throws \InvalidArgumentException
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      *
-     * @return array of \VitexSoftware\Raiffeisenbank\Model\GetStatements200Response|\VitexSoftware\Raiffeisenbank\Model\GetStatements400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \VitexSoftware\Raiffeisenbank\Model\GetStatements200Response|\VitexSoftware\Raiffeisenbank\Model\GetStatements400Response|\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
      */
     public function getStatementsWithHttpInfo($xRequestId, $requestBody, $page = null, $size = null, string $contentType = self::contentTypes['getStatements'][0])
     {
@@ -309,12 +307,12 @@ class GetStatementListApi
                         $response->getHeaders(),
                     ];
                 case 401:
-                    if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response' === '\SplFileObject') {
                         $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
 
-                        if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -332,7 +330,7 @@ class GetStatementListApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
@@ -491,7 +489,7 @@ class GetStatementListApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response',
                         $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);

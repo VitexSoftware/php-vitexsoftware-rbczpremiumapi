@@ -2,7 +2,7 @@ x-headmatter:
   readable_by: []
 swagger: '2.0'
 info:
-  version: 1.1.20240910
+  version: 1.1.20251142
   title: Production
   description: |
     ##### API Overview
@@ -148,6 +148,7 @@ paths:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':

@@ -35,7 +35,7 @@ namespace VitexSoftware\Raiffeisenbank\Model;
 use VitexSoftware\Raiffeisenbank\ObjectSerializer;
 
 /**
- * GetBalance200ResponseCurrencyFoldersInnerBalancesInner Class Doc Comment.
+ * GetTransactionList401Response Class Doc Comment.
  *
  * @category Class
  *
@@ -45,14 +45,15 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAccess, \JsonSerializable, ModelInterface
+class GetTransactionList401Response implements \ArrayAccess, \JsonSerializable, ModelInterface
 {
     public const DISCRIMINATOR = null;
+    public const ERROR_UNAUTHORISED = 'UNAUTHORISED';
 
     /**
      * The original name of the model.
      */
-    protected static string $openAPIModelName = 'getBalance_200_response_currencyFolders_inner_balances_inner';
+    protected static string $openAPIModelName = 'getTransactionList_401_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization.
@@ -60,9 +61,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      * @var string[]
      */
     protected static array $openAPITypes = [
-        'balanceType' => 'string',
-        'currency' => 'string',
-        'value' => 'float',
+        'error' => 'string',
+        'errorDescription' => 'string',
     ];
 
     /**
@@ -75,9 +75,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      * @psalm-var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'balanceType' => null,
-        'currency' => null,
-        'value' => 'double',
+        'error' => null,
+        'errorDescription' => null,
     ];
 
     /**
@@ -86,9 +85,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'balanceType' => false,
-        'currency' => false,
-        'value' => false,
+        'error' => false,
+        'errorDescription' => false,
     ];
 
     /**
@@ -105,9 +103,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      * @var string[]
      */
     protected static array $attributeMap = [
-        'balanceType' => 'balanceType',
-        'currency' => 'currency',
-        'value' => 'value',
+        'error' => 'error',
+        'errorDescription' => 'error_description',
     ];
 
     /**
@@ -116,9 +113,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      * @var string[]
      */
     protected static array $setters = [
-        'balanceType' => 'setBalanceType',
-        'currency' => 'setCurrency',
-        'value' => 'setValue',
+        'error' => 'setError',
+        'errorDescription' => 'setErrorDescription',
     ];
 
     /**
@@ -127,9 +123,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      * @var string[]
      */
     protected static array $getters = [
-        'balanceType' => 'getBalanceType',
-        'currency' => 'getCurrency',
-        'value' => 'getValue',
+        'error' => 'getError',
+        'errorDescription' => 'getErrorDescription',
     ];
 
     /**
@@ -147,9 +142,8 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('balanceType', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('value', $data ?? [], null);
+        $this->setIfExists('error', $data ?? [], null);
+        $this->setIfExists('errorDescription', $data ?? [], null);
     }
 
     /**
@@ -243,6 +237,18 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
     }
 
     /**
+     * Gets allowable values of the enum.
+     *
+     * @return string[]
+     */
+    public function getErrorAllowableValues()
+    {
+        return [
+            self::ERROR_UNAUTHORISED,
+        ];
+    }
+
+    /**
      * Show all the invalid properties with reasons.
      *
      * @return array invalid properties with reasons
@@ -251,16 +257,14 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
     {
         $invalidProperties = [];
 
-        if ($this->container['balanceType'] === null) {
-            $invalidProperties[] = "'balanceType' can't be null";
-        }
+        $allowedValues = $this->getErrorAllowableValues();
 
-        if ($this->container['currency'] === null) {
-            $invalidProperties[] = "'currency' can't be null";
-        }
-
-        if ($this->container['value'] === null) {
-            $invalidProperties[] = "'value' can't be null";
+        if (null !== $this->container['error'] && !\in_array($this->container['error'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'error', must be one of '%s'",
+                $this->container['error'],
+                implode("', '", $allowedValues),
+            );
         }
 
         return $invalidProperties;
@@ -278,85 +282,69 @@ class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAc
     }
 
     /**
-     * Gets balanceType.
+     * Gets error.
      *
-     * @return string
+     * @return null|string
      */
-    public function getBalanceType()
+    public function getError()
     {
-        return $this->container['balanceType'];
+        return $this->container['error'];
     }
 
     /**
-     * Sets balanceType.
+     * Sets error.
      *
-     * @param string $balanceType the balance type (CODEBOOK: AccountBalanceTypes)
+     * @param null|string $error error
      *
      * @return self
      */
-    public function setBalanceType($balanceType)
+    public function setError($error)
     {
-        if (null === $balanceType) {
-            throw new \InvalidArgumentException('non-nullable balanceType cannot be null');
+        if (null === $error) {
+            throw new \InvalidArgumentException('non-nullable error cannot be null');
         }
 
-        $this->container['balanceType'] = $balanceType;
+        $allowedValues = $this->getErrorAllowableValues();
+
+        if (!\in_array($error, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'error', must be one of '%s'",
+                    $error,
+                    implode("', '", $allowedValues),
+                ),
+            );
+        }
+
+        $this->container['error'] = $error;
 
         return $this;
     }
 
     /**
-     * Gets currency.
+     * Gets errorDescription.
      *
-     * @return string
+     * @return null|string
      */
-    public function getCurrency()
+    public function getErrorDescription()
     {
-        return $this->container['currency'];
+        return $this->container['errorDescription'];
     }
 
     /**
-     * Sets currency.
+     * Sets errorDescription.
      *
-     * @param string $currency The currency of the balance
+     * @param null|string $errorDescription errorDescription
      *
      * @return self
      */
-    public function setCurrency($currency)
+    public function setErrorDescription($errorDescription)
     {
-        if (null === $currency) {
-            throw new \InvalidArgumentException('non-nullable currency cannot be null');
+        if (null === $errorDescription) {
+            throw new \InvalidArgumentException('non-nullable errorDescription cannot be null');
         }
 
-        $this->container['currency'] = $currency;
-
-        return $this;
-    }
-
-    /**
-     * Gets value.
-     *
-     * @return float
-     */
-    public function getValue()
-    {
-        return $this->container['value'];
-    }
-
-    /**
-     * Sets value.
-     *
-     * @param float $value The balance amount
-     *
-     * @return self
-     */
-    public function setValue($value)
-    {
-        if (null === $value) {
-            throw new \InvalidArgumentException('non-nullable value cannot be null');
-        }
-
-        $this->container['value'] = $value;
+        $this->container['errorDescription'] = $errorDescription;
 
         return $this;
     }

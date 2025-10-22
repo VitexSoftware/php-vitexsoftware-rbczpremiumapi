@@ -44,8 +44,6 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @see     https://openapi-generator.tech
  *
  * @implements \ArrayAccess<string, mixed>
- *
- * @no-named-arguments
  */
 class GetTransactionList200ResponseTransactionsInner implements \ArrayAccess, \JsonSerializable, ModelInterface
 {

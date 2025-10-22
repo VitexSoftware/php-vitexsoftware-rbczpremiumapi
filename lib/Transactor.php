@@ -19,8 +19,6 @@ namespace VitexSoftware\Raiffeisenbank;
  * Handle bank transactions.
  *
  * @author vitex
- *
- * @no-named-arguments
  */
 class Transactor extends ApiClient
 {

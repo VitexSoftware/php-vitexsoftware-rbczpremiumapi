@@ -44,8 +44,6 @@ use PHPUnit\Framework\TestCase;
  * @author      OpenAPI Generator team
  *
  * @see        https://openapi-generator.tech
- *
- * @no-named-arguments
  */
 class ImportPayments415ResponseTest extends TestCase
 {

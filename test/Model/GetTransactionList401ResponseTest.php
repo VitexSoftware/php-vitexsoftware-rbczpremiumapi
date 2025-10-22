@@ -35,17 +35,17 @@ namespace VitexSoftware\Raiffeisenbank\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * GetTransactionList400ResponseTest Class Doc Comment.
+ * GetTransactionList401ResponseTest Class Doc Comment.
  *
  * @category    Class
  *
- * @description GetTransactionList400Response
+ * @description GetTransactionList401Response
  *
  * @author      OpenAPI Generator team
  *
  * @see        https://openapi-generator.tech
  */
-class GetTransactionList400ResponseTest extends TestCase
+class GetTransactionList401ResponseTest extends TestCase
 {
     /**
      * Setup before running any test case.
@@ -76,9 +76,9 @@ class GetTransactionList400ResponseTest extends TestCase
     }
 
     /**
-     * Test "GetTransactionList400Response".
+     * Test "GetTransactionList401Response".
      */
-    public function testGetTransactionList400Response(): void
+    public function testGetTransactionList401Response(): void
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');

@@ -148,6 +148,7 @@ Class | Method | HTTP request | Description
 - [GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformation](docs/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformation.md)
 - [GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformationCreditorReferenceInformation](docs/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformationCreditorReferenceInformation.md)
 - [GetTransactionList400Response](docs/Model/GetTransactionList400Response.md)
+- [GetTransactionList401Response](docs/Model/GetTransactionList401Response.md)
 - [ImportPayments200Response](docs/Model/ImportPayments200Response.md)
 - [ImportPayments400Response](docs/Model/ImportPayments400Response.md)
 - [ImportPayments413Response](docs/Model/ImportPayments413Response.md)

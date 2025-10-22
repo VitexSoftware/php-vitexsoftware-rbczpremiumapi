@@ -46,8 +46,6 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @see     https://openapi-generator.tech
  *
  * @implements \ArrayAccess<string, mixed>
- *
- * @no-named-arguments
  */
 class GetBatchDetail200ResponseBatchItemsInnerAccountInfo implements \ArrayAccess, \JsonSerializable, ModelInterface
 {

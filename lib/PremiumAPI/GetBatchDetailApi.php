@@ -53,8 +53,6 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @author   OpenAPI Generator team
  *
  * @see     https://openapi-generator.tech
- *
- * @no-named-arguments
  */
 class GetBatchDetailApi
 {
@@ -199,7 +197,7 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      *
-     * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail200Response|\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail400Response
+     * @return \VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response|\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail200Response|\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail400Response|\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response
      */
     public function getBatchDetail($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
@@ -218,7 +216,7 @@ class GetBatchDetailApi
      * @throws \InvalidArgumentException
      * @throws \VitexSoftware\Raiffeisenbank\ApiException on non-2xx response or if the response body is not in the expected format
      *
-     * @return array of \VitexSoftware\Raiffeisenbank\Model\GetBatchDetail200Response|\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail400Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \VitexSoftware\Raiffeisenbank\Model\GetBatchDetail200Response|\VitexSoftware\Raiffeisenbank\Model\GetBatchDetail400Response|\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance403Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance404Response|\VitexSoftware\Raiffeisenbank\Model\GetBalance429Response, HTTP status code, HTTP response headers (array of strings)
      */
     public function getBatchDetailWithHttpInfo($xRequestId, $batchFileId, string $contentType = self::contentTypes['getBatchDetail'][0])
     {
@@ -305,12 +303,12 @@ class GetBatchDetailApi
                         $response->getHeaders(),
                     ];
                 case 401:
-                    if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' === '\SplFileObject') {
+                    if ('\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response' === '\SplFileObject') {
                         $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
 
-                        if ('\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response' !== 'string') {
+                        if ('\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, \JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -328,7 +326,7 @@ class GetBatchDetailApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response', []),
+                        ObjectSerializer::deserialize($content, '\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response', []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
@@ -487,7 +485,7 @@ class GetBatchDetailApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\VitexSoftware\Raiffeisenbank\Model\GetBalance401Response',
+                        '\VitexSoftware\Raiffeisenbank\Model\GetTransactionList401Response',
                         $e->getResponseHeaders(),
                     );
                     $e->setResponseObject($data);

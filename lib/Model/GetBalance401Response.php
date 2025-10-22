@@ -44,13 +44,12 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  * @see     https://openapi-generator.tech
  *
  * @implements \ArrayAccess<string, mixed>
- *
- * @no-named-arguments
  */
 class GetBalance401Response implements \ArrayAccess, \JsonSerializable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const ERROR_UNAUTHORISED = 'UNAUTHORISED';
+    public const ERROR_INVALID_REQUEST = 'INVALID_REQUEST';
 
     /**
      * The original name of the model.
@@ -247,6 +246,7 @@ class GetBalance401Response implements \ArrayAccess, \JsonSerializable, ModelInt
     {
         return [
             self::ERROR_UNAUTHORISED,
+            self::ERROR_INVALID_REQUEST,
         ];
     }
 
