@@ -32,18 +32,7 @@ class JsonRateLimitStore implements RateLimitStoreInterface
         $this->filename = $filename;
 
         if (file_exists($filename)) {
-            $json = file_get_contents($filename);
-            if ($json === false) {
-                error_log("Failed to read rate limit store from {$filename}");
-                return;
-            }
-            $decoded = json_decode($json, true);
-            if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
-                error_log("Failed to decode rate limit JSON: " . json_last_error_msg());
-                $this->data = [];
-            } else {
-                $this->data = $decoded ?? [];
-            }
+            $this->load();
         }
     }
 
@@ -90,6 +79,36 @@ class JsonRateLimitStore implements RateLimitStoreInterface
         return $this->data[$clientId] ?? [];
     }
 
+    private function load(): void
+    {
+        $handle = fopen($this->filename, 'c+b');
+
+        if ($handle && flock($handle, \LOCK_SH)) {
+            $json = stream_get_contents($handle);
+
+            if ($json === false) {
+                error_log("Failed to read rate limit store from {$filename}");
+
+                return;
+            }
+
+            $decoded = json_decode($json, true);
+
+            if ($decoded === null && json_last_error() !== \JSON_ERROR_NONE) {
+                error_log('Failed to decode rate limit JSON: '.json_last_error_msg());
+                $this->data = [];
+            } else {
+                $this->data = $decoded ?? [];
+            }
+
+            flock($handle, \LOCK_UN);
+        }
+
+        if ($handle) {
+            fclose($handle);
+        }
+    }
+
     /**
      * Persist the in-memory rate limit data to the configured JSON file.
      *
@@ -97,6 +116,18 @@ class JsonRateLimitStore implements RateLimitStoreInterface
      */
     private function save(): void
     {
-        file_put_contents($this->filename, json_encode($this->data, \JSON_PRETTY_PRINT));
+        $handle = fopen($this->filename, 'cb');
+
+        if ($handle && flock($handle, \LOCK_EX)) {
+            ftruncate($handle, 0);
+            rewind($handle);
+            fwrite($handle, json_encode($this->data, \JSON_PRETTY_PRINT));
+            fflush($handle);
+            flock($handle, \LOCK_UN);
+        }
+
+        if ($handle) {
+            fclose($handle);
+        }
     }
 }

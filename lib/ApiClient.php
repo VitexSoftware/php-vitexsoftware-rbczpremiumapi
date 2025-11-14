@@ -56,6 +56,13 @@ class ApiClient extends \GuzzleHttp\Client
      * - 'debug': debug flag.
      *
      * @param array $config client configuration
+     *                      - 'clientid': client ID from Developer Portal
+     *                      - 'cert': [path, password]
+     *                      - 'clientpubip': client public IP
+     *                      - 'mocking': bool
+     *                      - 'debug': bool
+     *                      - 'rate_limit_store': RateLimitStoreInterface instance (optional)
+     *                      - 'rate_limit_wait': bool - wait when limited (default true)
      *
      * @throws \Exception if certificate file path (CERT_FILE) is not provided
      * @throws \Exception if certificate password (CERT_PASS) is not provided
@@ -92,9 +99,15 @@ class ApiClient extends \GuzzleHttp\Client
             $this->mockMode = (bool) $config['mocking'];
         }
 
-        $limitStore = new RateLimit\JsonRateLimitStore(sys_get_temp_dir().'/rbczpremiumapi_rates.json');
+        if (isset($config['rate_limit_store'])) {
+            $limitStore = $config['rate_limit_store'];
+        } else {
+            $path = $config['rate_limit_path'] ?? sys_get_temp_dir().'/rbczpremiumapi_rates.json';
+            $limitStore = new RateLimit\JsonRateLimitStore($path);
+        }
 
-        $this->rateLimiter = new RateLimiter($limitStore);
+        $waitMode = $config['rate_limit_wait'] ?? true;
+        $this->rateLimiter = new RateLimiter($limitStore, $waitMode);
 
         parent::__construct($config);
     }
