@@ -17,7 +17,6 @@ namespace VitexSoftware\Raiffeisenbank;
 
 use VitexSoftware\Raiffeisenbank\RateLimit\RateLimiter;
 use VitexSoftware\Raiffeisenbank\RateLimit\RateLimitExceededException;
-use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Description of ApiClient.
@@ -56,9 +55,10 @@ class ApiClient extends \GuzzleHttp\Client
      * - 'mocking': bool to enable mock endpoints.
      * - 'debug': debug flag.
      *
-     * @param array $config Client configuration.
-     * @throws \Exception If certificate file path (CERT_FILE) is not provided.
-     * @throws \Exception If certificate password (CERT_PASS) is not provided.
+     * @param array $config client configuration
+     *
+     * @throws \Exception if certificate file path (CERT_FILE) is not provided
+     * @throws \Exception if certificate password (CERT_PASS) is not provided
      */
     public function __construct(array $config = [])
     {
@@ -211,7 +211,7 @@ class ApiClient extends \GuzzleHttp\Client
      *
      * @deprecated since version 0.1 — Do not use in production environments.
      *
-     * @return string The generated request identifier composed from a source token and the current timestamp, truncated to at most 59 characters.
+     * @return string the generated request identifier composed from a source token and the current timestamp, truncated to at most 59 characters
      */
     public static function getxRequestId()
     {
@@ -221,11 +221,13 @@ class ApiClient extends \GuzzleHttp\Client
     /**
      * Send an HTTP request while enforcing and updating client rate limits.
      *
-     * @param \Psr\Http\Message\RequestInterface $request The HTTP request to send.
-     * @param array $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
-     * @return \Psr\Http\Message\ResponseInterface The HTTP response.
+     * @param \Psr\Http\Message\RequestInterface $request the HTTP request to send
+     * @param array                              $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws RateLimitExceededException If the client is rate limited and wait mode is disabled.
+     * @throws RateLimitExceededException            if the client is rate limited and wait mode is disabled
+     *
+     * @return \Psr\Http\Message\ResponseInterface the HTTP response
      */
     public function send(\Psr\Http\Message\RequestInterface $request, array $options = []): \Psr\Http\Message\ResponseInterface
     {

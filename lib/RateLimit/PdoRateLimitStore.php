@@ -34,9 +34,10 @@ class PdoRateLimitStore implements RateLimitStoreInterface
     /**
      * Fetches the remaining token count and expiry timestamp for a client's rate-limit window.
      *
-     * @param string $clientId Identifier of the client.
-     * @param string $window Identifier of the rate-limit window.
-     * @return array{remaining:int, timestamp:int}|null The row for the specified client and window with integer `remaining` and `timestamp`, or `null` if no record exists.
+     * @param string $clientId identifier of the client
+     * @param string $window   identifier of the rate-limit window
+     *
+     * @return null|array{remaining:int, timestamp:int} the row for the specified client and window with integer `remaining` and `timestamp`, or `null` if no record exists
      */
     public function get(string $clientId, string $window): ?array
     {
@@ -56,10 +57,10 @@ EOD);
     /**
      * Store or update the rate-limit record for a client and window.
      *
-     * @param string $clientId Identifier of the client.
-     * @param string $window Identifier of the rate-limit window (e.g., "1m", "hourly").
-     * @param int $remaining Number of remaining allowed requests for the window.
-     * @param int $timestamp UNIX timestamp associated with the record (seconds since epoch).
+     * @param string $clientId  identifier of the client
+     * @param string $window    Identifier of the rate-limit window (e.g., "1m", "hourly").
+     * @param int    $remaining number of remaining allowed requests for the window
+     * @param int    $timestamp UNIX timestamp associated with the record (seconds since epoch)
      */
     public function set(string $clientId, string $window, int $remaining, int $timestamp): void
     {
@@ -75,8 +76,9 @@ EOD);
     /**
      * Fetches all rate-limit entries for a client, indexed by window.
      *
-     * @param string $clientId The client identifier.
-     * @return array<string, array{remaining:int,timestamp:int}> Associative array keyed by window name; each value contains `remaining` (int) and `timestamp` (int).
+     * @param string $clientId the client identifier
+     *
+     * @return array<string, array{remaining:int, timestamp:int}> associative array keyed by window name; each value contains `remaining` (int) and `timestamp` (int)
      */
     public function allForClient(string $clientId): array
     {

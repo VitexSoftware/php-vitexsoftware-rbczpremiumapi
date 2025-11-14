@@ -44,9 +44,6 @@ files:
   PdoRateLimitStore.mustache:
     folder: lib/RateLimit
     destinationFilename: PdoRateLimitStore.php
-  RateLimitStore.mustache:
-    folder: lib/RateLimit
-    destinationFilename: RateLimitStore.php
   JsonRateLimitStore.mustache:
     folder: lib/RateLimit
     destinationFilename: JsonRateLimitStore.php

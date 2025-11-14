@@ -25,7 +25,7 @@ class JsonRateLimitStore implements RateLimitStoreInterface
      *
      * If the file exists, its JSON contents are decoded into the in-memory store; decoding failures result in an empty dataset.
      *
-     * @param string $filename Path to the JSON file used to persist rate limit data.
+     * @param string $filename path to the JSON file used to persist rate limit data
      */
     public function __construct(string $filename)
     {
@@ -40,9 +40,10 @@ class JsonRateLimitStore implements RateLimitStoreInterface
     /**
      * Retrieve the stored rate-limit entry for a client and window.
      *
-     * @param string $clientId The client identifier.
-     * @param string $window The rate-limit window identifier.
-     * @return array{remaining:int,timestamp:int}|null The entry for the specified client and window: an array with keys `remaining` and `timestamp`, or `null` if not found.
+     * @param string $clientId the client identifier
+     * @param string $window   the rate-limit window identifier
+     *
+     * @return null|array{remaining:int, timestamp:int} the entry for the specified client and window: an array with keys `remaining` and `timestamp`, or `null` if not found
      */
     public function get(string $clientId, string $window): ?array
     {
@@ -52,10 +53,10 @@ class JsonRateLimitStore implements RateLimitStoreInterface
     /**
      * Store the remaining quota and associated timestamp for a client's rate-limit window and persist it to the configured JSON file.
      *
-     * @param string $clientId Identifier of the client.
-     * @param string $window Identifier of the rate-limit window.
-     * @param int $remaining Number of remaining requests for the specified window.
-     * @param int $timestamp Unix timestamp associated with the stored entry.
+     * @param string $clientId  identifier of the client
+     * @param string $window    identifier of the rate-limit window
+     * @param int    $remaining number of remaining requests for the specified window
+     * @param int    $timestamp unix timestamp associated with the stored entry
      */
     public function set(string $clientId, string $window, int $remaining, int $timestamp): void
     {
@@ -70,8 +71,9 @@ class JsonRateLimitStore implements RateLimitStoreInterface
     /**
      * Retrieve all rate-limit window entries for a client.
      *
-     * @param string $clientId The client identifier.
-     * @return array An associative array of windows to entries where each entry contains keys `remaining` (int) and `timestamp` (int); returns an empty array if the client has no entries.
+     * @param string $clientId the client identifier
+     *
+     * @return array an associative array of windows to entries where each entry contains keys `remaining` (int) and `timestamp` (int); returns an empty array if the client has no entries
      */
     public function allForClient(string $clientId): array
     {
