@@ -1,0 +1,9 @@
+<?php
+
+namespace VitexSoftware\Raiffeisenbank\RateLimit;
+
+interface SqlDialect
+{
+    public function now(): int; // PHP timestamp → we store it directly as int
+    public function placeholder(string $name): string; // :name, ?, @name ...
+}

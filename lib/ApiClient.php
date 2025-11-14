@@ -15,6 +15,9 @@ declare(strict_types=1);
 
 namespace VitexSoftware\Raiffeisenbank;
 
+use VitexSoftware\Raiffeisenbank\RateLimit\RateLimiter;
+use VitexSoftware\Raiffeisenbank\RateLimit\RateLimitExceededException;
+
 /**
  * Description of ApiClient.
  *
@@ -40,17 +43,29 @@ class ApiClient extends \GuzzleHttp\Client
      * Use mocking for api calls ?
      */
     protected bool $mockMode = false;
+    private RateLimiter $rateLimiter;
 
     /**
-     * {@inheritDoc}
+     * Initialize the API client with configuration, certificate validation, and a rate limiter.
      *
-     * $config['clientid'] - obtained from Developer Portal - when you registered your app with us.
-     * $config['cert'] = ['/path/to/cert.p12','certificat password']
-     * $config['clientpubip'] = the closest IP address to the real end-user
-     * $config['mocking'] = true to use /rbcz/premium/mock/* endpoints
+     * Accepted $config keys:
+     * - 'clientid': client ID from the Developer Portal.
+     * - 'cert': array with [pathToP12, password]; when omitted, CERT_FILE and CERT_PASS configuration values are used.
+     * - 'clientpubip': client public IP (nearest to the end user).
+     * - 'mocking': bool to enable mock endpoints.
+     * - 'debug': debug flag.
      *
-     * @throws \Exception CERT_FILE is not set
-     * @throws \Exception CERT_PASS is not set
+     * @param array $config client configuration
+     *                      - 'clientid': client ID from Developer Portal
+     *                      - 'cert': [path, password]
+     *                      - 'clientpubip': client public IP
+     *                      - 'mocking': bool
+     *                      - 'debug': bool
+     *                      - 'rate_limit_store': RateLimitStoreInterface instance (optional)
+     *                      - 'rate_limit_wait': bool - wait when limited (default true)
+     *
+     * @throws \Exception if certificate file path (CERT_FILE) is not provided
+     * @throws \Exception if certificate password (CERT_PASS) is not provided
      */
     public function __construct(array $config = [])
     {
@@ -83,6 +98,16 @@ class ApiClient extends \GuzzleHttp\Client
         if (\array_key_exists('mocking', $config)) {
             $this->mockMode = (bool) $config['mocking'];
         }
+
+        if (isset($config['rate_limit_store'])) {
+            $limitStore = $config['rate_limit_store'];
+        } else {
+            $path = $config['rate_limit_path'] ?? sys_get_temp_dir().'/rbczpremiumapi_rates.json';
+            $limitStore = new RateLimit\JsonRateLimitStore($path);
+        }
+
+        $waitMode = $config['rate_limit_wait'] ?? true;
+        $this->rateLimiter = new RateLimiter($limitStore, $waitMode);
 
         parent::__construct($config);
     }
@@ -154,7 +179,7 @@ class ApiClient extends \GuzzleHttp\Client
      * @param string $certFile path to certificate
      * @param bool   $die      throw exception or return false ?
      *
-     * @throws Exception - Certificate file not found
+     * @throws \Exception - Certificate file not found
      *
      * @return bool certificate file
      */
@@ -176,7 +201,7 @@ class ApiClient extends \GuzzleHttp\Client
         return $found;
     }
 
-    public static function checkCertificate($certFile, $password): bool
+    public static function checkCertificate(string $certFile, string $password): bool
     {
         return self::checkCertificatePresence($certFile) && self::checkCertificatePassword($certFile, $password);
     }
@@ -188,21 +213,68 @@ class ApiClient extends \GuzzleHttp\Client
         if (openssl_pkcs12_read($certContent, $certs, $password) === false) {
             fwrite(\STDERR, 'Cannot read PKCS12 certificate file: '.$certFile.\PHP_EOL);
 
-            exit(1);
+            throw new \Exception('Cannot read PKCS12 certificate file: '.$certFile);
         }
 
         return true;
     }
 
     /**
-     * Request Identifier.
+     * Produce a short request identifier used for diagnostics and testing.
      *
-     * @deprecated since version 0.1 - Do not use in production Environment!
+     * @deprecated since version 0.1 — Do not use in production environments.
      *
-     * @return string
+     * @return string the generated request identifier composed from a source token and the current timestamp, truncated to at most 59 characters
      */
     public static function getxRequestId()
     {
         return substr(self::sourceString().'#'.time(), -59);
+    }
+
+    /**
+     * Send an HTTP request while enforcing and updating client rate limits.
+     *
+     * @param \Psr\Http\Message\RequestInterface $request the HTTP request to send
+     * @param array                              $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws RateLimitExceededException            if the client is rate limited and wait mode is disabled
+     *
+     * @return \Psr\Http\Message\ResponseInterface the HTTP response
+     */
+    public function send(\Psr\Http\Message\RequestInterface $request, array $options = []): \Psr\Http\Message\ResponseInterface
+    {
+        $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
+
+        $response = parent::send($request, $options);
+
+        $this->updateRateLimitsFromResponse($response);
+
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode === 429) { // 429 Too Many Requests
+            if ($this->rateLimiter->isWaitMode()) {
+                $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
+                $response = parent::send($request, $options);
+
+                $this->updateRateLimitsFromResponse($response);
+
+                $statusCode = $response->getStatusCode();
+            } else {
+                throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
+            }
+        }
+
+        return $response;
+    }
+
+    private function updateRateLimitsFromResponse(\Psr\Http\Message\ResponseInterface $response): void
+    {
+        if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
+            $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
+            $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
+            $timestamp = time();
+            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+        }
     }
 }
