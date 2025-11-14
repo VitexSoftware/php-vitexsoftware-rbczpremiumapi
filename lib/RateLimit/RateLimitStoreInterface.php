@@ -18,20 +18,32 @@ namespace VitexSoftware\Raiffeisenbank\RateLimit;
 interface RateLimitStoreInterface
 {
     /**
-     * Returns stored data for the given client identifier and window (second/day).
-     * Array:
-     *   remaining => int
-     *   timestamp => int (unix time when the value was received).
-     */
+ * Retrieve stored rate-limit data for a client and window.
+ *
+ * @param string $clientId The client identifier.
+ * @param string $window The rate limit window (e.g., "second" or "day").
+ * @return array|null An array with keys `remaining` (int) and `timestamp` (int, Unix time) or `null` if no data is stored.
+ */
     public function get(string $clientId, string $window): ?array;
 
     /**
-     * Stores data for the client and window (second/day).
-     */
+ * Store rate-limit data for a client and time window.
+ *
+ * Stores the number of remaining requests and the associated Unix timestamp for
+ * the specified client identifier and window (e.g., "second" or "day").
+ *
+ * @param string $clientId Identifier of the client.
+ * @param string $window Time window name (for example "second" or "day").
+ * @param int $remaining Number of remaining requests for the client in this window.
+ * @param int $timestamp Unix timestamp representing when the stored data expires or was recorded.
+ */
     public function set(string $clientId, string $window, int $remaining, int $timestamp): void;
 
     /**
-     * Returns all data for one client (for debugging).
-     */
+ * Retrieve stored rate-limit data for the given client (intended for debugging).
+ *
+ * @param string $clientId The client identifier.
+ * @return array An associative array keyed by window name (e.g., 'second', 'day') where each value is an array with keys `remaining` (int) and `timestamp` (int, Unix time). Returns an empty array if no data exists for the client.
+ */
     public function allForClient(string $clientId): array;
 }
