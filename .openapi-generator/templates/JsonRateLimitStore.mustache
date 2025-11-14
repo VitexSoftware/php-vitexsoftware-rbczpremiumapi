@@ -33,7 +33,17 @@ class JsonRateLimitStore implements RateLimitStoreInterface
 
         if (file_exists($filename)) {
             $json = file_get_contents($filename);
-            $this->data = json_decode($json, true) ?? [];
+            if ($json === false) {
+                error_log("Failed to read rate limit store from {$filename}");
+                return;
+            }
+            $decoded = json_decode($json, true);
+            if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
+                error_log("Failed to decode rate limit JSON: " . json_last_error_msg());
+                $this->data = [];
+            } else {
+                $this->data = $decoded ?? [];
+            }
         }
     }
 
