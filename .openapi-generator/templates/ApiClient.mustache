@@ -201,7 +201,7 @@ class ApiClient extends \GuzzleHttp\Client
         return $found;
     }
 
-    public static function checkCertificate($certFile, $password): bool
+    public static function checkCertificate(string $certFile, string $password): bool
     {
         return self::checkCertificatePresence($certFile) && self::checkCertificatePassword($certFile, $password);
     }
@@ -213,7 +213,7 @@ class ApiClient extends \GuzzleHttp\Client
         if (openssl_pkcs12_read($certContent, $certs, $password) === false) {
             fwrite(\STDERR, 'Cannot read PKCS12 certificate file: '.$certFile.\PHP_EOL);
 
-            exit(1);
+            throw new \Exception('Cannot read PKCS12 certificate file: '.$certFile);
         }
 
         return true;
@@ -248,12 +248,7 @@ class ApiClient extends \GuzzleHttp\Client
 
         $response = parent::send($request, $options);
 
-        if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
-            $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
-            $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
-            $timestamp = time();
-            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
-        }
+        $this->updateRateLimitsFromResponse($response);
 
         $statusCode = $response->getStatusCode();
 
@@ -262,12 +257,7 @@ class ApiClient extends \GuzzleHttp\Client
                 $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
                 $response = parent::send($request, $options);
 
-                if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
-                    $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
-                    $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
-                    $timestamp = time();
-                    $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
-                }
+                $this->updateRateLimitsFromResponse($response);
 
                 $statusCode = $response->getStatusCode();
             } else {
@@ -276,5 +266,15 @@ class ApiClient extends \GuzzleHttp\Client
         }
 
         return $response;
+    }
+
+    private function updateRateLimitsFromResponse(\Psr\Http\Message\ResponseInterface $response): void
+    {
+        if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
+            $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
+            $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
+            $timestamp = time();
+            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+        }
     }
 }
