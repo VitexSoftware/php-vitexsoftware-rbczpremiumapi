@@ -26,3 +26,36 @@ files:
       destinationFilename: Transactor.php
   bootstrap.php:
       folder: test
+  RateLimiter.mustache:
+    folder: lib/RateLimit
+    destinationFilename: RateLimiter.php
+  RateLimitStoreInterface.mustache:
+    folder: lib/RateLimit
+    destinationFilename: RateLimitStoreInterface.php
+  SqlDialect.mustache:
+    folder: lib/RateLimit
+    destinationFilename: SqlDialect.php
+  RateLimitMode.mustache:
+    folder: lib/RateLimit
+    destinationFilename: RateLimitMode.php
+  RateLimitExceededException.mustache:
+    folder: lib/RateLimit
+    destinationFilename: RateLimitExceededException.php
+  PdoRateLimitStore.mustache:
+    folder: lib/RateLimit
+    destinationFilename: PdoRateLimitStore.php
+  RateLimitStore.mustache:
+    folder: lib/RateLimit
+    destinationFilename: RateLimitStore.php
+  JsonRateLimitStore.mustache:
+    folder: lib/RateLimit
+    destinationFilename: JsonRateLimitStore.php
+  RateLimiterTest.mustache:
+    folder: test/RateLimit
+    destinationFilename: RateLimiterTest.php
+  RateLimitStoreInterfaceTest.mustache:
+    folder: test/RateLimit
+    destinationFilename: RateLimitStoreInterfaceTest.php
+  SqlDialectTest.mustache:
+    folder: test/RateLimit
+    destinationFilename: SqlDialectTest.php

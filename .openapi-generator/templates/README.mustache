@@ -146,6 +146,17 @@ All endpoints do not require authorization.
 {{/isOAuth}}
 
 {{/authMethods}}
+
+## Rate Limiting
+
+This library implements a rate limiting mechanism in the `VitexSoftware\Raiffeisenbank\RateLimit` namespace. It automatically tracks and respects API rate limits using response headers, and can pause or throw exceptions if limits are exceeded.
+
+- **RateLimiter**: Handles rate limit logic and enforces waiting or error on limit exceed.
+- **RateLimitStoreInterface**: Interface for storing rate limit state per client and window (second/day).
+- **SqlDialect**: Interface for SQL dialects used in rate limit storage implementations.
+
+The rate limiting mechanism ensures compliance with the API's restrictions and helps prevent accidental overuse. See the source code in `lib/RateLimit/` for details and extension options.
+
 ## Tests
 
 To run the tests, use:
@@ -177,3 +188,4 @@ Library is Used by:
  * https://github.com/VitexSoftware/abraflexi-raiffeisenbank
  * https://github.com/Spoje-NET/raiffeisenbank-statement-downloader
  * https://github.com/Spoje-NET/pohoda-raiffeisenbank
+

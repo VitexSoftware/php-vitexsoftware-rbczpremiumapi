@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace VitexSoftware\Raiffeisenbank;
 
+use VitexSoftware\Raiffeisenbank\RateLimit\RateLimiter;
+
 /**
  * Description of ApiClient.
  *
@@ -40,6 +42,7 @@ class ApiClient extends \GuzzleHttp\Client
      * Use mocking for api calls ?
      */
     protected bool $mockMode = false;
+    private RateLimiter $rateLimiter;
 
     /**
      * {@inheritDoc}
@@ -83,6 +86,10 @@ class ApiClient extends \GuzzleHttp\Client
         if (\array_key_exists('mocking', $config)) {
             $this->mockMode = (bool) $config['mocking'];
         }
+
+        $limitStore = new RateLimit\JsonRateLimitStore(sys_get_temp_dir().'/rbczpremiumapi_rates.json');
+
+        $this->rateLimiter = new RateLimiter($limitStore);
 
         parent::__construct($config);
     }
@@ -197,6 +204,8 @@ class ApiClient extends \GuzzleHttp\Client
     /**
      * Request Identifier.
      *
+     * @todo Obtain using RateLimiter
+     *
      * @deprecated since version 0.1 - Do not use in production Environment!
      *
      * @return string
@@ -204,5 +213,44 @@ class ApiClient extends \GuzzleHttp\Client
     public static function getxRequestId()
     {
         return substr(self::sourceString().'#'.time(), -59);
+    }
+
+    /**
+     * Send an HTTP request.
+     *
+     * @param array $options Request options to apply to the given
+     *                       request and to the transfer. See \GuzzleHttp\RequestOptions.
+     *
+     * @throws GuzzleException
+     * @throws RateLimitExceededException
+     */
+    public function send(\Psr\Http\Message\RequestInterface $request, array $options = []): \Psr\Http\Message\ResponseInterface
+    {
+        $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
+
+        $response = parent::send($request, $options);
+
+        $statusCode = $response->getStatusCode();
+        $responseHeaders = $response->getHeaders();
+
+        if (isset($responseHeaders['x-ratelimit-remaining-second'])) {
+            $remainingSecond = (int) $responseHeaders['x-ratelimit-remaining-second'][0];
+            $remainingDay = (int) $responseHeaders['x-ratelimit-remaining-day'][0];
+
+            $timestamp = time();
+
+            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+        }
+
+        if ($statusCode === 429) { // 429 Too Many Requests
+            if ($this->rateLimiter->isWaitMode()) {
+                $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
+                $response = parent::send($request, $options);
+            } else {
+                throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
+            }
+        }
+
+        return $response;
     }
 }

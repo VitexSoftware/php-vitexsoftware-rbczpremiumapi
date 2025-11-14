@@ -39,6 +39,7 @@
         "psr-4": {
             "VitexSoftware\\Raiffeisenbank\\" : "lib/",
             "VitexSoftware\\Raiffeisenbank\\Model\\" : "lib/Model",
+            "VitexSoftware\\Raiffeisenbank\\RateLimit\\" : "lib/RateLimit",
             "VitexSoftware\\Raiffeisenbank\\PremiumAPI\\" : "lib/PremiumAPI"
 	}
     },
@@ -46,6 +47,7 @@
         "psr-4": {
 	    "VitexSoftware\\Raiffeisenbank\\Test\\" : "test/",
             "VitexSoftware\\Raiffeisenbank\\Test\\Model\\" : "test/Model",
+            "VitexSoftware\\Raiffeisenbank\\Test\\RateLimit\\" : "test/RateLimit",
             "VitexSoftware\\Raiffeisenbank\\Test\\PremiumAPI\\" : "test/PremiumAPI"
 	}
     },
