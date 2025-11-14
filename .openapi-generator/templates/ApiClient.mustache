@@ -248,26 +248,33 @@ class ApiClient extends \GuzzleHttp\Client
 
         $response = parent::send($request, $options);
 
+        if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
+            $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
+            $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
+            $timestamp = time();
+            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+        }
+
         $statusCode = $response->getStatusCode();
 
         if ($statusCode === 429) { // 429 Too Many Requests
             if ($this->rateLimiter->isWaitMode()) {
                 $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
                 $response = parent::send($request, $options);
+
+                if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
+                    $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
+                    $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
+                    $timestamp = time();
+                    $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+                }
+
                 $statusCode = $response->getStatusCode();
             } else {
                 throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
             }
         }
 
-        // Always update limits from the final response; header names are case-insensitive
-        if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
-            $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
-            $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
-            $timestamp = time();
-
-            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
-        }
-
-        return $response;    }
+        return $response;
+    }
 }
