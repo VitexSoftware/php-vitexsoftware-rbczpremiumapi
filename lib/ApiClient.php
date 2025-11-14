@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace VitexSoftware\Raiffeisenbank;
 
 use VitexSoftware\Raiffeisenbank\RateLimit\RateLimiter;
+use VitexSoftware\Raiffeisenbank\RateLimit\RateLimitExceededException;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Description of ApiClient.
@@ -161,7 +163,7 @@ class ApiClient extends \GuzzleHttp\Client
      * @param string $certFile path to certificate
      * @param bool   $die      throw exception or return false ?
      *
-     * @throws Exception - Certificate file not found
+     * @throws \Exception - Certificate file not found
      *
      * @return bool certificate file
      */
