@@ -249,26 +249,25 @@ class ApiClient extends \GuzzleHttp\Client
         $response = parent::send($request, $options);
 
         $statusCode = $response->getStatusCode();
-        $responseHeaders = $response->getHeaders();
-
-        if (isset($responseHeaders['x-ratelimit-remaining-second'])) {
-            $remainingSecond = (int) $responseHeaders['x-ratelimit-remaining-second'][0];
-            $remainingDay = (int) $responseHeaders['x-ratelimit-remaining-day'][0];
-
-            $timestamp = time();
-
-            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
-        }
 
         if ($statusCode === 429) { // 429 Too Many Requests
             if ($this->rateLimiter->isWaitMode()) {
                 $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
                 $response = parent::send($request, $options);
+                $statusCode = $response->getStatusCode();
             } else {
                 throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
             }
         }
 
-        return $response;
-    }
+        // Always update limits from the final response; header names are case-insensitive
+        if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
+            $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
+            $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
+            $timestamp = time();
+
+            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+        }
+
+        return $response;    }
 }

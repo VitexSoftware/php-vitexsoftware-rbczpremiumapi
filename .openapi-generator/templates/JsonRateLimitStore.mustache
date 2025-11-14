@@ -87,18 +87,18 @@ class JsonRateLimitStore implements RateLimitStoreInterface
             $json = stream_get_contents($handle);
 
             if ($json === false) {
-                error_log("Failed to read rate limit store from {$filename}");
-
-                return;
-            }
-
-            $decoded = json_decode($json, true);
-
-            if ($decoded === null && json_last_error() !== \JSON_ERROR_NONE) {
-                error_log('Failed to decode rate limit JSON: '.json_last_error_msg());
+                error_log("Failed to read rate limit store from {$this->filename}");
+                // fall through so the lock can be released and the handle closed
                 $this->data = [];
             } else {
-                $this->data = $decoded ?? [];
+                $decoded = json_decode($json, true);
+
+                if ($decoded === null && json_last_error() !== \JSON_ERROR_NONE) {
+                    error_log('Failed to decode rate limit JSON: '.json_last_error_msg());
+                    $this->data = [];
+                } else {
+                    $this->data = $decoded ?? [];
+                }
             }
 
             flock($handle, \LOCK_UN);

@@ -54,12 +54,11 @@ EOD);
         if (!$row) {
             return null;
         }
-        
+
         return [
             'remaining' => (int) $row['remaining'],
             'timestamp' => (int) $row['timestamp'],
         ];
-    }
     }
 
     /**
