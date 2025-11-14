@@ -51,7 +51,15 @@ EOD);
         $stmt->execute([$clientId, $window]);
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        return $row ?: null;
+        if (!$row) {
+            return null;
+        }
+        
+        return [
+            'remaining' => (int) $row['remaining'],
+            'timestamp' => (int) $row['timestamp'],
+        ];
+    }
     }
 
     /**
