@@ -52,6 +52,7 @@ composer test\nnpm test
 - **Main Components**: Core functionality and modules
 - **Configuration**: Configuration files and environment variables
 - **Integration Points**: External services and dependencies
+- **Rate Limiting**: API rate limits are enforced per certificate (mTLS client certificate), not per X-IBM-Client-Id. The library automatically calculates the SHA1 fingerprint of the certificate and uses it as the client identifier for rate limit tracking.
 
 ## Common Tasks
 

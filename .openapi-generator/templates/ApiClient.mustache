@@ -46,6 +46,16 @@ class ApiClient extends \GuzzleHttp\Client
     private RateLimiter $rateLimiter;
 
     /**
+     * Path to the certificate file used for mTLS authentication.
+     */
+    private string $certFilePath = '';
+
+    /**
+     * Cached certificate fingerprint for rate limiting.
+     */
+    private ?string $certFingerprint = null;
+
+    /**
      * Initialize the API client with configuration, certificate validation, and a rate limiter.
      *
      * Accepted $config keys:
@@ -86,6 +96,8 @@ class ApiClient extends \GuzzleHttp\Client
                 throw new \Exception('Certificate password (CERT_PASS) not specified');
             }
         }
+
+        $this->certFilePath = $config['cert'][0];
 
         if (\array_key_exists('debug', $config) === false) {
             $config['debug'] = \Ease\Shared::cfg('API_DEBUG', false);
@@ -232,7 +244,63 @@ class ApiClient extends \GuzzleHttp\Client
     }
 
     /**
+     * Calculate and return the SHA1 fingerprint of the certificate used for mTLS.
+     *
+     * This fingerprint is used as the client identifier for rate limiting,
+     * as rate limits in the API are tied to the certificate, not to X-IBM-Client-Id.
+     *
+     * @throws \Exception if unable to read or parse the certificate
+     *
+     * @return string SHA1 fingerprint of the certificate in lowercase hex format
+     */
+    public function getCertificateFingerprint(): string
+    {
+        if ($this->certFingerprint !== null) {
+            return $this->certFingerprint;
+        }
+
+        if (empty($this->certFilePath)) {
+            throw new \Exception('Certificate file path not set');
+        }
+
+        $certContent = file_get_contents($this->certFilePath);
+
+        if ($certContent === false) {
+            throw new \Exception('Unable to read certificate file: '.$this->certFilePath);
+        }
+
+        $certs = [];
+
+        if (openssl_pkcs12_read($certContent, $certs, $this->getConfig()['cert'][1]) === false) {
+            throw new \Exception('Unable to parse PKCS12 certificate: '.openssl_error_string());
+        }
+
+        if (!isset($certs['cert'])) {
+            throw new \Exception('Certificate not found in PKCS12 file');
+        }
+
+        $certResource = openssl_x509_read($certs['cert']);
+
+        if ($certResource === false) {
+            throw new \Exception('Unable to read X509 certificate: '.openssl_error_string());
+        }
+
+        $fingerprint = openssl_x509_fingerprint($certResource, 'sha1');
+
+        if ($fingerprint === false) {
+            throw new \Exception('Unable to calculate certificate fingerprint: '.openssl_error_string());
+        }
+
+        $this->certFingerprint = strtolower($fingerprint);
+
+        return $this->certFingerprint;
+    }
+
+    /**
      * Send an HTTP request while enforcing and updating client rate limits.
+     *
+     * Rate limits are enforced per certificate (not per X-IBM-Client-Id).
+     * The certificate fingerprint is used as the client identifier.
      *
      * @param \Psr\Http\Message\RequestInterface $request the HTTP request to send
      * @param array                              $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
@@ -244,7 +312,9 @@ class ApiClient extends \GuzzleHttp\Client
      */
     public function send(\Psr\Http\Message\RequestInterface $request, array $options = []): \Psr\Http\Message\ResponseInterface
     {
-        $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
+        $certFingerprint = $this->getCertificateFingerprint();
+
+        $this->rateLimiter->checkBeforeRequest($certFingerprint);
 
         $response = parent::send($request, $options);
 
@@ -254,7 +324,7 @@ class ApiClient extends \GuzzleHttp\Client
 
         if ($statusCode === 429) { // 429 Too Many Requests
             if ($this->rateLimiter->isWaitMode()) {
-                $this->rateLimiter->checkBeforeRequest($this->xIBMClientId);
+                $this->rateLimiter->checkBeforeRequest($certFingerprint);
                 $response = parent::send($request, $options);
 
                 $this->updateRateLimitsFromResponse($response);
@@ -268,13 +338,21 @@ class ApiClient extends \GuzzleHttp\Client
         return $response;
     }
 
+    /**
+     * Update rate limits from API response headers.
+     *
+     * Uses the certificate fingerprint as the client identifier for storing rate limits.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response the HTTP response containing rate limit headers
+     */
     private function updateRateLimitsFromResponse(\Psr\Http\Message\ResponseInterface $response): void
     {
         if ($response->hasHeader('x-ratelimit-remaining-second') && $response->hasHeader('x-ratelimit-remaining-day')) {
             $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
             $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
             $timestamp = time();
-            $this->rateLimiter->handleRateLimits($this->xIBMClientId, $remainingSecond, $remainingDay, $timestamp);
+            $certFingerprint = $this->getCertificateFingerprint();
+            $this->rateLimiter->handleRateLimits($certFingerprint, $remainingSecond, $remainingDay, $timestamp);
         }
     }
 }
