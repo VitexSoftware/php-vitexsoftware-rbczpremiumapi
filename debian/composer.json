@@ -1,7 +1,6 @@
 {
   "name": "deb/rbczpremiumapi",
   "description": "An Core of PHP Framework for Ease of writing Applications (debianized)",
-  "version": "1.4.1",
   "authors": [
     {
       "name": "Vítězslav Dvořák",

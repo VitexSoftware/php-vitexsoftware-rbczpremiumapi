@@ -1,4 +1,13 @@
-php-vitexsoftware-rbczpremiumapi (1.5.0) UNRELEASED; urgency=medium
+php-vitexsoftware-rbczpremiumapi (1.5.1) UNRELEASED; urgency=medium
+
+  * Fix rate limiting to use certificate fingerprint instead of X-IBM-Client-Id
+    - Rate limits are enforced per certificate as per API documentation
+    - Added getCertificateFingerprint() method to calculate SHA1 fingerprint
+    - Updated ApiClient to use certificate fingerprint for rate limit tracking
+
+ -- vitex <info@vitexsoftware.cz>  Thu, 21 Nov 2025 14:54:00 +0100
+
+php-vitexsoftware-rbczpremiumapi (1.5.0) unstable; urgency=medium
 
   * Rate limiting support added
 
