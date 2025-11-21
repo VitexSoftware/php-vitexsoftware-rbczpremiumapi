@@ -253,7 +253,7 @@ class ApiClient extends \GuzzleHttp\Client
      *
      * @return string SHA1 fingerprint of the certificate in lowercase hex format
      */
-    public function getCertificateFingerprint(): string
+    public function getCertificateSerialNumber(): string
     {
         if ($this->certFingerprint !== null) {
             return $this->certFingerprint;
@@ -312,7 +312,7 @@ class ApiClient extends \GuzzleHttp\Client
      */
     public function send(\Psr\Http\Message\RequestInterface $request, array $options = []): \Psr\Http\Message\ResponseInterface
     {
-        $certFingerprint = $this->getCertificateFingerprint();
+        $certFingerprint = $this->getCertificateSerialNumber();
 
         $this->rateLimiter->checkBeforeRequest($certFingerprint);
 
@@ -351,7 +351,7 @@ class ApiClient extends \GuzzleHttp\Client
             $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
             $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
             $timestamp = time();
-            $certFingerprint = $this->getCertificateFingerprint();
+            $certFingerprint = $this->getCertificateSerialNumber();
             $this->rateLimiter->handleRateLimits($certFingerprint, $remainingSecond, $remainingDay, $timestamp);
         }
     }

@@ -244,16 +244,16 @@ class ApiClient extends \GuzzleHttp\Client
     }
 
     /**
-     * Calculate and return the SHA1 fingerprint of the certificate used for mTLS.
+     * Get the decimal serial number of the certificate used for mTLS.
      *
-     * This fingerprint is used as the client identifier for rate limiting,
+     * This serial number is used as the client identifier for rate limiting,
      * as rate limits in the API are tied to the certificate, not to X-IBM-Client-Id.
      *
      * @throws \Exception if unable to read or parse the certificate
      *
-     * @return string SHA1 fingerprint of the certificate in lowercase hex format
+     * @return string Decimal serial number of the certificate
      */
-    public function getCertificateFingerprint(): string
+    public function getCertificateSerialNumber(): string
     {
         if ($this->certFingerprint !== null) {
             return $this->certFingerprint;
@@ -285,13 +285,14 @@ class ApiClient extends \GuzzleHttp\Client
             throw new \Exception('Unable to read X509 certificate: '.openssl_error_string());
         }
 
-        $fingerprint = openssl_x509_fingerprint($certResource, 'sha1');
+        $certData = openssl_x509_parse($certResource);
 
-        if ($fingerprint === false) {
-            throw new \Exception('Unable to calculate certificate fingerprint: '.openssl_error_string());
+        if ($certData === false || !isset($certData['serialNumber'])) {
+            throw new \Exception('Unable to parse certificate data: '.openssl_error_string());
         }
 
-        $this->certFingerprint = strtolower($fingerprint);
+        // serialNumber from openssl_x509_parse is already in decimal format
+        $this->certFingerprint = $certData['serialNumber'];
 
         return $this->certFingerprint;
     }
@@ -300,7 +301,7 @@ class ApiClient extends \GuzzleHttp\Client
      * Send an HTTP request while enforcing and updating client rate limits.
      *
      * Rate limits are enforced per certificate (not per X-IBM-Client-Id).
-     * The certificate fingerprint is used as the client identifier.
+     * The certificate serial number is used as the client identifier.
      *
      * @param \Psr\Http\Message\RequestInterface $request the HTTP request to send
      * @param array                              $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
@@ -312,7 +313,7 @@ class ApiClient extends \GuzzleHttp\Client
      */
     public function send(\Psr\Http\Message\RequestInterface $request, array $options = []): \Psr\Http\Message\ResponseInterface
     {
-        $certFingerprint = $this->getCertificateFingerprint();
+        $certFingerprint = $this->getCertificateSerialNumber();
 
         $this->rateLimiter->checkBeforeRequest($certFingerprint);
 
@@ -341,7 +342,7 @@ class ApiClient extends \GuzzleHttp\Client
     /**
      * Update rate limits from API response headers.
      *
-     * Uses the certificate fingerprint as the client identifier for storing rate limits.
+     * Uses the certificate serial number as the client identifier for storing rate limits.
      *
      * @param \Psr\Http\Message\ResponseInterface $response the HTTP response containing rate limit headers
      */
@@ -351,7 +352,7 @@ class ApiClient extends \GuzzleHttp\Client
             $remainingSecond = (int) $response->getHeaderLine('x-ratelimit-remaining-second');
             $remainingDay = (int) $response->getHeaderLine('x-ratelimit-remaining-day');
             $timestamp = time();
-            $certFingerprint = $this->getCertificateFingerprint();
+            $certFingerprint = $this->getCertificateSerialNumber();
             $this->rateLimiter->handleRateLimits($certFingerprint, $remainingSecond, $remainingDay, $timestamp);
         }
     }
