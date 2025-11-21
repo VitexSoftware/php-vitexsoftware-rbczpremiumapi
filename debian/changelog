@@ -1,4 +1,4 @@
-php-vitexsoftware-rbczpremiumapi (1.5.1) UNRELEASED; urgency=medium
+php-vitexsoftware-rbczpremiumapi (1.5.1) unstable; urgency=medium
 
   * Fix rate limiting to use certificate fingerprint instead of X-IBM-Client-Id
     - Rate limits are enforced per certificate as per API documentation
