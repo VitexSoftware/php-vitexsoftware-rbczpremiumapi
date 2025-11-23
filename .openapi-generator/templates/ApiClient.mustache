@@ -114,7 +114,7 @@ class ApiClient extends \GuzzleHttp\Client
         if (isset($config['rate_limit_store'])) {
             $limitStore = $config['rate_limit_store'];
         } else {
-            $path = $config['rate_limit_path'] ?? sys_get_temp_dir().'/rbczpremiumapi_rates.json';
+            $path = $config['rate_limit_path'] ?? \Ease\Shared::cfg('RBAPI_RATE_LIMIT_JSON_FILE', sys_get_temp_dir().'/rbczpremiumapi_rates.json');
             $limitStore = new RateLimit\JsonRateLimitStore($path);
         }
 

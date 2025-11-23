@@ -55,6 +55,8 @@ XIBMCLIENTID=FbboLD2r1WHDRcuKS4wWUbSRHxlDloWL
 API_DEBUG=True
 ```
 
+Set the `RBAPI_RATE_LIMIT_JSON_FILE` to override default /tmp/rbczpremiumapi_rates.json
+
 Please follow the [installation procedure](#installation--usage) and then run the following:
 
 ```php
