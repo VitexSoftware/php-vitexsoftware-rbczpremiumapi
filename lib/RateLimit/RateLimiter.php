@@ -81,12 +81,8 @@ class RateLimiter
             $wait = max(0, 1 - ($now - $second['timestamp']));
 
             if ($wait > 0) {
-                if ($this->waitMode) {
-                    error_log(sprintf('Rate-limit (second window) exceeded. Waiting %d seconds', $wait));
-                    usleep($wait * 1_000_000);
-                } else {
-                    throw new RateLimitExceededException('Rate-limit (second window) exceeded');
-                }
+                error_log(sprintf('Rate-limit (second window) exceeded. Waiting %d seconds', $wait));
+                usleep($wait * 1_000_000);
             }
         }
 

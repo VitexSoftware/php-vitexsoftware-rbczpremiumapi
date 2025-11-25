@@ -57,6 +57,9 @@ API_DEBUG=True
 
 Set the `RBAPI_RATE_LIMIT_JSON_FILE` to override default /tmp/rbczpremiumapi_rates.json
 
+When the `RBAPI_RATE_WAIT_MODE` is not set, the RateLimitExceededException is throwed. The 'true' value wait till the next day, to continue.
+
+
 Please follow the [installation procedure](#installation--usage) and then run the following:
 
 ```php

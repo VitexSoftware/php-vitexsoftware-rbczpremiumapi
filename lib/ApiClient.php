@@ -118,7 +118,7 @@ class ApiClient extends \GuzzleHttp\Client
             $limitStore = new RateLimit\JsonRateLimitStore($path);
         }
 
-        $waitMode = $config['rate_limit_wait'] ?? true;
+        $waitMode = $config['rate_limit_wait'] ?? (strtolower(\Ease\Shared::cfg('RBAPI_RATE_WAIT_MODE', 'false')) === 'true');
         $this->rateLimiter = new RateLimiter($limitStore, $waitMode);
 
         parent::__construct($config);
