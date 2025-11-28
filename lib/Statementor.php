@@ -155,18 +155,8 @@ class Statementor extends \Ease\Sand
                 }
             } while ($stop === false);
         } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
-            preg_match('/cURL error ([0-9]+)/', $errorMessage, $matches);
-
-            if (\array_key_exists(1, $matches)) {
-                $errorCode = $matches[1];
-            } elseif (preg_match('/\[([0-9]+)\]/', $errorMessage, $matches)) {
-                $errorCode = $matches[1];
-            } else {
-                $errorCode = 2;
-            }
-
-            $this->addStatusMessage('Exception when calling GetStatementsRequest: '.$errorMessage, 'error', $apiInstance);
+            $this->addStatusMessage($e->getCode().' Exception when calling GetStatementsRequest: '.$e->getMessage(), 'error', $apiInstance);
+            throw $e;
         }
 
         return $statements;
