@@ -156,6 +156,7 @@ class Statementor extends \Ease\Sand
             } while ($stop === false);
         } catch (\Exception $e) {
             $this->addStatusMessage($e->getCode().' Exception when calling GetStatementsRequest: '.$e->getMessage(), 'error', $apiInstance);
+
             throw $e;
         }
 

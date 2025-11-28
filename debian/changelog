@@ -1,3 +1,9 @@
+php-vitexsoftware-rbczpremiumapi (1.5.3) UNRELEASED; urgency=medium
+
+  * Statementor rethrow the Api Execeptions
+
+ -- vitex <info@vitexsoftware.cz>  Fri, 28 Nov 2025 14:28:59 +0100
+
 php-vitexsoftware-rbczpremiumapi (1.5.2) unstable; urgency=medium
 
   * Use certificate serial number instead of SHA1 fingerprint for rate limiting
@@ -5,7 +11,7 @@ php-vitexsoftware-rbczpremiumapi (1.5.2) unstable; urgency=medium
     - Now uses decimal serial number from certificate for client identification
     - Updated both ApiClient.php and template to preserve changes
 
- -- vitex <info@vitexsoftware.cz>  Thu, 21 Nov 2025 19:02:00 +0100
+ -- vitex <info@vitexsoftware.cz>  Fri, 28 Nov 2025 14:28:30 +0100
 
 php-vitexsoftware-rbczpremiumapi (1.5.1) unstable; urgency=medium
 
