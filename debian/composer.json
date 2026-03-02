@@ -8,9 +8,6 @@
       "homepage": "https://vitexsoftware.com/"
     }
   ],
-  "config": {
-    "vendor-dir": "/var/lib/composer/php-vitexsoftware-rbczpremiumapi"
-  },
   "autoload": {
     "psr-4": {
       "VitexSoftware\\Raiffeisenbank\\": "./",
@@ -24,20 +21,6 @@
     "guzzlehttp/guzzle": "^7.3",
     "deb/ease-core": "*"
   },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "/usr/share/php/EaseCore"
-    },
-    {
-      "type": "path",
-      "url": "/usr/share/php/Raiffeisenbank"
-    },
-    {
-      "type": "path",
-      "url": "/usr/share/php/GuzzleHttp"
-    }
-  ],
   "type": "library",
   "homepage": "https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi",
   "license": "MIT"

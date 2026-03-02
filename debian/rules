@@ -4,7 +4,7 @@ PKG_PATH:=/usr/share/php/EaseCore
 BUILD_DIR:=build
 
 %:
-	dh $@
+	dh $@ --with phpcomposer
 
 override_dh_prep:
 	phpdoc -d lib --defaultpackagename=MainPackage
@@ -20,5 +20,10 @@ override_dh_auto_test:
 
 
 override_dh_install:
-	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/composer.json |sponge debian/composer.json
 	dh_install
+	phpab --output debian/php-vitexsoftware-rbczpremiumapi/usr/share/php/Raiffeisenbank/autoload.php \
+		--basedir debian/php-vitexsoftware-rbczpremiumapi/usr/share/php/Raiffeisenbank \
+		--tolerant \
+		debian/php-vitexsoftware-rbczpremiumapi/usr/share/php/Raiffeisenbank
+	install -m0755 -d debian/php-vitexsoftware-rbczpremiumapi/usr/share/pkg-php-tools/autoloaders
+	echo 'deb rbczpremiumapi Raiffeisenbank/autoload.php' > debian/php-vitexsoftware-rbczpremiumapi/usr/share/pkg-php-tools/autoloaders/php-vitexsoftware-rbczpremiumapi

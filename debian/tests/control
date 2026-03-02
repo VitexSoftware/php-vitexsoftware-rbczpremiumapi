@@ -1,0 +1,3 @@
+Test-Command: php -r "require_once '/usr/share/php/Raiffeisenbank/autoload.php'; new VitexSoftware\\Raiffeisenbank\\ApiClient();"
+Depends: php-vitexsoftware-rbczpremiumapi, php-cli
+Restrictions: superficial

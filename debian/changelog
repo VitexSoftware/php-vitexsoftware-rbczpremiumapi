@@ -1,6 +1,8 @@
-php-vitexsoftware-rbczpremiumapi (1.5.3) UNRELEASED; urgency=medium
+php-vitexsoftware-rbczpremiumapi (1.5.3) unstable; urgency=medium
 
   * Statementor rethrow the Api Execeptions
+  * Modernize Debian packaging: debhelper-compat 13, pkg-php-tools, phpab
+  * Remove composer-debian dependency
 
  -- vitex <info@vitexsoftware.cz>  Fri, 28 Nov 2025 14:28:59 +0100
 

@@ -1,18 +1,30 @@
 Source: php-vitexsoftware-rbczpremiumapi
-Build-Depends: debhelper (>= 10), moreutils, jq, composer, phpdocumentor, php-curl, php-vitexsoftware-ease-core (>= 1.38), moreutils
-Section: web
-Standards-Version: 3.9.8
+Section: php
+Priority: optional
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
 Uploaders: Vitex <vitex@hippy.cz>
-Priority: optional
+Build-Depends:
+ debhelper-compat (= 13),
+ pkg-php-tools (>= 1.7~),
+ phpab,
+ moreutils,
+ jq,
+ composer,
+ phpdocumentor,
+ php-curl,
+ php-vitexsoftware-ease-core (>= 1.38),
+Standards-Version: 4.7.0
 Homepage: https://github.com/VitexSoftware/php-vitexsoftware-rbczpremiumapi
+Rules-Requires-Root: no
 
 Package: php-vitexsoftware-rbczpremiumapi
-Depends: ${misc:Depends}, php-guzzlehttp-psr7, composer-debian, php-vitexsoftware-ease-core
 Architecture: all
+Depends:
+ ${misc:Depends},
+ ${phpcomposer:Debian-require},
+ php-vitexsoftware-ease-core,
 Suggests: abraflexi-raiffasenbank
 Section: office
-Priority: optional
 Description: php client library for rbczpremiumapi 
  See Accont Balance, Download statements etc.
 

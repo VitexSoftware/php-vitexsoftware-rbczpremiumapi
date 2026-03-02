@@ -111,7 +111,7 @@ if (!currentBuild.result || currentBuild.result == 'SUCCESS') {
         string(name: 'UPSTREAM_JOB', value: env.JOB_NAME),
         string(name: 'UPSTREAM_BUILD', value: env.BUILD_NUMBER),
         string(name: 'REMOTE_SSH', value: 'multirepo@repo.multiflexi.eu'),
-        string(name: 'REMOTE_REPO_DIR', value: '/srv/repo'),
+        string(name: 'REMOTE_REPO_DIR', value: '/var/lib/multirepo/public/multiflexi'),
         string(name: 'COMPONENT', value: 'main'),
         string(name: 'DEB_DIST', value: '')
       ]
