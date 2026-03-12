@@ -1,3 +1,10 @@
+php-vitexsoftware-rbczpremiumapi (1.5.4) unstable; urgency=medium
+
+  * Lower Guzzle dependency versions for Debian 12/13 and Ubuntu Noble
+    compatibility (guzzle ^7.4, psr7 ^2.4)
+
+ -- vitex <info@vitexsoftware.cz>  Wed, 12 Mar 2026 22:21:00 +0100
+
 php-vitexsoftware-rbczpremiumapi (1.5.3) unstable; urgency=medium
 
   * Statementor rethrow the Api Execeptions
