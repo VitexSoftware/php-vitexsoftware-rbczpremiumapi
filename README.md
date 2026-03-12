@@ -16,7 +16,7 @@ PHP 8.1 and later.
 
 Debian/Ubuntu dependencies:
 - `php-guzzlehttp-guzzle` >= 7.4
-- `php-guzzlehttp-psr7` >= 2.4
+- `php-guzzlehttp-psr7` >= 1.8
 - `php-vitexsoftware-ease-core` >= 1.49
 
 ### Composer
