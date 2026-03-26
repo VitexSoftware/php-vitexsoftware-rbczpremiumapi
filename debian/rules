@@ -25,5 +25,6 @@ override_dh_install:
 		--basedir debian/php-vitexsoftware-rbczpremiumapi/usr/share/php/Raiffeisenbank \
 		--tolerant \
 		debian/php-vitexsoftware-rbczpremiumapi/usr/share/php/Raiffeisenbank
+	echo 'require_once "/usr/share/php/GuzzleHttp/autoload.php";' >> debian/php-vitexsoftware-rbczpremiumapi/usr/share/php/Raiffeisenbank/autoload.php
 	install -m0755 -d debian/php-vitexsoftware-rbczpremiumapi/usr/share/pkg-php-tools/autoloaders
 	echo 'deb rbczpremiumapi Raiffeisenbank/autoload.php' > debian/php-vitexsoftware-rbczpremiumapi/usr/share/pkg-php-tools/autoloaders/php-vitexsoftware-rbczpremiumapi
