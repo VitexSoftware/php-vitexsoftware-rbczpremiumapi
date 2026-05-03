@@ -1,3 +1,12 @@
+php-vitexsoftware-rbczpremiumapi (1.5.5) unstable; urgency=medium
+
+  * Fix setSUIPAddress assignment bug in all PremiumAPI classes
+  * Update tests: use createMock for interfaces instead of getMockForAbstractClass
+  * Add RateLimit test suite to phpunit.xml.dist
+  * Regenerated models after schema update
+
+ -- vitex <info@vitexsoftware.cz>  Sun, 04 May 2026 01:00:00 +0200
+
 php-vitexsoftware-rbczpremiumapi (1.5.4) unstable; urgency=medium
 
   * Lower Guzzle dependency versions for Debian 12/13 and Ubuntu Noble
