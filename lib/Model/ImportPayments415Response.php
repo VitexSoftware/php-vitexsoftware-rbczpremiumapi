@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class ImportPayments415Response implements \ArrayAccess, \JsonSerializable, ModelInterface
+class ImportPayments415Response implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
 

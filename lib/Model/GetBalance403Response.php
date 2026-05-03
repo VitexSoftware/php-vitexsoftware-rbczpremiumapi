@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetBalance403Response implements \ArrayAccess, \JsonSerializable, ModelInterface
+class GetBalance403Response implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const ERROR_INSUFFICIENT_RIGHTS = 'INSUFFICIENT_RIGHTS';

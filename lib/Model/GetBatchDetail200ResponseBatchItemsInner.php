@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetBatchDetail200ResponseBatchItemsInner implements \ArrayAccess, \JsonSerializable, ModelInterface
+class GetBatchDetail200ResponseBatchItemsInner implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const BATCH_TYPE_DPO = 'DPO';

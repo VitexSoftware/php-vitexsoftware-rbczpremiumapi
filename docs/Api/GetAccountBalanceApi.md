@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 
 
-Get balance for given accounts.
+Get balance for given accounts.  Balance can be of one of the following types in this table:  | Abbreviation  | Balance type      | Description                                                                                        |  | ------------- | ----------------- | -------------------------------------------------------------------------------------------------- | | CLAV          | Available balance | Available balance on the account in the time of the response to the request with credit limit      | | CLBD          | Booking balance   | Actual accounting balance on the account                                                           | | CLAB          | Actual balance    | Available balance on the account in the time of the response to the request without credit limit   | | BLCK          | Blocked balance   | Sum of blocked amounts on the account                                                              |
 
 ### Example
 

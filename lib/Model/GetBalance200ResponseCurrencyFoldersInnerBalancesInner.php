@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAccess, \JsonSerializable, ModelInterface
+class GetBalance200ResponseCurrencyFoldersInnerBalancesInner implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
 

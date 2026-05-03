@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetTransactionList400Response implements \ArrayAccess, \JsonSerializable, ModelInterface
+class GetTransactionList400Response implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const ERROR_DT01 = 'DT01';

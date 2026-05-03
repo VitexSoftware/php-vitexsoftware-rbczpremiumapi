@@ -20,21 +20,21 @@ class RateLimitStoreInterfaceTest extends TestCase
 {
     public function testGetReturnsArrayOrNull(): void
     {
-        $mock = $this->getMockForAbstractClass(RateLimitStoreInterface::class);
+        $mock = $this->createMock(RateLimitStoreInterface::class);
         $result = $mock->get('client', 'second');
         $this->assertTrue(\is_array($result) || null === $result);
     }
 
     public function testSetDoesNotThrow(): void
     {
-        $mock = $this->getMockForAbstractClass(RateLimitStoreInterface::class);
+        $mock = $this->createMock(RateLimitStoreInterface::class);
         $this->expectNotToPerformAssertions();
         $mock->set('client', 'second', 10, time());
     }
 
     public function testAllForClientReturnsArray(): void
     {
-        $mock = $this->getMockForAbstractClass(RateLimitStoreInterface::class);
+        $mock = $this->createMock(RateLimitStoreInterface::class);
         $result = $mock->allForClient('client');
         $this->assertIsArray($result);
     }

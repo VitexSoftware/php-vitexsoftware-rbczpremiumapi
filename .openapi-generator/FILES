@@ -55,7 +55,6 @@ docs/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransaction
 docs/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformation.md
 docs/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformationCreditorReferenceInformation.md
 docs/Model/GetTransactionList400Response.md
-docs/Model/GetTransactionList401Response.md
 docs/Model/ImportPayments200Response.md
 docs/Model/ImportPayments400Response.md
 docs/Model/ImportPayments413Response.md
@@ -107,7 +106,6 @@ lib/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionD
 lib/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformation.php
 lib/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsRemittanceInformationCreditorReferenceInformation.php
 lib/Model/GetTransactionList400Response.php
-lib/Model/GetTransactionList401Response.php
 lib/Model/ImportPayments200Response.php
 lib/Model/ImportPayments400Response.php
 lib/Model/ImportPayments413Response.php
@@ -123,6 +121,13 @@ lib/PremiumAPI/GetFxRatesListApi.php
 lib/PremiumAPI/GetStatementListApi.php
 lib/PremiumAPI/GetTransactionListApi.php
 lib/PremiumAPI/UploadPaymentsApi.php
+lib/RateLimit/JsonRateLimitStore.php
+lib/RateLimit/PdoRateLimitStore.php
+lib/RateLimit/RateLimitExceededException.php
+lib/RateLimit/RateLimitMode.php
+lib/RateLimit/RateLimitStoreInterface.php
+lib/RateLimit/RateLimiter.php
+lib/RateLimit/SqlDialect.php
 lib/Statementor.php
 lib/Transactor.php
 phpunit.xml.dist
@@ -176,9 +181,11 @@ test/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransaction
 test/Model/GetTransactionList200ResponseTransactionsInnerEntryDetailsTransactionDetailsTest.php
 test/Model/GetTransactionList200ResponseTransactionsInnerTest.php
 test/Model/GetTransactionList400ResponseTest.php
-test/Model/GetTransactionList401ResponseTest.php
 test/Model/ImportPayments200ResponseTest.php
 test/Model/ImportPayments400ResponseTest.php
 test/Model/ImportPayments413ResponseTest.php
 test/Model/ImportPayments415ResponseTest.php
+test/RateLimit/RateLimitStoreInterfaceTest.php
+test/RateLimit/RateLimiterTest.php
+test/RateLimit/SqlDialectTest.php
 test/bootstrap.php

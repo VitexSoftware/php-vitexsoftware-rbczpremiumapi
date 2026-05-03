@@ -4,12 +4,14 @@
     <include>
       <directory suffix=".php">./lib/PremiumAPI</directory>
       <directory suffix=".php">./lib/Model</directory>
+      <directory suffix=".php">./lib/RateLimit</directory>
     </include>
   </coverage>
   <testsuites>
     <testsuite name="tests">
       <directory>./test/Api</directory>
       <directory>./test/Model</directory>
+      <directory>./test/RateLimit</directory>
     </testsuite>
   </testsuites>
   <php>

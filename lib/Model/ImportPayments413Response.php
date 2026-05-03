@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class ImportPayments413Response implements \ArrayAccess, \JsonSerializable, ModelInterface
+class ImportPayments413Response implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const ERROR_BATCH_CONTENT_SIZE_EXCEEDED___CONTENT_EXCEEDS_MAXIMUM_OF_200_MB = 'BATCH_CONTENT_SIZE_EXCEEDED - Content exceeds maximum of 200 MB';

@@ -45,7 +45,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class ImportPayments400Response implements \ArrayAccess, \JsonSerializable, ModelInterface
+class ImportPayments400Response implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const ERROR_INVALID_BATCH_IMPORT_FORMAT = 'INVALID_BATCH_IMPORT_FORMAT';

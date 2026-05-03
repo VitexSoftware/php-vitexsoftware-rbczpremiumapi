@@ -47,7 +47,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class GetStatementsRequest implements \ArrayAccess, \JsonSerializable, ModelInterface
+class GetStatementsRequest implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const STATEMENT_LINE_MAIN = 'MAIN';

@@ -47,7 +47,7 @@ use VitexSoftware\Raiffeisenbank\ObjectSerializer;
  *
  * @implements \ArrayAccess<string, mixed>
  */
-class DownloadStatementRequest implements \ArrayAccess, \JsonSerializable, ModelInterface
+class DownloadStatementRequest implements \ArrayAccess, \JsonSerializable, \Stringable, ModelInterface
 {
     public const DISCRIMINATOR = null;
     public const STATEMENT_FORMAT_PDF = 'pdf';

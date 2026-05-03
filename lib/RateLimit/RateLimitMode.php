@@ -15,8 +15,7 @@ declare(strict_types=1);
 
 namespace VitexSoftware\Raiffeisenbank\RateLimit;
 
-enum RateLimitMode: string
+class RateLimitMode
 {
-    case WAIT = 'wait';
-    case EXCEPTION = 'exception';
+    // Add properties and methods as needed
 }

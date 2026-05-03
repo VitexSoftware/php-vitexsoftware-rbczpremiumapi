@@ -2,7 +2,7 @@ x-headmatter:
   readable_by: []
 swagger: '2.0'
 info:
-  version: 1.1.20251142
+  version: 1.1.20240910
   title: Production
   description: |
     ##### API Overview
@@ -39,8 +39,18 @@ schemes:
 paths:
   '/rbcz/premium/api/accounts/{accountNumber}/balance':
     get:
-      description: >
+      description: |
         Get balance for given accounts.
+
+        Balance can be of one of the following types in this table:
+        
+        | Abbreviation  | Balance type      | Description                                                                                        | 
+        | ------------- | ----------------- | -------------------------------------------------------------------------------------------------- |
+        | CLAV          | Available balance | Available balance on the account in the time of the response to the request with credit limit      |
+        | CLBD          | Booking balance   | Actual accounting balance on the account                                                           |
+        | CLAB          | Actual balance    | Available balance on the account in the time of the response to the request without credit limit   |
+        | BLCK          | Blocked balance   | Sum of blocked amounts on the account                                                              |
+
       operationId: getBalance
       produces:
         - application/json
@@ -586,13 +596,15 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate is invalid.
+          description: Certificate's serial number is missing or certificate is in an invalid state.
           schema:
+            type: object
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':
@@ -705,6 +717,7 @@ paths:
             - GEMINI-P32
             - GEMINI-F84
             - ABO-KPC
+            - DOM-XML
             - SEPA-XML
             - CFD
             - CFU
@@ -777,7 +790,7 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate is invalid.
+          description: Certificate's serial number is missing or certificate is in an invalid state.
           schema:
             type: object
             properties:
@@ -785,6 +798,7 @@ paths:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':
@@ -1004,13 +1018,15 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate is invalid.
+          description: Certificate's serial number is missing or certificate is in an invalid state.
           schema:
+            type: object
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':
@@ -1171,13 +1187,15 @@ paths:
           description: |
             Nonexisting page or empty content.
         '401':
-          description: Certificate is invalid.
+          description: Certificate's serial number is missing or certificate is in an invalid state.
           schema:
+            type: object
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':
@@ -1385,13 +1403,15 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate is invalid.
+          description: Certificate's serial number is missing or certificate is in an invalid state.
           schema:
+            type: object
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':
@@ -1527,13 +1547,15 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate is invalid.
+          description: Certificate's serial number is missing or certificate is in an invalid state.
           schema:
+            type: object
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
+                  - INVALID_REQUEST
               error_description:
                 type: string
         '403':

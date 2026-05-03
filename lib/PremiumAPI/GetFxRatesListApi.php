@@ -64,8 +64,11 @@ class GetFxRatesListApi
             'application/json',
         ],
     ];
+
     protected ClientInterface $client;
+
     protected Configuration $config;
+
     protected HeaderSelector $headerSelector;
 
     /**
@@ -142,7 +145,7 @@ class GetFxRatesListApi
      */
     public function setSUIPAddress($SUIPAddress): self
     {
-        $this->SUIPAddress;
+        $this->SUIPAddress = $SUIPAddress;
 
         return $this;
     }

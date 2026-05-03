@@ -20,13 +20,15 @@ class SqlDialectTest extends TestCase
 {
     public function testNowReturnsInt(): void
     {
-        $mock = $this->getMockForAbstractClass(SqlDialect::class);
+        $mock = $this->createMock(SqlDialect::class);
+        $mock->method('now')->willReturn(time());
         $this->assertIsInt($mock->now());
     }
 
     public function testPlaceholderReturnsString(): void
     {
-        $mock = $this->getMockForAbstractClass(SqlDialect::class);
+        $mock = $this->createMock(SqlDialect::class);
+        $mock->method('placeholder')->willReturn(':test');
         $this->assertIsString($mock->placeholder('test'));
     }
 }

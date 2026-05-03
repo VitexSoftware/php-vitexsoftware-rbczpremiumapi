@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace VitexSoftware\Raiffeisenbank\RateLimit;
 
-class RateLimitExceededException extends \RuntimeException
+class RateLimitExceededException extends \Exception
 {
+    // Add custom exception logic if needed
 }
