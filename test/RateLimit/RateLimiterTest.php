@@ -50,4 +50,58 @@ class RateLimiterTest extends TestCase
         $this->expectNotToPerformAssertions();
         $limiter->checkBeforeRequest('client');
     }
+
+    public function testAcquireLockSerializesSameClient(): void
+    {
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $lockDir = sys_get_temp_dir();
+        $limiter = new RateLimiter($mockStore, false, $lockDir);
+
+        $clientId = 'test-client-'.uniqid('', true);
+        $lockFile = $lockDir.'/rbczpremiumapi_'.$clientId.'.lock';
+
+        $handle = $limiter->acquireLock($clientId);
+
+        try {
+            $this->assertFileExists($lockFile);
+
+            $secondHandle = fopen($lockFile, 'c');
+            $this->assertFalse(
+                flock($secondHandle, \LOCK_EX | \LOCK_NB),
+                'A second exclusive lock for the same client must fail while the first is held',
+            );
+            fclose($secondHandle);
+        } finally {
+            $limiter->releaseLock($handle);
+        }
+
+        $thirdHandle = fopen($lockFile, 'c');
+        $this->assertTrue(
+            flock($thirdHandle, \LOCK_EX | \LOCK_NB),
+            'The lock must become acquirable again once released',
+        );
+        flock($thirdHandle, \LOCK_UN);
+        fclose($thirdHandle);
+
+        @unlink($lockFile);
+    }
+
+    public function testAcquireLockSanitizesClientIdIntoFilename(): void
+    {
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $lockDir = sys_get_temp_dir();
+        $limiter = new RateLimiter($mockStore, false, $lockDir);
+
+        $clientId = '../../etc/passwd:'.uniqid('', true);
+        $handle = $limiter->acquireLock($clientId);
+        $limiter->releaseLock($handle);
+
+        $matches = glob($lockDir.'/rbczpremiumapi_*etc_passwd*.lock');
+        $this->assertNotEmpty($matches, 'Lock file must be created inside the configured lock directory');
+        $this->assertFileDoesNotExist('/etc/passwd.lock');
+
+        foreach ($matches as $match) {
+            @unlink($match);
+        }
+    }
 }

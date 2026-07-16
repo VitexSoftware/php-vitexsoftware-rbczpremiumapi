@@ -19,17 +19,57 @@ class RateLimiter
 {
     private RateLimitStoreInterface $store;
     private bool $waitMode;
+    private string $lockDir;
 
     /**
      * Create a RateLimiter configured with a storage backend and a handling mode for exceeded limits.
      *
      * @param RateLimitStoreInterface $store    storage backend for per-client rate-limit state
      * @param bool                    $waitMode if true, the limiter will wait until the limit window resets; if false, it will throw a RateLimitExceededException when limits are exceeded
+     * @param string                  $lockDir  directory used to store per-client lock files that serialize concurrent requests (defaults to the system temp directory)
      */
-    public function __construct(RateLimitStoreInterface $store, bool $waitMode = true)
+    public function __construct(RateLimitStoreInterface $store, bool $waitMode = true, ?string $lockDir = null)
     {
         $this->store = $store;
         $this->waitMode = $waitMode;
+        $this->lockDir = $lockDir ?? sys_get_temp_dir();
+    }
+
+    /**
+     * Acquire an exclusive, cross-process lock for the given client so that concurrent
+     * processes sharing the same client (e.g. the same certificate) serialize their
+     * check-send-update cycle instead of racing past each other's stale counters.
+     *
+     * The lock is released with {@see releaseLock()}; it is also released automatically
+     * by the OS if the process dies while holding it.
+     *
+     * @param string $clientId identifier of the client to lock (used to derive the lock file name)
+     *
+     * @return resource the open, locked file handle to pass to releaseLock()
+     */
+    public function acquireLock(string $clientId)
+    {
+        $safeId = preg_replace('/[^a-zA-Z0-9_.-]/', '_', $clientId);
+        $handle = fopen($this->lockDir.'/rbczpremiumapi_'.$safeId.'.lock', 'c');
+
+        if ($handle === false) {
+            throw new \RuntimeException('Unable to open rate-limit lock file for client '.$clientId);
+        }
+
+        flock($handle, \LOCK_EX);
+
+        return $handle;
+    }
+
+    /**
+     * Release a lock previously acquired with {@see acquireLock()}.
+     *
+     * @param resource $handle the file handle returned by acquireLock()
+     */
+    public function releaseLock($handle): void
+    {
+        flock($handle, \LOCK_UN);
+        fclose($handle);
     }
     /**
      * Indicates whether the limiter is configured to wait when a rate limit is exceeded.

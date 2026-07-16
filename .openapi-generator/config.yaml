@@ -7,7 +7,7 @@ additionalProperties:
   RepoId: php-vitexsoftware-rbczpremiumapi
   infoEmail: info@vitexsoftware.cz
   allowUnicodeIdentifiers: true
-  artifactVersion: 1.5.5
+  artifactVersion: 1.5.6
   invokerPackage: VitexSoftware\Raiffeisenbank
   modelPackage: Model
   variableNamingConvention: camelCase
@@ -26,6 +26,9 @@ files:
       destinationFilename: Transactor.php
   bootstrap.php:
       folder: test
+  ApiClientTest.mustache:
+      folder: test
+      destinationFilename: ApiClientTest.php
   RateLimiter.mustache:
     folder: lib/RateLimit
     destinationFilename: RateLimiter.php

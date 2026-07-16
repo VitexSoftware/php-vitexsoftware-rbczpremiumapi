@@ -1,3 +1,19 @@
+php-vitexsoftware-rbczpremiumapi (1.5.6) unstable; urgency=medium
+
+  * Fix: ApiClient::send() recovers the response from Guzzle's RequestException
+    on 4xx/5xx instead of letting it throw before the 429 handling ever runs,
+    so a 429 always reaches the rate-limit retry/exception logic
+  * Add per-certificate exclusive file locking (RateLimiter::acquireLock/
+    releaseLock) around the check-send-update cycle in ApiClient::send(), so
+    concurrent processes sharing one certificate (e.g. one task per bank
+    account under the same company) serialize instead of racing past stale
+    rate-limit counters
+  * Add RBAPI_RATE_LIMIT_LOCK_DIR config option / env var for the lock directory
+  * Add ApiClientTest and RateLimiter locking tests
+  * Document the 429 recovery and locking behavior in README.md
+
+ -- vitex <info@vitexsoftware.cz>  Thu, 16 Jul 2026 17:09:25 +0200
+
 php-vitexsoftware-rbczpremiumapi (1.5.5) unstable; urgency=medium
 
   * Fix setSUIPAddress assignment bug in all PremiumAPI classes
