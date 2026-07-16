@@ -11,6 +11,10 @@ php-vitexsoftware-rbczpremiumapi (1.5.6) unstable; urgency=medium
   * Add RBAPI_RATE_LIMIT_LOCK_DIR config option / env var for the lock directory
   * Add ApiClientTest and RateLimiter locking tests
   * Document the 429 recovery and locking behavior in README.md
+  * Relax guzzlehttp/guzzle back to ^7.4 and guzzlehttp/psr7 back to
+    ^1.8 || ^2.4 (previous dependabot PRs #59/#60 had tightened these past
+    what bookworm/trixie/jammy/noble/resolute actually package, breaking
+    apt installation of the built .deb with unmet dependencies)
 
  -- vitex <info@vitexsoftware.cz>  Thu, 16 Jul 2026 17:09:25 +0200
 
