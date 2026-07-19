@@ -119,7 +119,8 @@ class ApiClient extends \GuzzleHttp\Client
         }
 
         $waitMode = $config['rate_limit_wait'] ?? (strtolower(\Ease\Shared::cfg('RBAPI_RATE_WAIT_MODE', 'false')) === 'true');
-        $this->rateLimiter = new RateLimiter($limitStore, $waitMode);
+        $lockDir = $config['rate_limit_lock_dir'] ?? \Ease\Shared::cfg('RBAPI_RATE_LIMIT_LOCK_DIR', sys_get_temp_dir());
+        $this->rateLimiter = new RateLimiter($limitStore, $waitMode, $lockDir);
 
         parent::__construct($config);
     }
@@ -300,7 +301,11 @@ class ApiClient extends \GuzzleHttp\Client
      * Send an HTTP request while enforcing and updating client rate limits.
      *
      * Rate limits are enforced per certificate (not per X-IBM-Client-Id).
-     * The certificate fingerprint is used as the client identifier.
+     * The certificate fingerprint is used as the client identifier, and the whole
+     * check-send-update cycle is serialized (via an exclusive file lock) across
+     * concurrent processes sharing that certificate, so parallel tasks (e.g. one
+     * per bank account under the same company certificate) can't race past the
+     * rate limiter's stale in-store counters and all land in the same request window.
      *
      * @param \Psr\Http\Message\RequestInterface $request the HTTP request to send
      * @param array                              $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
@@ -314,28 +319,60 @@ class ApiClient extends \GuzzleHttp\Client
     {
         $certFingerprint = $this->getCertificateSerialNumber();
 
-        $this->rateLimiter->checkBeforeRequest($certFingerprint);
+        $lock = $this->rateLimiter->acquireLock($certFingerprint);
 
-        $response = parent::send($request, $options);
+        try {
+            $this->rateLimiter->checkBeforeRequest($certFingerprint);
 
-        $this->updateRateLimitsFromResponse($response);
+            $response = $this->sendAllowingErrorStatus($request, $options);
 
-        $statusCode = $response->getStatusCode();
+            $this->updateRateLimitsFromResponse($response);
 
-        if ($statusCode === 429) { // 429 Too Many Requests
-            if ($this->rateLimiter->isWaitMode()) {
-                $this->rateLimiter->checkBeforeRequest($certFingerprint);
-                $response = parent::send($request, $options);
+            $statusCode = $response->getStatusCode();
 
-                $this->updateRateLimitsFromResponse($response);
+            if ($statusCode === 429) { // 429 Too Many Requests
+                if ($this->rateLimiter->isWaitMode()) {
+                    $this->rateLimiter->checkBeforeRequest($certFingerprint);
+                    $response = $this->sendAllowingErrorStatus($request, $options);
 
-                $statusCode = $response->getStatusCode();
-            } else {
-                throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
+                    $this->updateRateLimitsFromResponse($response);
+
+                    $statusCode = $response->getStatusCode();
+                } else {
+                    throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
+                }
             }
-        }
 
-        return $response;
+            return $response;
+        } finally {
+            $this->rateLimiter->releaseLock($lock);
+        }
+    }
+
+    /**
+     * Send a request via Guzzle and return the response even when its status code
+     * represents an HTTP error.
+     *
+     * By default Guzzle throws a RequestException (e.g. ClientException for 4xx,
+     * ServerException for 5xx) before the caller ever sees the response. That would
+     * bypass the 429 handling and rate-limit-header bookkeeping in send(), so here
+     * the response is recovered from the exception instead of letting it propagate.
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException if the request failed without producing a response (e.g. connection error)
+     */
+    private function sendAllowingErrorStatus(\Psr\Http\Message\RequestInterface $request, array $options): \Psr\Http\Message\ResponseInterface
+    {
+        try {
+            return parent::send($request, $options);
+        } catch (\GuzzleHttp\Exception\RequestException $exception) {
+            $response = $exception->getResponse();
+
+            if ($response === null) {
+                throw $exception;
+            }
+
+            return $response;
+        }
     }
 
     /**
