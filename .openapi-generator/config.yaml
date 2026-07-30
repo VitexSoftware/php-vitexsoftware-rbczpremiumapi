@@ -7,7 +7,7 @@ additionalProperties:
   RepoId: php-vitexsoftware-rbczpremiumapi
   infoEmail: info@vitexsoftware.cz
   allowUnicodeIdentifiers: true
-  artifactVersion: 1.5.6
+  artifactVersion: 1.5.7
   invokerPackage: VitexSoftware\Raiffeisenbank
   modelPackage: Model
   variableNamingConvention: camelCase

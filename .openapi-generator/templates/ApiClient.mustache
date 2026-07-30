@@ -120,7 +120,8 @@ class ApiClient extends \GuzzleHttp\Client
 
         $waitMode = $config['rate_limit_wait'] ?? (strtolower(\Ease\Shared::cfg('RBAPI_RATE_WAIT_MODE', 'false')) === 'true');
         $lockDir = $config['rate_limit_lock_dir'] ?? \Ease\Shared::cfg('RBAPI_RATE_LIMIT_LOCK_DIR', sys_get_temp_dir());
-        $this->rateLimiter = new RateLimiter($limitStore, $waitMode, $lockDir);
+        $globalRateLimitPerSecond = (int) ($config['global_rate_limit_per_second'] ?? \Ease\Shared::cfg('RBAPI_GLOBAL_RATE_LIMIT_PER_SECOND', 0));
+        $this->rateLimiter = new RateLimiter($limitStore, $waitMode, $lockDir, $globalRateLimitPerSecond);
 
         parent::__construct($config);
     }
@@ -323,6 +324,7 @@ class ApiClient extends \GuzzleHttp\Client
 
         try {
             $this->rateLimiter->checkBeforeRequest($certFingerprint);
+            $this->throttleGlobally();
 
             $response = $this->sendAllowingErrorStatus($request, $options);
 
@@ -333,6 +335,7 @@ class ApiClient extends \GuzzleHttp\Client
             if ($statusCode === 429) { // 429 Too Many Requests
                 if ($this->rateLimiter->isWaitMode()) {
                     $this->rateLimiter->checkBeforeRequest($certFingerprint);
+                    $this->throttleGlobally();
                     $response = $this->sendAllowingErrorStatus($request, $options);
 
                     $this->updateRateLimitsFromResponse($response);
@@ -346,6 +349,29 @@ class ApiClient extends \GuzzleHttp\Client
             return $response;
         } finally {
             $this->rateLimiter->releaseLock($lock);
+        }
+    }
+
+    /**
+     * Enforce the host-wide, self-tracked rate limit shared by every certificate
+     * using this store (see {@see RateLimiter::checkGlobalBeforeRequest()}).
+     *
+     * Serializes the check against concurrent processes via a dedicated lock
+     * keyed by {@see RateLimiter::GLOBAL_CLIENT_ID} (distinct from the
+     * per-certificate lock already held around this call), then releases it
+     * immediately — only the check-and-increment is serialized, not the
+     * outbound HTTP call itself.
+     *
+     * @throws RateLimitExceededException if the host-wide cap is exceeded and wait mode is disabled
+     */
+    private function throttleGlobally(): void
+    {
+        $globalLock = $this->rateLimiter->acquireLock(RateLimiter::GLOBAL_CLIENT_ID);
+
+        try {
+            $this->rateLimiter->checkGlobalBeforeRequest();
+        } finally {
+            $this->rateLimiter->releaseLock($globalLock);
         }
     }
 

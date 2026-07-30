@@ -1,3 +1,32 @@
+php-vitexsoftware-rbczpremiumapi (1.5.8) unstable; urgency=medium
+
+  * Fix uncaught RateLimitExceededException crashing consumers on rate-
+    limit exhaustion: RateLimitExceededException now extends
+    ApiException (code 429) so existing catch(ApiException) blocks catch
+    it. Add RBAPI_RATE_MAX_WAIT_SECONDS (default 300) to bound wait-mode
+    sleeps, preventing a day-window reset from blocking a caller for up
+    to 24h.
+
+ -- vitex <info@vitexsoftware.cz>  Thu, 30 Jul 2026 11:14:38 +0200
+
+php-vitexsoftware-rbczpremiumapi (1.5.7) unstable; urgency=medium
+
+  * Add opt-in host-wide rate limit (RateLimiter::checkGlobalBeforeRequest(),
+    RBAPI_GLOBAL_RATE_LIMIT_PER_SECOND / global_rate_limit_per_second): a
+    self-tracked cap on requests per second shared across ALL certificates
+    using the same rate limit store, not just the one making the current
+    request. Per-certificate enforcement alone cannot see a gateway-level
+    limit above the certificate scope (e.g. per source IP or per
+    account-holder), since RB's response headers only ever report the
+    calling certificate's own remaining quota; many certificates can each
+    show plenty of headroom while collectively exceeding such a shared
+    limit. Disabled by default (0) since the true scope of RB's gateway
+    limit is not documented
+  * Add ApiClient/RateLimiter tests for the new global cap
+  * Document the global cap in README.md
+
+ -- vitex <info@vitexsoftware.cz>  Sun, 19 Jul 2026 18:17:40 +0200
+
 php-vitexsoftware-rbczpremiumapi (1.5.6) unstable; urgency=medium
 
   * Fix: ApiClient::send() recovers the response from Guzzle's RequestException

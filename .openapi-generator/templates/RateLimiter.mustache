@@ -17,22 +17,32 @@ namespace VitexSoftware\Raiffeisenbank\RateLimit;
 
 class RateLimiter
 {
+    /**
+     * Pseudo client id used to key the host-wide, self-tracked request counter
+     * in the store (see {@see checkGlobalBeforeRequest()}). Never collides with
+     * a real client id, which is always a certificate SHA1 fingerprint.
+     */
+    public const GLOBAL_CLIENT_ID = '__global_host__';
+
     private RateLimitStoreInterface $store;
     private bool $waitMode;
     private string $lockDir;
+    private int $globalRateLimitPerSecond;
 
     /**
      * Create a RateLimiter configured with a storage backend and a handling mode for exceeded limits.
      *
-     * @param RateLimitStoreInterface $store    storage backend for per-client rate-limit state
-     * @param bool                    $waitMode if true, the limiter will wait until the limit window resets; if false, it will throw a RateLimitExceededException when limits are exceeded
-     * @param string                  $lockDir  directory used to store per-client lock files that serialize concurrent requests (defaults to the system temp directory)
+     * @param RateLimitStoreInterface $store                    storage backend for per-client rate-limit state
+     * @param bool                    $waitMode                 if true, the limiter will wait until the limit window resets; if false, it will throw a RateLimitExceededException when limits are exceeded
+     * @param string                  $lockDir                  directory used to store per-client lock files that serialize concurrent requests (defaults to the system temp directory)
+     * @param int                     $globalRateLimitPerSecond host-wide cap on requests per second across ALL certificates/clients sharing this store, enforced by {@see checkGlobalBeforeRequest()}; 0 disables it (default, no behavior change)
      */
-    public function __construct(RateLimitStoreInterface $store, bool $waitMode = true, ?string $lockDir = null)
+    public function __construct(RateLimitStoreInterface $store, bool $waitMode = true, ?string $lockDir = null, int $globalRateLimitPerSecond = 0)
     {
         $this->store = $store;
         $this->waitMode = $waitMode;
         $this->lockDir = $lockDir ?? sys_get_temp_dir();
+        $this->globalRateLimitPerSecond = $globalRateLimitPerSecond;
     }
 
     /**
@@ -139,5 +149,52 @@ class RateLimiter
                 }
             }
         }
+    }
+
+    /**
+     * Enforces a host-wide, self-tracked cap on requests per second across every
+     * certificate/client sharing this store.
+     *
+     * Unlike {@see checkBeforeRequest()}, this does NOT rely on RB's response
+     * headers: those only ever report the remaining quota for the certificate
+     * that made the request, so a gateway-level limit shared by many
+     * certificates (e.g. per source IP or per account-holder) never shows up
+     * as an exhausted window on any single certificate — each one still has
+     * plenty of headroom while the shared limit is being blown through. This
+     * method instead counts requests this library itself has sent, in a
+     * fixed one-second bucket, and self-throttles against a configured cap.
+     *
+     * The caller MUST serialize calls to this method across processes (see
+     * {@see acquireLock()} with {@see GLOBAL_CLIENT_ID}), since the
+     * read-increment-write cycle here is not atomic on its own.
+     *
+     * A no-op when the cap is 0 (default): the true scope and size of RB's
+     * gateway-level limit is not documented, so this is opt-in until it has
+     * been confirmed and a sane value configured.
+     *
+     * @throws RateLimitExceededException if the cap is exceeded and wait mode is disabled
+     */
+    public function checkGlobalBeforeRequest(): void
+    {
+        if ($this->globalRateLimitPerSecond <= 0) {
+            return;
+        }
+
+        $now = time();
+        $bucket = $this->store->get(self::GLOBAL_CLIENT_ID, 'second');
+        $count = ($bucket !== null && $bucket['timestamp'] === $now) ? $bucket['remaining'] : 0;
+
+        if ($count >= $this->globalRateLimitPerSecond) {
+            if ($this->waitMode) {
+                error_log(sprintf('Global self-tracked rate limit (%d req/s) exceeded. Waiting 1 second', $this->globalRateLimitPerSecond));
+                sleep(1);
+                $now = time();
+                $count = 0;
+            } else {
+                throw new RateLimitExceededException('Global rate limit exceeded (self-tracked, host-wide)');
+            }
+        }
+
+        $this->store->set(self::GLOBAL_CLIENT_ID, 'second', $count + 1, $now);
     }
 }

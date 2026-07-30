@@ -1,6 +1,8 @@
 # Raiffeisenbank Premium API client library
 
 ![Library Logo](library-logo.svg?raw=true)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Packaging: deb](https://img.shields.io/badge/packaging-.deb-red?logo=debian&logoColor=white)
 
 
  php client library for rbczpremiumapi 
@@ -57,7 +59,13 @@ Set the `RBAPI_RATE_LIMIT_JSON_FILE` to override default /tmp/rbczpremiumapi_rat
 
 Set the `RBAPI_RATE_LIMIT_LOCK_DIR` to override the default directory (system temp dir) used for the per-certificate lock files that serialize concurrent requests.
 
-When the `RBAPI_RATE_WAIT_MODE` is not set, the RateLimitExceededException is throwed. The 'true' value wait till the next day, to continue.
+When the `RBAPI_RATE_WAIT_MODE` is not set, the RateLimitExceededException is throwed. The 'true' value waits for the window to reset, up to `RBAPI_RATE_MAX_WAIT_SECONDS` (see below).
+
+`RateLimitExceededException` extends `ApiException`, so any code that already catches `ApiException` around API calls catches rate-limit errors too, with `getCode() === 429`.
+
+Set `RBAPI_RATE_MAX_WAIT_SECONDS` (default `300`) to cap how long wait mode will ever `sleep()` for. The day-window reset can be up to 24h away; without a cap, wait mode would block the caller for that long. When the required wait exceeds this cap, `RateLimitExceededException` is thrown instead, even in wait mode.
+
+Set `RBAPI_GLOBAL_RATE_LIMIT_PER_SECOND` (or pass `global_rate_limit_per_second` in the client config) to cap requests per second host-wide, across *all* certificates sharing the rate limit store — not just the one making the current request. This is disabled by default (0). It exists because RB's rate-limit response headers only ever report the remaining quota for the certificate that made the request: if the gateway enforces a shared limit above the per-certificate level (e.g. per source IP or per account-holder), many certificates can each still show plenty of per-certificate headroom while collectively exceeding that shared limit — none of them can see it coming from the headers alone. This setting is a client-side, self-tracked cap (counted by the library itself, not derived from RB's headers) rather than a fix for a specific documented RB limit, so pick a conservative value for your deployment.
 
 
 Please follow the [installation procedure](#installation--usage) and then run the following:
@@ -172,6 +180,8 @@ This library implements a rate limiting mechanism in the `VitexSoftware\Raiffeis
 `ApiClient::send()` recovers the HTTP response from Guzzle's `RequestException` on 4xx/5xx status codes (Guzzle's default `http_errors` behavior would otherwise throw before the 429 handling ever runs), so a 429 always reaches the rate-limit logic instead of leaking a raw Guzzle exception.
 
 Rate limits are enforced per certificate. Since several independent processes (e.g. one per bank account under the same company certificate) can call the API concurrently using the same certificate, `ApiClient::send()` serializes the whole check-send-update cycle per certificate fingerprint with an exclusive file lock (`RateLimiter::acquireLock()`/`releaseLock()`), preventing concurrent processes from racing past each other's stale rate-limit counters and all landing in the same request window.
+
+Per-certificate enforcement has a blind spot: it can't see a rate limit the gateway enforces above the certificate level (e.g. per source IP or per account-holder), since RB's response headers only ever report the calling certificate's own remaining quota. `RateLimiter::checkGlobalBeforeRequest()` closes that gap with an opt-in, self-tracked host-wide cap (`RBAPI_GLOBAL_RATE_LIMIT_PER_SECOND`, see above) — counted locally by the library across all certificates sharing the store, independent of what any single certificate's headers report.
 
 The rate limiting mechanism ensures compliance with the API's restrictions and helps prevent accidental overuse. See the source code in `lib/RateLimit/` for details and extension options.
 

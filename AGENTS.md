@@ -52,7 +52,7 @@ composer test\nnpm test
 - **Main Components**: Core functionality and modules
 - **Configuration**: Configuration files and environment variables
 - **Integration Points**: External services and dependencies
-- **Rate Limiting**: API rate limits are enforced per certificate (mTLS client certificate), not per X-IBM-Client-Id. The library automatically calculates the SHA1 fingerprint of the certificate and uses it as the client identifier for rate limit tracking.
+- **Rate Limiting**: API rate limits are enforced per certificate (mTLS client certificate), not per X-IBM-Client-Id. The library automatically calculates the SHA1 fingerprint of the certificate and uses it as the client identifier for rate limit tracking. This alone can't see a gateway-level limit shared above the certificate scope (e.g. per source IP or per account-holder), since RB's response headers only report the calling certificate's own remaining quota — see `RateLimiter::checkGlobalBeforeRequest()` / `RBAPI_GLOBAL_RATE_LIMIT_PER_SECOND` for the opt-in, self-tracked host-wide cap that closes that gap.
 
 ## Common Tasks
 

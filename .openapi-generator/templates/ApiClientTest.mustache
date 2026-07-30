@@ -37,6 +37,60 @@ class ApiClientTest extends TestCase
         ]);
     }
 
+    private function makeClientWithGlobalCap(HandlerStack $stack, bool $waitMode, int $globalRateLimitPerSecond): ApiClient
+    {
+        return new ApiClient([
+            'cert' => [\dirname(__DIR__).'/examples/test_cert_ssl3.p12', 'test12345678'],
+            'clientid' => 'test-client-id',
+            'handler' => $stack,
+            'rate_limit_wait' => $waitMode,
+            'rate_limit_path' => sys_get_temp_dir().'/apiclienttest_rates_'.uniqid('', true).'.json',
+            'rate_limit_lock_dir' => sys_get_temp_dir(),
+            'global_rate_limit_per_second' => $globalRateLimitPerSecond,
+        ]);
+    }
+
+    /**
+     * The scenario from #20563: many certificates each have plenty of
+     * per-certificate headroom (RB's response headers only ever report the
+     * per-cert view), yet the shared gateway-level limit is still exceeded.
+     * With a configured global cap, a second request within the same second
+     * must be rejected even though the per-certificate window is fine.
+     */
+    public function testGlobalCapRejectsSecondRequestInSameSecondEvenWithHeadroomPerCertificate(): void
+    {
+        $mock = new MockHandler([
+            new Response(200, ['x-ratelimit-remaining-second' => '9', 'x-ratelimit-remaining-day' => '99'], 'ok'),
+        ]);
+        $client = $this->makeClientWithGlobalCap(HandlerStack::create($mock), false, 1);
+
+        $first = $client->send(new Request('POST', 'https://api.rb.cz/rbcz/premium/api/accounts/statements/download'));
+        $this->assertSame(200, $first->getStatusCode());
+
+        $this->expectException(RateLimitExceededException::class);
+        $client->send(new Request('POST', 'https://api.rb.cz/rbcz/premium/api/accounts/statements/download'));
+    }
+
+    /**
+     * Default configuration (no global cap set) must behave exactly as before:
+     * unrelated to the per-certificate window, back-to-back requests are not
+     * throttled by the (disabled) global limiter.
+     */
+    public function testGlobalCapDisabledByDefaultDoesNotThrottle(): void
+    {
+        $mock = new MockHandler([
+            new Response(200, ['x-ratelimit-remaining-second' => '9', 'x-ratelimit-remaining-day' => '99'], 'ok'),
+            new Response(200, ['x-ratelimit-remaining-second' => '8', 'x-ratelimit-remaining-day' => '98'], 'ok'),
+        ]);
+        $client = $this->makeClient(HandlerStack::create($mock), false);
+
+        $first = $client->send(new Request('POST', 'https://api.rb.cz/rbcz/premium/api/accounts/statements/download'));
+        $second = $client->send(new Request('POST', 'https://api.rb.cz/rbcz/premium/api/accounts/statements/download'));
+
+        $this->assertSame(200, $first->getStatusCode());
+        $this->assertSame(200, $second->getStatusCode());
+    }
+
     /**
      * Guzzle's default http_errors behavior throws a ClientException for a 429
      * response before send() gets a chance to inspect the status code. This must

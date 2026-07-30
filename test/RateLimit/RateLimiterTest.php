@@ -86,6 +86,91 @@ class RateLimiterTest extends TestCase
         @unlink($lockFile);
     }
 
+    public function testCheckGlobalBeforeRequestIsNoOpWhenCapIsZero(): void
+    {
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $mockStore->expects($this->never())->method('get');
+        $mockStore->expects($this->never())->method('set');
+
+        $limiter = new RateLimiter($mockStore, true, null, 0);
+        $limiter->checkGlobalBeforeRequest();
+    }
+
+    public function testCheckGlobalBeforeRequestAllowsRequestsUnderCap(): void
+    {
+        $now = time();
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $mockStore->method('get')
+            ->with(RateLimiter::GLOBAL_CLIENT_ID, 'second')
+            ->willReturn(['remaining' => 2, 'timestamp' => $now]);
+        $mockStore->expects($this->once())
+            ->method('set')
+            ->with(RateLimiter::GLOBAL_CLIENT_ID, 'second', 3, $now);
+
+        $limiter = new RateLimiter($mockStore, true, null, 5);
+        $limiter->checkGlobalBeforeRequest();
+    }
+
+    public function testCheckGlobalBeforeRequestThrowsWhenCapReachedAndWaitModeDisabled(): void
+    {
+        $now = time();
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $mockStore->method('get')
+            ->with(RateLimiter::GLOBAL_CLIENT_ID, 'second')
+            ->willReturn(['remaining' => 5, 'timestamp' => $now]);
+        $mockStore->expects($this->never())->method('set');
+
+        $limiter = new RateLimiter($mockStore, false, null, 5);
+
+        $this->expectException(\VitexSoftware\Raiffeisenbank\RateLimit\RateLimitExceededException::class);
+        $limiter->checkGlobalBeforeRequest();
+    }
+
+    public function testCheckGlobalBeforeRequestStartsNewBucketForNewSecond(): void
+    {
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $mockStore->method('get')
+            ->with(RateLimiter::GLOBAL_CLIENT_ID, 'second')
+            ->willReturn(['remaining' => 5, 'timestamp' => time() - 10]);
+        $mockStore->expects($this->once())
+            ->method('set')
+            ->with(RateLimiter::GLOBAL_CLIENT_ID, 'second', 1, $this->isType('int'));
+
+        $limiter = new RateLimiter($mockStore, false, null, 5);
+        $limiter->checkGlobalBeforeRequest();
+    }
+
+    public function testCheckBeforeRequestThrowsWhenDayWaitExceedsMaxWaitEvenInWaitMode(): void
+    {
+        $now = time();
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $mockStore->method('get')->willReturnMap([
+            ['client', 'second', ['remaining' => 1, 'timestamp' => $now]],
+            ['client', 'day', ['remaining' => 0, 'timestamp' => $now]],
+        ]);
+
+        // wait mode enabled, but the day window won't reset for ~86400s, far beyond maxWaitSeconds
+        $limiter = new RateLimiter($mockStore, true, null, 0, 5);
+
+        $this->expectException(\VitexSoftware\Raiffeisenbank\RateLimit\RateLimitExceededException::class);
+        $limiter->checkBeforeRequest('client');
+    }
+
+    public function testCheckBeforeRequestSleepsWhenDayWaitIsWithinMaxWait(): void
+    {
+        $now = time();
+        $mockStore = $this->createMock(RateLimitStoreInterface::class);
+        $mockStore->method('get')->willReturnMap([
+            ['client', 'second', ['remaining' => 1, 'timestamp' => $now]],
+            // day window resets in ~1s, well within maxWaitSeconds
+            ['client', 'day', ['remaining' => 0, 'timestamp' => $now - 86399]],
+        ]);
+
+        $limiter = new RateLimiter($mockStore, true, null, 0, 300);
+        $this->expectNotToPerformAssertions();
+        $limiter->checkBeforeRequest('client');
+    }
+
     public function testAcquireLockSanitizesClientIdIntoFilename(): void
     {
         $mockStore = $this->createMock(RateLimitStoreInterface::class);

@@ -15,7 +15,19 @@ declare(strict_types=1);
 
 namespace VitexSoftware\Raiffeisenbank\RateLimit;
 
-class RateLimitExceededException extends \Exception
+use VitexSoftware\Raiffeisenbank\ApiException;
+
+/**
+ * Thrown when a client's request rate has exceeded the API's or the local
+ * self-tracked limit. Extends ApiException (rather than plain \Exception) so
+ * that callers who already `catch (ApiException $exc)` around API calls
+ * catch this too, without needing a separate catch block. Defaults to code
+ * 429 (HTTP "Too Many Requests") unless the caller passes a different code.
+ */
+class RateLimitExceededException extends ApiException
 {
-    // Add custom exception logic if needed
+    public function __construct($message = '', $code = 429, $responseHeaders = [], $responseBody = null)
+    {
+        parent::__construct($message, $code, $responseHeaders, $responseBody);
+    }
 }
