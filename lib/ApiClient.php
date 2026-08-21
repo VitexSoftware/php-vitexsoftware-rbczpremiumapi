@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace VitexSoftware\Raiffeisenbank;
 
+use VitexSoftware\Raiffeisenbank\Outage\OutageException;
 use VitexSoftware\Raiffeisenbank\RateLimit\RateLimiter;
 use VitexSoftware\Raiffeisenbank\RateLimit\RateLimitExceededException;
 
@@ -314,6 +315,7 @@ class ApiClient extends \GuzzleHttp\Client
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws RateLimitExceededException            if the client is rate limited and wait mode is disabled
+     * @throws OutageException                       if the RB gateway itself reports being down (HTTP 500 + `outage: yes`)
      *
      * @return \Psr\Http\Message\ResponseInterface the HTTP response
      */
@@ -330,6 +332,15 @@ class ApiClient extends \GuzzleHttp\Client
             $response = $this->sendAllowingErrorStatus($request, $options);
 
             $this->updateRateLimitsFromResponse($response);
+
+            if (OutageException::isOutageResponse($response)) {
+                throw new OutageException(
+                    'Raiffeisenbank API gateway is reporting an outage (HTTP 500, outage: yes)',
+                    500,
+                    $response->getHeaders(),
+                    (string) $response->getBody(),
+                );
+            }
 
             $statusCode = $response->getStatusCode();
 
