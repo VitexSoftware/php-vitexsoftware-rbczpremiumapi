@@ -15,6 +15,7 @@
       <directory>./test/Api</directory>
       <directory>./test/Model</directory>
       <directory>./test/RateLimit</directory>
+      <directory>./test/Outage</directory>
     </testsuite>
   </testsuites>
   <php>

@@ -24,11 +24,23 @@ files:
   Transactor.mustache:
       folder: lib
       destinationFilename: Transactor.php
+  ApiError.mustache:
+      folder: lib
+      destinationFilename: ApiError.php
+  OutageException.mustache:
+    folder: lib/Outage
+    destinationFilename: OutageException.php
   bootstrap.php:
       folder: test
   ApiClientTest.mustache:
       folder: test
       destinationFilename: ApiClientTest.php
+  ApiErrorTest.mustache:
+      folder: test
+      destinationFilename: ApiErrorTest.php
+  OutageExceptionTest.mustache:
+    folder: test/Outage
+    destinationFilename: OutageExceptionTest.php
   RateLimiter.mustache:
     folder: lib/RateLimit
     destinationFilename: RateLimiter.php
