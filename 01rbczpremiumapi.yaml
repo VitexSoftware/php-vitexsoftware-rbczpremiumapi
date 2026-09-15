@@ -21,6 +21,11 @@ info:
 
     Client certificates issued in Internet Banking for bank clients/users have limited validity (e.g. **5 years**). However, **each year** certificates are automatically blocked and bank client/user must unblock them in Internet Banking. It is possible to do it in advance and prolong the time before the certificate is blocked. Your app should be prepared for these scenarios and it should communicate such cases to your user in advance to provide seamless service and high user-experience of your app.
 
+    Not covered by the original bank documentation (observed empirically): a certificate that is still X.509-valid and whose PKCS#12 password is correct can still be rejected by the API. In that case every mTLS operation returns HTTP **401** with JSON body `{"error":"UNAUTHORISED","error_description":"<reason>"}`. Observed `error_description` values:
+    - `Certificate is terminated` — the certificate was revoked/terminated in Internet Banking
+    - `Certificate is blocked` — the yearly automatic block; the user must unblock it in Internet Banking
+    Do not treat a readable `.p12` file or unexpired `notAfter` as proof that the API will accept the certificate.
+
     ##### Rate Limiting
     The number of requests in each API operation is limited to 10 per client per sliding second and 5000 per client per sliding day. The exception is the 'Download Statement' operation with the limits lowered to 5 per client per sliding second and 1500 per client per sliding day. This is because it transports potentially sizeable binary files. The consumer must be able to handle HTTP status 429 in case of exceeding these limits.
     
@@ -28,6 +33,8 @@ info:
 
     ##### Notes
     Be aware, that in certain error situations, API can return specific error structures along with 5xx status code, which is not explicitely defined below.
+
+    Not covered by this specification (observed empirically, not documented by Raiffeisenbank): when the API gateway itself is down rather than rejecting an individual request, every endpoint returns HTTP 500 together with an `outage: yes` response header, regardless of account/certificate/client - this is distinguishable from a per-request 500 caused by bad input or a transient backend error, which does not carry this header.
 
     ##### Quick Start Client
     Feel free to download a <a href="assets/PremiumApiClient.java" download>simple Java client</a> that gives you quick access to our API.
@@ -150,17 +157,32 @@ paths:
             - numberPart2
             - bankCode
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: Certficate is valid but user has no sufficient rights to access resource.
           schema:
@@ -596,17 +618,32 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: No access rights to perform the operation.
           schema:
@@ -790,17 +827,32 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: No access rights to perform the operation.
           schema:
@@ -846,7 +898,19 @@ paths:
               error_description:
                 type: string
         '500':
-          description: Unexpected error.
+          description: >-
+            Unexpected error. Note: not part of Raiffeisenbank's published
+            documentation, but empirically observed on this and other
+            endpoints - when the API gateway itself is down (rather than
+            rejecting this specific request), the response carries an
+            `outage: yes` header (see the `outage` entry below).
+          headers:
+            outage:
+              type: string
+              description: >-
+                Present with value `yes` when this 500 reflects a gateway-wide
+                outage rather than a per-request error. Undocumented by
+                Raiffeisenbank; observed empirically.
           schema:
             type: object
             properties:
@@ -1018,17 +1082,32 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: No access rights to perform the operation.
           schema:
@@ -1187,17 +1266,32 @@ paths:
           description: |
             Nonexisting page or empty content.
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: No access rights to perform the operation.
           schema:
@@ -1403,17 +1497,32 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: No access rights to perform the operation.
           schema:
@@ -1547,17 +1656,32 @@ paths:
               error_description:
                 type: string
         '401':
-          description: Certificate's serial number is missing or certificate is in an invalid state.
+          description: |
+            Client certificate serial number is missing, or the certificate is in an invalid state (blocked, terminated, or otherwise not accepted for mTLS).
+            Observed production body: `{"error":"UNAUTHORISED","error_description":"Certificate is terminated"}`.
+            Other observed `error_description` for the same `error`: `Certificate is blocked`.
           schema:
             type: object
+            required:
+              - error
+              - error_description
             properties:
               error:
                 type: string
                 enum:
                   - UNAUTHORISED
                   - INVALID_REQUEST
+                example: UNAUTHORISED
               error_description:
                 type: string
+                description: |
+                  Human-readable reason from the API gateway.
+                  Observed values include `Certificate is terminated` (revoked in Internet Banking)
+                  and `Certificate is blocked` (yearly automatic block).
+                example: Certificate is terminated
+            example:
+              error: UNAUTHORISED
+              error_description: Certificate is terminated
         '403':
           description: No access rights to perform the operation.
           schema:

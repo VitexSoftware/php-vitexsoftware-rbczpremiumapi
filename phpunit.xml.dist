@@ -11,6 +11,7 @@
   <testsuites>
     <testsuite name="tests">
       <file>./test/ApiClientTest.php</file>
+      <file>./test/ApiErrorTest.php</file>
       <directory>./test/Api</directory>
       <directory>./test/Model</directory>
       <directory>./test/RateLimit</directory>

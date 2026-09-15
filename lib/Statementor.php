@@ -125,6 +125,13 @@ class Statementor extends \Ease\Sand
 
                 $result = $apiInstance->getStatements(\VitexSoftware\Raiffeisenbank\ApiClient::getxRequestId(), $requestBody, $page);
 
+                if (!$result instanceof \VitexSoftware\Raiffeisenbank\Model\GetStatements200Response) {
+                    $apiError = ApiError::fromResponseModel(\is_object($result) ? $result : (object) ['error' => 'UNEXPECTED_RESPONSE']);
+                    $this->addStatusMessage($apiError->getMessage(), 'error');
+
+                    throw $apiError;
+                }
+
                 $pageStatements = $result->getStatements();
 
                 if (empty($pageStatements)) {
@@ -154,10 +161,14 @@ class Statementor extends \Ease\Sand
                     sleep(1);
                 }
             } while ($stop === false);
-        } catch (\Exception $e) {
-            $this->addStatusMessage($e->getCode().' Exception when calling GetStatementsRequest: '.$e->getMessage(), 'error', $apiInstance);
+        } catch (\Throwable $e) {
+            $this->addStatusMessage($e->getMessage(), 'error', $apiInstance);
 
-            throw $e;
+            if ($e instanceof ApiException) {
+                throw $e;
+            }
+
+            throw new ApiException($e->getMessage(), (int) $e->getCode(), [], $e->getMessage());
         }
 
         return $statements;
@@ -286,6 +297,14 @@ class Statementor extends \Ease\Sand
                 'statementId' => $statement['statementId'],
                 'statementFormat' => $format]);
             $pdfStatementRaw = $apiInstance->downloadStatement(ApiClient::getxRequestId(), 'cs', $requestBody);
+
+            if (!$pdfStatementRaw instanceof \SplFileObject) {
+                $apiError = ApiError::fromResponseModel(\is_object($pdfStatementRaw) ? $pdfStatementRaw : (object) ['error' => 'UNEXPECTED_RESPONSE']);
+                $this->addStatusMessage($apiError->getMessage(), 'error');
+
+                throw $apiError;
+            }
+
             sleep(1);
 
             if (file_put_contents($saveTo.'/'.$statementFilename, $pdfStatementRaw->fread($pdfStatementRaw->getSize()))) {

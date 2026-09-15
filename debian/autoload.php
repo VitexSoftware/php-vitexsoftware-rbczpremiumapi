@@ -8,6 +8,7 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'vitexsoftware\\raiffeisenbank\\apiclient' => '/ApiClient.php',
+                'vitexsoftware\\raiffeisenbank\\apierror' => '/ApiError.php',
                 'vitexsoftware\\raiffeisenbank\\apiexception' => '/ApiException.php',
                 'vitexsoftware\\raiffeisenbank\\configuration' => '/Configuration.php',
                 'vitexsoftware\\raiffeisenbank\\formdataprocessor' => '/FormDataProcessor.php',

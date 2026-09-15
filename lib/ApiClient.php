@@ -314,8 +314,9 @@ class ApiClient extends \GuzzleHttp\Client
      * @param array                              $options Request options to apply to the transfer. See \GuzzleHttp\RequestOptions.
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws RateLimitExceededException            if the client is rate limited and wait mode is disabled
+     * @throws ApiException                          on HTTP 4xx/5xx other than 429 (message includes error / error_description)
      * @throws OutageException                       if the RB gateway itself reports being down (HTTP 500 + `outage: yes`)
+     * @throws RateLimitExceededException            if the client is rate limited and wait mode is disabled
      *
      * @return \Psr\Http\Message\ResponseInterface the HTTP response
      */
@@ -356,6 +357,19 @@ class ApiClient extends \GuzzleHttp\Client
                 } else {
                     throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
                 }
+            }
+
+            // sendAllowingErrorStatus() recovers 4xx/5xx so rate-limit headers
+            // can be stored. Generated OpenAPI clients then treat those bodies
+            // as success models (e.g. GetBalance401Response) and callers crash
+            // calling getStatements() on them. Throw a readable ApiException
+            // instead — including UNAUTHORISED / "Certificate is terminated".
+            if ($statusCode === 429) {
+                throw new RateLimitExceededException('Rate limit exceeded (HTTP 429)');
+            }
+
+            if ($statusCode >= 400) {
+                throw ApiError::fromHttpResponse($response);
             }
 
             return $response;
