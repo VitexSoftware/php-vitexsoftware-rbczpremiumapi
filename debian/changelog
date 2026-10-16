@@ -1,3 +1,18 @@
+php-vitexsoftware-rbczpremiumapi (1.6.0) unstable; urgency=medium
+
+  * Detect RB gateway-wide outage (HTTP 500 with 'outage: yes' header)
+    and raise a dedicated OutageException so consumers can tell a bank-
+    side outage from a request error.
+  * Fix Statementor::getStatements() crashing when RB answers 401
+    UNAUTHORISED (e.g. certificate terminated/blocked): 4xx error bodies
+    are now turned into a readable ApiException via new ApiError helper,
+    and terminated/blocked certificates are documented in the OpenAPI
+    spec.
+  * Regenerate generator templates so outage and auth handling survive
+    client regeneration.
+
+ -- vitex <info@vitexsoftware.cz>  Fri, 16 Oct 2026 08:53:21 +0200
+
 php-vitexsoftware-rbczpremiumapi (1.5.8) unstable; urgency=medium
 
   * Fix uncaught RateLimitExceededException crashing consumers on rate-
