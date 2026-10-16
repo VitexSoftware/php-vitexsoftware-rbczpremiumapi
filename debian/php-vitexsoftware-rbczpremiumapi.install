@@ -3,3 +3,5 @@ lib/RateLimit/*                 usr/share/php/Raiffeisenbank/RateLimit
 lib/Model/*                     usr/share/php/Raiffeisenbank/Model
 lib/PremiumAPI/*                usr/share/php/Raiffeisenbank/PremiumAPI
 debian/composer.json		usr/share/php/Raiffeisenbank
+debian/io.github.vitexsoftware.php_vitexsoftware_rbczpremiumapi.metainfo.xml	usr/share/metainfo
+io.github.vitexsoftware.php_vitexsoftware_rbczpremiumapi.svg	usr/share/icons/hicolor/scalable/apps
